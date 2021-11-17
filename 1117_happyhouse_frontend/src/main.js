@@ -1,3 +1,16 @@
+// import Vue from 'vue'
+// import App from './App.vue'
+// import router from './router'
+// import store from './store'
+
+// Vue.config.productionTip = false
+
+// new Vue({
+//   router,
+//   store,
+//   render: h => h(App)
+// }).$mount('#app')
+
 /*!
 
 =========================================================
@@ -19,7 +32,9 @@ import DashboardPlugin from './plugins/dashboard-plugin';
 import App from './App.vue';
 
 // router setup
-import router from './routes/router';
+import router from './router/router.js';
+
+import store from './store/index.js';
 // plugin setup
 Vue.use(DashboardPlugin);
 
@@ -27,5 +42,6 @@ Vue.use(DashboardPlugin);
 new Vue({
   el: '#app',
   render: h => h(App),
+  store,
   router
 });
