@@ -10,7 +10,8 @@
           <b-form-select v-model="gugunCode" :options="guguns" @change="searchApt"></b-form-select>
         </b-col>
         <b-col class="sm-3">
-          <b-form-select v-model="gugunCode" :options="guguns" @change="searchApt"></b-form-select>
+          <b-form-select></b-form-select>
+          <!-- <b-form-select v-model="gugunCode" :options="guguns" @change="searchApt"></b-form-select> -->
         </b-col>
       </b-row>
     </base-header>
@@ -18,7 +19,7 @@
     <b-container fluid class="mt--7">
       <b-row>
         <b-col>
-          <house-list />
+          <!-- <house-list /> -->
         </b-col>
         <b-col>
           <b-card no-body class="border-0">
@@ -35,20 +36,26 @@
   import { API_KEY } from './Maps/API_KEY';
   import GoogleMapsLoader from 'google-maps';
   import HouseList from '@/components/House/HouseList.vue';
-  // import http from '../util/http-common.js';
+import { mapActions, mapMutations, mapState } from 'vuex';
 
   GoogleMapsLoader.KEY = API_KEY;
 
   export default {
   name: "KakaoMap",
+  components: {
+    HouseList
+  },
+  computed: {
+    ...mapState(["sidos", "guguns"])
+  },
+  created() {
+    this.CLEAR_SIDO_LIST();
+    this.sidoList();
+  },
   data() {
     return {
-      components: {
-        HouseList
-      },
-      created() {
-
-      },
+      sidoCode: null,
+      gugunCode: null,
       map: null,
       markerPositions1: [
         [33.452278, 126.567803],
@@ -81,6 +88,20 @@
     }
   },
   methods: {
+    ...mapActions(["getSido", "getGugun"]),
+    ...mapMutations(["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST"]),
+    sidoList() {
+      this.getSido();
+    },
+    gugunList() {
+      console.log(this.sidoCode);
+      this.CLEAR_GUGUN_LIST();
+      this.gugunCode = null;
+      if(this.sidoCode) this.getGugun(this.sidoCode);
+    },
+    searchApt() {
+
+    },
     initMap() {
       const container = document.getElementById("map");
       const options = {
