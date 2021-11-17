@@ -16,11 +16,6 @@ const routes = [
         component: () => import("../views/Dashboard.vue"),
       },
       {
-        path: "/icons",
-        name: "icons",
-        component: () => import("../views/Icons.vue"),
-      },
-      {
         path: "/profile",
         name: "profile",
         component: () => import("../views/Pages/UserProfile.vue"),
@@ -28,7 +23,7 @@ const routes = [
       {
         path: "/maps",
         name: "maps",
-        component: () => import("../views/GoogleMaps.vue"),
+        component: () => import("../views/KakaoMaps.vue"),
       },
       {
         path: "/tables",

@@ -62,7 +62,7 @@
 
     <!--Charts-->
     <b-container fluid class="mt--7">
-      <b-row>
+      <!-- <b-row>
         <b-col xl="8" class="mb-5 mb-xl-0">
           <card type="default" header-classes="bg-transparent">
             <b-row align-v="center" slot="header">
@@ -118,7 +118,7 @@
             </bar-chart>
           </card>
         </b-col>
-      </b-row>
+      </b-row> -->
       <!-- End charts-->
 
       <!--Tables-->
@@ -213,5 +213,8 @@
 .el-table .cell{
   padding-left: 0px;
   padding-right: 0px;
+}
+.bg-success {
+  background: #2186C4 !important;
 }
 </style>

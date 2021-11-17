@@ -14,15 +14,6 @@
 
         <sidebar-item
           :link="{
-            name: 'Icons',
-            path: '/icons',
-            icon: 'ni ni-planet text-blue',
-          }"
-        >
-        </sidebar-item>
-
-        <sidebar-item
-          :link="{
             name: 'Maps',
             path: '/maps',
             icon: 'ni ni-pin-3 text-orange',
