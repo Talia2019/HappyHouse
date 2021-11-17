@@ -59,7 +59,7 @@
           :link="{
             name: 'Board',
             path: '/board',
-            icon: 'ni ni-circle-08 text-pink',
+            icon: 'ni ni-bullet-list-67 text-red',
           }"
         >
         </sidebar-item>

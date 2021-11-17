@@ -1,6 +1,5 @@
 import DashboardLayout from "@/views/Layout/DashboardLayout.vue";
 import AuthLayout from "@/views/Pages/AuthLayout.vue";
-import Board from "@/views/jytest.vue";
 
 import NotFound from "@/views/NotFoundPage.vue";
 
@@ -30,6 +29,39 @@ const routes = [
         name: "tables",
         component: () => import("../views/RegularTables.vue"),
       },
+      {
+        path: "/board",
+        name: "boards",
+        component: () => import("../views/FreeBoard.vue"),
+        // redirect: "/board/list",
+        // children: [
+        //   {
+        //     path: "list",
+        //     name: "BoardList",
+        //     component: BoardList,
+        //   },
+        //   {
+        //     path: "write",
+        //     name: "BoardWrite",
+        //     component: BoardWrite,
+        //   },
+        //   {
+        //     path: "detail/:articleno",
+        //     name: "BoardView",
+        //     component: BoardView,
+        //   },
+        //   {
+        //     path: "update/:articleno",
+        //     name: "BoardUpdate",
+        //     component: BoardUpdate,
+        //   },
+        //   {
+        //     path: "delete/:articleno",
+        //     name: "BoardDelete",
+        //     component: BoardDelete,
+        //   },
+        // ],
+      },
     ],
   },
   {
@@ -49,39 +81,6 @@ const routes = [
       },
       { path: "*", component: NotFound },
     ],
-  },
-  {
-    path: "/board",
-    name: "board",
-    component: Board,
-    // redirect: "/board/list",
-    // children: [
-    //   {
-    //     path: "list",
-    //     name: "BoardList",
-    //     component: BoardList,
-    //   },
-    //   {
-    //     path: "write",
-    //     name: "BoardWrite",
-    //     component: BoardWrite,
-    //   },
-    //   {
-    //     path: "detail/:articleno",
-    //     name: "BoardView",
-    //     component: BoardView,
-    //   },
-    //   {
-    //     path: "update/:articleno",
-    //     name: "BoardUpdate",
-    //     component: BoardUpdate,
-    //   },
-    //   {
-    //     path: "delete/:articleno",
-    //     name: "BoardDelete",
-    //     component: BoardDelete,
-    //   },
-    // ],
   },
 ];
 
