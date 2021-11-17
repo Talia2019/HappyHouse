@@ -43,4 +43,7 @@
   };
 </script>
 <style>
+.bg-gradient-success {
+  background: #2186C4 !important;
+}
 </style>
