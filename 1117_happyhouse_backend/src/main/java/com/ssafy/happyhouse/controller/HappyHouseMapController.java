@@ -33,13 +33,12 @@ public class HappyHouseMapController {
 
 	@GetMapping("/dong")
 	public ResponseEntity<List<HouseInfoDto>> dong(@RequestParam("gugun") String gugun) throws Exception {
-		System.out.println(gugun);
 		return new ResponseEntity<List<HouseInfoDto>>(happyHouseMapService.getDongInGugun(gugun), HttpStatus.OK);
 	}
 
 	@GetMapping("/apt")
-	public ResponseEntity<List<HouseInfoDto>> apt(@RequestParam("dong") String dong) throws Exception {
-		return new ResponseEntity<List<HouseInfoDto>>(happyHouseMapService.getAptInDong(dong), HttpStatus.OK);
+	public ResponseEntity<String> apt(@RequestParam("gugun") String gugun) throws Exception {
+		return new ResponseEntity<String>(happyHouseMapService.getAptInDong(gugun), HttpStatus.OK);
 	}
 
 	@GetMapping("/aptSearch")

@@ -1,62 +1,17 @@
 <template>
-  <div>
-    <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
-      <b-button variant="outline-primary">Button</b-button>
-      <b-row class="mt-4 mb-4 text-center">
-        <b-col class="sm-3">
-          <b-form-select v-model="sidoCode" :options="sidos" @change="gugunList"></b-form-select>
-        </b-col>
-        <b-col class="sm-3">
-          <b-form-select v-model="gugunCode" :options="guguns" @change="searchApt"></b-form-select>
-        </b-col>
-        <b-col class="sm-3">
-          <b-form-select></b-form-select>
-          <!-- <b-form-select v-model="gugunCode" :options="guguns" @change="searchApt"></b-form-select> -->
-        </b-col>
-      </b-row>
-    </base-header>
-  
-    <b-container fluid class="mt--7">
-      <b-row>
-        <b-col>
-          <!-- <house-list /> -->
-        </b-col>
-        <b-col>
-          <b-card no-body class="border-0">
-            
-            <!-- <div id="map-custom" class="map-canvas" style="height: 600px;"></div> -->
-            <div id="map" class="map-canvas" style="height: 600px;"></div>
-          </b-card>
-        </b-col>
-      </b-row>
-    </b-container>
-  </div>
+  <div id="map" class="map-canvas" style="height: 600px;"></div>
 </template>
+
 <script>
-  import { API_KEY } from './Maps/API_KEY';
-  import GoogleMapsLoader from 'google-maps';
-  import HouseList from '@/components/House/HouseList.vue';
-import { mapActions, mapMutations, mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
-  GoogleMapsLoader.KEY = API_KEY;
-
-  export default {
+export default {
   name: "KakaoMap",
-  components: {
-    HouseList
-  },
-  computed: {
-    ...mapState(["sidos", "guguns"])
-  },
-  created() {
-    this.CLEAR_SIDO_LIST();
-    this.sidoList();
-  },
   data() {
     return {
-      sidoCode: null,
-      gugunCode: null,
+      locations: [],
       map: null,
+      geocoder: null,
       markerPositions1: [
         [33.452278, 126.567803],
         [33.452671, 126.574792],
@@ -73,7 +28,24 @@ import { mapActions, mapMutations, mapState } from 'vuex';
       ],
       markers: [],
       infowindow: null,
-    };
+    }
+  },
+  computed: {
+    ...mapState(["sidos", "guguns", "dongs", "houses"]),
+    ...mapGetters(["getLocation"])
+  },
+  watch: {
+    getLocation(val) {
+      console.log("houses watch", val);
+      if (val.length != 0){
+        console.log(val)
+        val.forEach(house => {
+          this.locations.push(house["법정동"] + " " + house["지번"]);
+        })
+        console.log(this.locations);
+        this.getLatLng(val);
+      }
+    }
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -83,24 +55,47 @@ import { mapActions, mapMutations, mapState } from 'vuex';
       /* global kakao */
       script.onload = () => kakao.maps.load(this.initMap);
       script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=915cffed372954b7b44804ed422b9cf0";
+        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=915cffed372954b7b44804ed422b9cf0&libraries=services";
       document.head.appendChild(script);
     }
   },
+  updated() {
+    console.log(this.houses);
+  },
   methods: {
-    ...mapActions(["getSido", "getGugun"]),
-    ...mapMutations(["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST"]),
-    sidoList() {
-      this.getSido();
-    },
-    gugunList() {
-      console.log(this.sidoCode);
-      this.CLEAR_GUGUN_LIST();
-      this.gugunCode = null;
-      if(this.sidoCode) this.getGugun(this.sidoCode);
-    },
-    searchApt() {
+    getLatLng(houses) {
+      const container = document.getElementById("map");
+      const options = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 5,
+      };
+      var map = new kakao.maps.Map(container, options);
 
+      // 주소-좌표 변환 객체를 생성합니다
+      this.geocoder = new kakao.maps.services.Geocoder();
+
+      // 주소로 좌표를 검색합니다
+      houses.forEach(house => {
+        this.geocoder.addressSearch(house["법정동"] + " " + house["지번"], function(result, status) {
+            // 정상적으로 검색이 완료됐으면 
+          if (status === kakao.maps.services.Status.OK) {  
+            var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+            // 결과값으로 받은 위치를 마커로 표시합니다
+            var marker = new kakao.maps.Marker({
+              map: map,
+              position: coords
+            });
+                // 인포윈도우로 장소에 대한 설명을 표시합니다
+            var infowindow = new kakao.maps.InfoWindow({
+                content: '<div style="width:150px;text-align:center;padding:6px 0;">'+ house['아파트'] + ':' + house['거래금액'] +'</div>'
+            });
+            infowindow.open(map, marker);
+  
+            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+            map.setCenter(coords);
+          } 
+        });    
+      })
     },
     initMap() {
       const container = document.getElementById("map");
@@ -162,25 +157,10 @@ import { mapActions, mapMutations, mapState } from 'vuex';
 
       this.map.setCenter(iwPosition);
     },
-  },
-};
+  } 
+}
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-#map {
-  width: 600px;
-  height: 600px;
-}
+<style>
 
-.button-group {
-  margin: 10px 0px;
-}
-
-button {
-  margin: 0 3px;
-}
-.bg-success {
-  background: #2186C4 !important;
-}
 </style>

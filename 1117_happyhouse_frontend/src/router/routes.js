@@ -22,7 +22,7 @@ const routes = [
       {
         path: '/maps',
         name: 'maps',
-        component: () => import('../views/KakaoMaps.vue')
+        component: () => import('../views/HouseDeal.vue')
       },
       {
         path: '/tables',

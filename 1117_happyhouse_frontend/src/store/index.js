@@ -9,6 +9,14 @@ export default new Vuex.Store({
   state: {
     sidos: [{ value: null, text: "선택하세요" }],
     guguns: [{ value: null, text: "선택하세요" }],
+    dongs: [{ value: null, text: "선택하세요" }],
+    houses: [],
+    house: null,
+  },
+  getters: {
+    getLocation(state) {
+      return state.houses;
+    }
   },
   mutations: {
     SET_SIDO_LIST(state, sidos) {
@@ -21,12 +29,26 @@ export default new Vuex.Store({
         state.guguns.push({ value: gugun.gugunCode, text: gugun.gugunName });
       })
     },
+    SET_DONG_LIST(state, dongs) {
+      dongs.forEach(dong => {
+        state.dongs.push({ value: dong.dongCode, text: dong.dongName });
+      })
+    },
+    SET_HOUSE_LIST(state, houses){
+      state.houses = houses;
+    }, 
     CLEAR_SIDO_LIST(state) {
       state.sidos = [{ value: null, text: "선택하세요" }];
     },
     CLEAR_GUGUN_LIST(state) {
       state.guguns = [{ value: null, text: "선택하세요" }];
     },
+    CLEAR_DONG_LIST(state) {
+      state.dongs = [{ value: null, text: "선택하세요 "}];
+    },
+    CLEAR_HOUSE_LIST(state) {
+      state.houses = [];
+    }
   },
   actions: {
     getSido({ commit }) {
@@ -37,13 +59,6 @@ export default new Vuex.Store({
         }).catch((err) => {
           console.log(err);
         })
-      const params = { gugun: '11110' };
-      console.log(params)
-      http.get("/map/dong", params).then((res) => {
-        console.log(res);
-      }).catch((err) => {
-        console.log(err);
-      })
     },
     getGugun({ commit }, sidoCode) {
       const params = { sido: sidoCode };
@@ -53,7 +68,36 @@ export default new Vuex.Store({
         }).catch((err) => {
           console.log(err);
         })
-    }
+    },
+    getDong({ commit }, gugunCode) {
+      const params = { gugun: gugunCode };
+      http
+        .get("/map/dong", { params }).then((res) => {
+          commit("SET_DONG_LIST", res.data);
+        }).catch((err) => {
+          console.log(err);
+        })
+    },
+    getHouse({ commit }, code) {
+      const dongCode = code.dongCode*1;
+      const params = { gugun: code.gugunCode };
+      http
+        .get("/map/apt", { params }).then((res) => {
+          // console.log(res.data.response.body.items.item, commit);
+          const items = res.data.response.body.items.item;
+          console.log(dongCode);
+          console.log(items);
+          const houseList = [];
+          items.forEach(item => {
+            if (item["법정동읍면동코드"] === dongCode){
+              houseList.push(item);
+            }
+          });
+          commit("SET_HOUSE_LIST", houseList);
+        }).catch((err) => {
+          console.log(err);
+        })
+    },
   },
   modules: {
   },
