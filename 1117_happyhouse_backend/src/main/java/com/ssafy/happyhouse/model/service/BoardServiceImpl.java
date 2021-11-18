@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.happyhouse.model.BoardDto;
+import com.ssafy.happyhouse.model.BoardParameterDto;
 import com.ssafy.happyhouse.model.mapper.BoardMapper;
 
 @Service
@@ -13,33 +14,41 @@ public class BoardServiceImpl implements BoardService {
 
     @Autowired
 	private BoardMapper boardMapper;
-//	@Autowired
-//	private SqlSession sqlSession;
     
 	@Override
-	public List<BoardDto> retrieveBoard() {
-		return boardMapper.selectBoard();
-//		sqlSession.getMapper(UserMapper.class).registerMember(userDto);
+	public boolean writeArticle(BoardDto boardDto) throws Exception {
+		if(boardDto.getSubject() == null || boardDto.getContent() == null) {
+			throw new Exception();
+		}
+		return boardMapper.writeArticle(boardDto) == 1;
 	}
 
 	@Override
-	public BoardDto detailBoard(int no) {
-		return boardMapper.selectBoardByNo(no);
+	public List<BoardDto> listArticle(BoardParameterDto boardParameterDto) throws Exception {
+		int start = boardParameterDto.getPg() == 0 ? 0 : (boardParameterDto.getPg() - 1) * boardParameterDto.getSpp();
+		boardParameterDto.setStart(start);
+		return boardMapper.listArticle(boardParameterDto);
 	}
 
 	@Override
-	public boolean writeBoard(BoardDto board) {
-		return boardMapper.insertBoard(board) == 1;
+	public BoardDto getArticle(int articleno) throws Exception {
+		return boardMapper.getArticle(articleno);
 	}
 
 	@Override
-	public boolean updateBoard(BoardDto board) {
-		return boardMapper.updateBoard(board) == 1;
+	public void updateHit(int articleno) throws Exception {
+		boardMapper.updateHit(articleno);
 	}
 
 	@Override
-	public boolean deleteBoard(int no) {
-		return boardMapper.deleteBoard(no) == 1;
+	public boolean modifyArticle(BoardDto boardDto) throws Exception {
+		return boardMapper.modifyArticle(boardDto) == 1;
+	}
+
+	@Override
+	public boolean deleteArticle(int articleno) throws Exception {
+		boardMapper.deleteMemo(articleno);
+		return boardMapper.deleteArticle(articleno) == 1;
 	}
 
 }

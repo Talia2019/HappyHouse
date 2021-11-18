@@ -104,21 +104,7 @@ export default {
 };
 </script>
 <style>
-.el-table.table {
-  background-color: #a72e1e;
-  color: #3f464d;
-}
-
-/* .el-table th,
-.el-table tr {
-  background-color: #fff6e6;
-} */
-
-/* .el-table td,
-.el-table th.is-leaf {
-  border-bottom: none;
-} */
-/* .el-table.table-dark {
+.el-table.table-dark {
   background-color: #172b4d;
   color: #f8f9fe;
 }
@@ -131,5 +117,5 @@ export default {
 .el-table.table-dark td,
 .el-table.table-dark th.is-leaf {
   border-bottom: none;
-} */
+}
 </style>

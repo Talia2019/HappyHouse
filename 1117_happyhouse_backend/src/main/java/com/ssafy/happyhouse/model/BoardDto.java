@@ -8,9 +8,9 @@ public class BoardDto {
 	private String subject;
 	private String content;
 	private int hit;
-	private Date regTime;
+	private String regTime;
 
-	public BoardDto(int boardNo, String userId, String subject, String content, int hit, Date regTime) {
+	public BoardDto(int boardNo, String userId, String subject, String content, int hit, String regTime) {
 		super();
 		this.boardNo = boardNo;
 		this.userId = userId;
@@ -64,11 +64,11 @@ public class BoardDto {
 		this.hit = hit;
 	}
 
-	public Date getRegTime() {
+	public String getRegTime() {
 		return regTime;
 	}
 
-	public void setRegTime(Date regTime) {
+	public void setRegTime(String regTime) {
 		this.regTime = regTime;
 	}
 

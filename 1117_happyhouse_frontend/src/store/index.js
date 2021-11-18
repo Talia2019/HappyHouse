@@ -1,9 +1,11 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import http from '@/util/http-common.js';
+import Vue from "vue";
+import Vuex from "vuex";
+import http from "@/util/http-common.js";
 import createPersistedState from "vuex-persistedstate";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
+
+import boardStore from "@/store/modules/boardStore.js";
 
 export default new Vuex.Store({
   state: {
@@ -12,14 +14,14 @@ export default new Vuex.Store({
   },
   mutations: {
     SET_SIDO_LIST(state, sidos) {
-      sidos.forEach(sido => {
+      sidos.forEach((sido) => {
         state.sidos.push({ value: sido.sidoCode, text: sido.sidoName });
-      })
+      });
     },
     SET_GUGUN_LIST(state, guguns) {
-      guguns.forEach(gugun => {
+      guguns.forEach((gugun) => {
         state.guguns.push({ value: gugun.gugunCode, text: gugun.gugunName });
-      })
+      });
     },
     CLEAR_SIDO_LIST(state) {
       state.sidos = [{ value: null, text: "선택하세요" }];
@@ -31,24 +33,34 @@ export default new Vuex.Store({
   actions: {
     getSido({ commit }) {
       http
-        .get("/map/sido").then((res) => {
+        .get("/map/sido")
+        .then((res) => {
           // console.log(res);
           commit("SET_SIDO_LIST", res.data);
-        }).catch((err) => {
-          console.log(err);
         })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     getGugun({ commit }, sidoCode) {
       const params = { sido: sidoCode };
       http
-        .get("/map/gugun", { params }).then((res) => {
+        .get("/map/gugun", { params })
+        .then((res) => {
           commit("SET_GUGUN_LIST", res.data);
-        }).catch((err) => {
-          console.log(err);
         })
-    }
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   modules: {
+    boardStore,
   },
-  plugins: [createPersistedState()],
-})
+  plugins: [
+    createPersistedState({
+      // 브라우저 종료시 제거하기 위해 localStorage가 아닌 sessionStorage로 변경. (default: localStorage)
+      storage: sessionStorage,
+    }),
+  ],
+});

@@ -33,34 +33,34 @@ const routes = [
         path: "/board",
         name: "boards",
         component: () => import("../views/FreeBoard.vue"),
-        // redirect: "/board/list",
-        // children: [
-        //   {
-        //     path: "list",
-        //     name: "BoardList",
-        //     component: BoardList,
-        //   },
-        //   {
-        //     path: "write",
-        //     name: "BoardWrite",
-        //     component: BoardWrite,
-        //   },
-        //   {
-        //     path: "detail/:articleno",
-        //     name: "BoardView",
-        //     component: BoardView,
-        //   },
-        //   {
-        //     path: "update/:articleno",
-        //     name: "BoardUpdate",
-        //     component: BoardUpdate,
-        //   },
-        //   {
-        //     path: "delete/:articleno",
-        //     name: "BoardDelete",
-        //     component: BoardDelete,
-        //   },
-        // ],
+        redirect: "/board/list",
+        children: [
+          {
+            path: "list",
+            name: "boardList",
+            component: () => import("../views/Boards/BoardList.vue"),
+          },
+          {
+            path: "detail/:articleno",
+            name: "boardView",
+            component: () => import("../views/Boards/BoardView.vue"),
+          },
+          {
+            path: "write",
+            name: "boardWrite",
+            component: () => import("../views/Boards/BoardWrite.vue"),
+          },
+          {
+            path: "update/:articleno",
+            name: "boardUpdate",
+            component: () => import("../views/FreeBoard.vue"),
+          },
+          {
+            path: "delete/:articleno",
+            name: "boardDelete",
+            component: () => import("../views/FreeBoard.vue"),
+          },
+        ],
       },
     ],
   },
