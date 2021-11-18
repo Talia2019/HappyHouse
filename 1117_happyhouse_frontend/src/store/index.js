@@ -37,6 +37,13 @@ export default new Vuex.Store({
         }).catch((err) => {
           console.log(err);
         })
+      const params = { gugun: '11110' };
+      console.log(params)
+      http.get("/map/dong", params).then((res) => {
+        console.log(res);
+      }).catch((err) => {
+        console.log(err);
+      })
     },
     getGugun({ commit }, sidoCode) {
       const params = { sido: sidoCode };
