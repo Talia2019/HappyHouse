@@ -57,10 +57,10 @@
 		 where boardno = #{no}
 	</delete>
 	
-	<delete id="deleteMemo" parameterType="int">
-		delete from memo
-		where boardno = #{no}
-	</delete>
+<!-- 	<delete id="deleteMemo" parameterType="int"> -->
+<!-- 		delete from memo -->
+<!-- 		where boardno = #{no} -->
+<!-- 	</delete> -->
 	
 	<select id="getTotalCount" parameterType="map" resultType="int">
 		select count(boardNo)

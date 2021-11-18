@@ -6,7 +6,7 @@
           <h3 class="mb-0">자유 게시판</h3>
         </b-col>
         <b-col class="text-right">
-          <b-button @click="moveWrite()" class="btn btn-sm" variant="primary"
+          <b-button @click="moveWrite()" class="btn" variant="primary"
             >글쓰기</b-button
           >
         </b-col>
@@ -57,12 +57,39 @@
       </el-table-column>
     </el-table>
 
-    <b-card-footer class="py-4 d-flex justify-content-end table-light">
-      <base-pagination
-        v-model="currentPage"
-        :per-page="10"
-        :total="50"
-      ></base-pagination>
+    <b-card-footer class="py-4 table-light">
+      <b-row>
+        <div class="pb-5">
+          <b-input-group>
+            <template #prepend>
+              <b-dropdown
+                :text="dropdown[selecteddrop]"
+                variant="outline-primary"
+              >
+                <b-dropdown-item @click="changeDropdown(0)">{{
+                  dropdown[0]
+                }}</b-dropdown-item>
+                <b-dropdown-item @click="changeDropdown(1)">{{
+                  dropdown[1]
+                }}</b-dropdown-item>
+              </b-dropdown>
+            </template>
+            <b-form-input></b-form-input>
+
+            <b-input-group-append>
+              <b-button variant="primary">검색</b-button>
+            </b-input-group-append>
+          </b-input-group>
+        </div>
+      </b-row>
+      <div class="row d-flex justify-content-center">
+        <base-pagination
+          class="d-flex justify-content-end"
+          v-model="currentPage"
+          :per-page="10"
+          :total="50"
+        ></base-pagination>
+      </div>
     </b-card-footer>
   </b-card>
 </template>
@@ -80,6 +107,8 @@ export default {
     return {
       currentPage: 1,
       articles: [],
+      dropdown: ["제목", "작성자"],
+      selecteddrop: 0,
     };
   },
   created() {
@@ -102,6 +131,9 @@ export default {
   methods: {
     moveWrite() {
       this.$router.push({ name: "boardWrite" });
+    },
+    changeDropdown(index) {
+      this.selecteddrop = index;
     },
     // viewArticle(article) {
     //   this.$router.go({
