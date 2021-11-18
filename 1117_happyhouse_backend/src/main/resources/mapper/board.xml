@@ -45,8 +45,10 @@
 	<update id="modifyArticle" parameterType="boardDto">
 		update board
 		set subject = #{subject}, 
-			content = #{content}, 
-		 where boardno = #{boardno}
+			content = #{content},
+			regtime=now()
+			 
+		 where boardno = #{boardNo}
 	</update>
 
 	<!-- 게시글 삭제 -->

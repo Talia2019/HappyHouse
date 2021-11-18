@@ -1,68 +1,68 @@
 <template>
-  <card>
-    <b-form @submit="onSubmit" @reset="onReset">
-      <b-row align-v="center" slot="header">
-        <b-col cols="8">
-          <h3 class="mb-0">글 작성</h3>
+  <b-form @submit="onSubmit" @reset="onReset">
+    <b-row align-v="center" slot="header" class="m-4">
+      <b-col cols="8">
+        <h2 v-if="this.type === 'register'" class="mb-0">글 작성</h2>
+        <h2 v-if="this.type === 'modify'" class="mb-0">글 수정</h2>
+      </b-col>
+      <b-col class="text-right">
+        <!-- <a href="#!" class="btn btn-sm btn-primary">Settings</a> -->
+        <b-button
+          type="submit"
+          variant="primary"
+          class="m-1"
+          v-if="this.type === 'register'"
+          >완료</b-button
+        >
+        <b-button type="submit" variant="primary" class="m-1" v-else
+          >수정완료</b-button
+        >
+      </b-col>
+    </b-row>
+    <div class="pl-lg-4">
+      <b-row>
+        <b-col lg="6">
+          <base-input
+            id="userid"
+            type="text"
+            label="작성자"
+            :disabled="isUserid"
+            placeholder=""
+            required
+            v-model="article.userId"
+          >
+          </base-input>
         </b-col>
-        <b-col cols="4" class="text-right">
-          <!-- <a href="#!" class="btn btn-sm btn-primary">Settings</a> -->
-          <b-button
-            type="submit"
-            variant="primary"
-            class="m-1"
-            v-if="this.type === 'register'"
-            >완료</b-button
+        <b-col lg="6">
+          <base-input
+            id="subject"
+            type="text"
+            label="제목"
+            placeholder=""
+            required
+            v-model="article.subject"
           >
-          <b-button type="submit" variant="primary" class="m-1" v-else
-            >완료</b-button
+          </base-input>
+        </b-col>
+        <b-col>
+          <b-form-group
+            label="내용"
+            label-class="form-control-label"
+            class="mb-0"
+            label-for="content"
           >
+            <b-form-textarea
+              rows="6"
+              value=""
+              id="content"
+              placeholder=""
+              required
+              v-model="article.content"
+            ></b-form-textarea>
+          </b-form-group>
         </b-col>
       </b-row>
-      <div class="pl-lg-4">
-        <b-row>
-          <b-col lg="6">
-            <base-input
-              id="userid"
-              type="text"
-              label="작성자"
-              :disabled="isUserid"
-              placeholder=""
-              required
-              v-model="article.userId"
-            >
-            </base-input>
-          </b-col>
-          <b-col lg="6">
-            <base-input
-              id="subject"
-              type="text"
-              label="제목"
-              placeholder=""
-              required
-              v-model="article.subject"
-            >
-            </base-input>
-          </b-col>
-          <b-col>
-            <b-form-group
-              label="내용"
-              label-class="form-control-label"
-              class="mb-0"
-              label-for="content"
-            >
-              <b-form-textarea
-                rows="6"
-                value=""
-                id="content"
-                placeholder=""
-                required
-                v-model="article.content"
-              ></b-form-textarea>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <!-- <b-row class="buttonstyle">
+      <!-- <b-row class="buttonstyle">
           <b-button
             type="submit"
             variant="primary"
@@ -77,9 +77,8 @@
             >초기화</b-button
           >
           </b-row> -->
-      </div>
-    </b-form>
-  </card>
+    </div>
+  </b-form>
 </template>
 
 <script>
@@ -177,11 +176,11 @@ export default {
           content: this.article.content,
         },
         ({ data }) => {
-          let msg = "수정 처리시 문제가 발생했습니다.";
+          // let msg = "수정 처리시 문제가 발생했습니다.";
           if (data === "success") {
-            msg = "수정이 완료되었습니다.";
+            //   msg = "수정이 완료되었습니다.";
           }
-          alert(msg);
+          // alert(msg);
           // 현재 route를 /list로 변경.
           this.$router.push({ name: "boardList" });
         },

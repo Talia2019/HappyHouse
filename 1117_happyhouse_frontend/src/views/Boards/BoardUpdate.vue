@@ -1,6 +1,6 @@
 <template>
   <card class="bv-example-row mt-3">
-    <board-write-form type="register" />
+    <board-write-form type="modify" />
   </card>
 </template>
 
@@ -8,7 +8,7 @@
 import BoardWriteForm from "./child/BoardWriteForm.vue";
 
 export default {
-  name: "boardWrite",
+  name: "boardUpdate",
   components: {
     BoardWriteForm,
   },

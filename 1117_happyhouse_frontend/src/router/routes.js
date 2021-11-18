@@ -53,7 +53,7 @@ const routes = [
           {
             path: "update/:articleno",
             name: "boardUpdate",
-            component: () => import("../views/FreeBoard.vue"),
+            component: () => import("../views/Boards/BoardUpdate.vue"),
           },
           {
             path: "delete/:articleno",

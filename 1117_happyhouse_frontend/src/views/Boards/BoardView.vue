@@ -45,12 +45,14 @@
           <b-col class="text-right">
             <b-button
               variant="outline-info"
-              size="sm"
               @click="moveModifyArticle"
-              class="mr-2"
+              class="m-1"
               >수정</b-button
             >
-            <b-button variant="outline-danger" size="sm" @click="removeArticle"
+            <b-button
+              variant="outline-danger"
+              class="m-1"
+              @click="removeArticle"
               >삭제</b-button
             >
           </b-col>
@@ -58,7 +60,7 @@
       </b-card-body>
     </card>
     <div class="buttonclass d-flex justify-content-center">
-      <b-button @click="listArticle()" class="btn btn-sm" variant="primary"
+      <b-button @click="listArticle()" class="m-1" variant="primary"
         >목록</b-button
       >
     </div>
