@@ -36,8 +36,15 @@
         <hr class="my-4" />
         <b-row>
           <div class="row-vh">
-            <div class="h-50">
+            <!-- <div class="h-50" v-html="article.content">
               {{ article.content }}
+            </div> -->
+            <div class="h-50 content">
+              {{ article.content }}
+              <!-- <content-area></content-area> -->
+              <!-- <template v-for="(c, index) in article.content">
+                {{ c }} <br :key="index" /> -->
+              <!-- </template> -->
             </div>
           </div>
         </b-row>
@@ -71,7 +78,11 @@ import { getArticle, deleteArticle } from "@/api/board";
 
 export default {
   name: "boardView",
-  components: {},
+  components: {
+    // contentArea: {
+    //   template: this.article.content,
+    // },
+  },
   data() {
     return {
       article: {},
@@ -80,7 +91,7 @@ export default {
   computed: {
     message() {
       if (this.article.content)
-        return this.article.content.split("\n").join("<br>");
+        return this.article.content.split("\r\n").join("<br>");
       return "";
     },
   },
@@ -89,7 +100,11 @@ export default {
       this.$route.params.articleno,
       (response) => {
         this.article = response.data;
-        console.log(this.article);
+        // this.article.content = this.article.content.replace(
+        //   /(?:\r\n|\r|\n)/g,
+        //   "<br/>"
+        // );
+        // console.log(this.article);
       },
       (error) => {
         console.log("게시글 얻어오기 에러", error);
@@ -126,5 +141,8 @@ export default {
 }
 .row-vh {
   height: 300px;
+}
+.content {
+  white-space: pre-line;
 }
 </style>
