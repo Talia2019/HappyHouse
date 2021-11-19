@@ -65,4 +65,14 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.writeComment(commentDto) == 1;
 	}
 
+	@Override
+	public List<CommentDto> listComment(int articleno) throws Exception {
+		return boardMapper.listComment(articleno);
+	}
+
+	@Override
+	public boolean deleteComment(int commentno) throws Exception {
+		return boardMapper.deleteComment(commentno) == 1;
+	}
+
 }

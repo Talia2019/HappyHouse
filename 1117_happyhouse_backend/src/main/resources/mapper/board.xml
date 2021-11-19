@@ -89,5 +89,23 @@
 		values (#{boardNo}, #{userId}, #{content})
 	</insert>
 
+	<!-- 댓글 조회 -->
+	<select id="listComment" parameterType="int" resultType="commentDto">
+		select boardno, commentno, userid, content, 
+				case when date_format(regtime, '%Y%m%d') = date_format(now(), '%Y%m%d')
+				then date_format(regtime, '%y.%m.%d')
+				else date_format(regtime, '%y.%m.%d')
+				end regtime
+		from comment
+		where boardno = #{no}
+		 order by commentno desc
+	</select>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteComment" parameterType="int">
+		delete from comment
+		 where commentno = #{no}
+	</delete>
+	
 </mapper>
 

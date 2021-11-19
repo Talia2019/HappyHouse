@@ -60,7 +60,11 @@
 
         <hr class="my-4" />
         <b-row>
-          <comment v-on:write-comment="registerComment" prop=""></comment>
+          <comment
+            v-on:write-comment="registerComment"
+            :comments="comments"
+            :boardno="article.boardNo"
+          ></comment>
         </b-row>
       </b-card-body>
     </card>
@@ -72,7 +76,12 @@
   </div>
 </template>
 <script>
-import { getArticle, deleteArticle, writeComment } from "@/api/board";
+import {
+  getArticle,
+  deleteArticle,
+  writeComment,
+  listComment,
+} from "@/api/board";
 import Comment from "@/components/Comment";
 
 export default {
@@ -86,6 +95,7 @@ export default {
   data() {
     return {
       article: {},
+      comments: [],
     };
   },
   computed: {
@@ -100,11 +110,16 @@ export default {
       this.$route.params.articleno,
       (response) => {
         this.article = response.data;
-        // this.article.content = this.article.content.replace(
-        //   /(?:\r\n|\r|\n)/g,
-        //   "<br/>"
-        // );
-        // console.log(this.article);
+        listComment(
+          this.article.boardNo,
+          (response) => {
+            this.comments = response.data;
+            // console.log(this.comments);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
       },
       (error) => {
         console.log("게시글 얻어오기 에러", error);
@@ -116,9 +131,9 @@ export default {
       this.$router.push({ name: "boardList" });
     },
     refreshArticle() {
-      this.$router.push({
+      this.$router.go({
         name: "boardView",
-        params: { articleno: this.article.articleno },
+        params: { articleno: this.article.boardNo },
       });
       // :to="{
       //   name: 'boardView',
@@ -145,6 +160,7 @@ export default {
         // boardno, userid, content
         {
           boardNo: this.article.boardNo,
+          //수정필요!!!!!!!!!!!!!!!!! article.userId 아니고 현재 로그인한사람으로 돼야함!!!!!!
           userId: this.article.userId,
           content: value,
         },

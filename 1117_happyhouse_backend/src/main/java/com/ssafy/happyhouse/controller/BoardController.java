@@ -78,11 +78,11 @@ public class BoardController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}	
 	
-//	@ApiOperation(value = "댓글목록", notes = "댓글들을 반환.", response = List.class)
-//	@GetMapping
-//	public ResponseEntity<List<CommentDto>> listComment(@ApiParam(value = "댓글들을 얻기위한 부가정보.", required = true)int articleno) throws Exception {
-//		return new ResponseEntity<List<BoardDto>>(boardService.listArticle(boardParameterDto), HttpStatus.OK);
-//	}
+	@ApiOperation(value = "댓글목록", notes = "댓글들을 반환.", response = List.class)
+	@GetMapping("/comment/{articleno}")
+	public ResponseEntity<List<CommentDto>> listComment(@PathVariable("articleno") @ApiParam(value = "댓글들을 얻기위한 부가정보.", required = true)int articleno) throws Exception {
+		return new ResponseEntity<List<CommentDto>>(boardService.listComment(articleno), HttpStatus.OK);
+	}
 	
 	@ApiOperation(value = "댓글작성", notes = "새로운 댓글 정보를 입력한다.(100자제한) 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PostMapping("/comment")
@@ -95,6 +95,15 @@ public class BoardController {
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
+	
+	@ApiOperation(value = "댓글 삭제", notes = "댓글 번호에 맞는 댓글의 정보를 삭제한다. 그리고 DB삭제 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@DeleteMapping("/comment/{commentno}")
+	public ResponseEntity<String> deleteComment(@PathVariable("commentno") @ApiParam(value = "삭제할 댓글번호.", required = true) int commentno) throws Exception {
+		if (boardService.deleteComment(commentno)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}	
 	
 //	@ApiOperation(value = "글번호에 해당하는 게시글의 정보를 반환한다.", response = BoardDto.class)
 //	@GetMapping("{no}")

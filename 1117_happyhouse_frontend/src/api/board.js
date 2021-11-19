@@ -34,6 +34,14 @@ function writeComment(comment, success, fail) {
   api.post(`/board/comment`, JSON.stringify(comment)).then(success).catch(fail);
 }
 
+function listComment(commentno, success, fail) {
+  api.get(`/board/comment/${commentno}`).then(success).catch(fail);
+}
+
+function deleteComment(commentno, success, fail) {
+  api.delete(`/board/comment/${commentno}`).then(success).catch(fail);
+}
+
 export {
   listArticle,
   writeArticle,
@@ -43,4 +51,6 @@ export {
   searchArticle,
   totalArticle,
   writeComment,
+  listComment,
+  deleteComment,
 };

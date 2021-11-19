@@ -165,6 +165,7 @@ export default {
         param,
         (response) => {
           this.articles = response.data;
+          // console.log(response.data);
         },
         (error) => {
           console.log(error);
@@ -179,22 +180,45 @@ export default {
       console.log("test" + this.currentPage);
     },
     changePage(value) {
-      // console.log("불렸는가?" + this.currentPage + " " + value);
+      // // console.log("불렸는가?" + this.currentPage + " " + value);
+      // let param = {
+      //   pg: value,
+      //   spp: 10,
+      //   key: null,
+      //   word: null,
+      // };
+      // listArticle(
+      //   param,
+      //   (response) => {
+      //     this.articles = response.data;
+      //   },
+      //   (error) => {
+      //     console.log(error);
+      //   }
+      // );
+      let keyWord;
+      if (this.selecteddrop == 0) keyWord = "subject";
+      else keyWord = "userId";
       let param = {
         pg: value,
         spp: 10,
-        key: null,
-        word: null,
+        key: keyWord,
+        word: this.searchWord,
       };
-      listArticle(
+      searchArticle(
         param,
         (response) => {
           this.articles = response.data;
+          // console.log(response.data);
         },
         (error) => {
           console.log(error);
         }
       );
+      totalArticle(param, (response) => {
+        this.totalPages = response.data;
+        // console.log("개수:" + this.totalPages);
+      });
     },
     // viewArticle(article) {
     //   this.$router.go({

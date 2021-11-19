@@ -16,5 +16,7 @@ public interface BoardService {
 	public boolean deleteArticle(int articleno) throws Exception;
 	public int getTotalCount(BoardParameterDto boardParameterDto) throws Exception;
 	public boolean writeComment(CommentDto commentDto) throws Exception;
+	public List<CommentDto> listComment(int articleno) throws Exception;
+	public boolean deleteComment(int commentno) throws Exception;
 	
 }

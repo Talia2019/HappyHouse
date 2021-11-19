@@ -1,29 +1,71 @@
 <template>
   <b-container class="bv-example-row">
-    <b-row class="ml-2 my-4 d-flex justify-content-left">
-      <h3 class="mb-0">댓글 남기기</h3>
-    </b-row>
-    <b-row align-h="center" class="ml-2">
+    <b-row class="my-4 d-flex justify-content-center">
       <b-col cols="10">
-        <b-form-textarea
+        <h3 class="mb-0">댓글 남기기</h3>
+      </b-col>
+      <b-col cols="2" class="d-flex justify-content-end">
+        <b-button class="btn" variant="primary" @click="writeComment()"
+          >등록</b-button
+        ></b-col
+      >
+    </b-row>
+    <b-row align-h="center">
+      <b-col>
+        <base-input
+          size="lg"
           id="comment"
           type="text"
           placeholder=""
           v-model="commentText"
-          rows="2"
         >
-        </b-form-textarea>
+        </base-input>
+        <!-- <b-form-textarea
+          id="comment"
+          type="text"
+          placeholder=""
+          v-model="commentText"
+          rows="1"
+        >
+        </b-form-textarea> -->
       </b-col>
-      <b-col cols="2">
-        <b-button class="btn" variant="primary" @click="writeComment()"
-          >등록</b-button
-        >
+    </b-row>
+    <b-row
+      align-h="center"
+      class="mb-2"
+      v-for="comment in comments"
+      :key="comment.commentNo"
+    >
+      <b-col>
+        <card class="comment-light">
+          <b-row class="mb-2">
+            <b-col class="h5" max-width="20px" cols="2">
+              {{ comment.userId }}
+            </b-col>
+            <b-col class="h5 font-weight-300" cols="2">
+              {{ comment.regTime }}
+            </b-col>
+            <b-col class="d-flex justify-content-end" cols="8">
+              <b-button
+                class="btn"
+                variant="outline-warning"
+                @click="deleteComment(comment.commentNo)"
+              >
+                삭제
+              </b-button>
+            </b-col>
+          </b-row>
+          <b-row>
+            <b-col class="h5 font-weight-300"> {{ comment.content }}</b-col>
+          </b-row>
+        </card>
       </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
+import { deleteComment } from "@/api/board";
 export default {
   data() {
     return {
@@ -34,6 +76,12 @@ export default {
     commentValue: {
       type: String,
       default: "",
+    },
+    comments: {
+      type: Array,
+    },
+    boardno: {
+      type: Number,
     },
   },
   created() {
@@ -57,8 +105,25 @@ export default {
         this.commentText = "";
       }
     },
+    deleteComment(commentno) {
+      if (confirm("삭제 하시겠습니까?")) {
+        deleteComment(commentno, () => {
+          this.$router.go({
+            name: "boardView",
+            params: { articleno: this.boardno },
+          });
+        });
+      }
+    },
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+.comment-light {
+  background-color: #fff6e6;
+}
+.base-input {
+  height: 100px;
+}
+</style>
