@@ -36,15 +36,8 @@
         <hr class="my-4" />
         <b-row>
           <div class="row-vh">
-            <!-- <div class="h-50" v-html="article.content">
-              {{ article.content }}
-            </div> -->
             <div class="h-50 content">
               {{ article.content }}
-              <!-- <content-area></content-area> -->
-              <!-- <template v-for="(c, index) in article.content">
-                {{ c }} <br :key="index" /> -->
-              <!-- </template> -->
             </div>
           </div>
         </b-row>
