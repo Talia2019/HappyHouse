@@ -13,5 +13,6 @@ public interface BoardService {
 	public void updateHit(int articleno) throws Exception;
 	public boolean modifyArticle(BoardDto boardDto) throws Exception;
 	public boolean deleteArticle(int articleno) throws Exception;
+	public int getTotalCount(BoardParameterDto boardParameterDto) throws Exception;
 	
 }

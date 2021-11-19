@@ -22,4 +22,20 @@ function deleteArticle(articleno, success, fail) {
   api.delete(`/board/${articleno}`).then(success).catch(fail);
 }
 
-export { listArticle, writeArticle, getArticle, modifyArticle, deleteArticle };
+function searchArticle(param, success, fail) {
+  api.get(`/board`, { params: param }).then(success).catch(fail);
+}
+
+function totalArticle(param, success, fail) {
+  api.get(`/board/total`, { params: param }).then(success).catch(fail);
+}
+
+export {
+  listArticle,
+  writeArticle,
+  getArticle,
+  modifyArticle,
+  deleteArticle,
+  searchArticle,
+  totalArticle,
+};

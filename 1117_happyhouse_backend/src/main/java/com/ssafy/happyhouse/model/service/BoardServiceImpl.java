@@ -51,4 +51,9 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.deleteArticle(articleno) == 1;
 	}
 
+	@Override
+	public int getTotalCount(BoardParameterDto boardParameterDto) throws Exception {
+		return boardMapper.getTotalCount(boardParameterDto);
+	}
+
 }

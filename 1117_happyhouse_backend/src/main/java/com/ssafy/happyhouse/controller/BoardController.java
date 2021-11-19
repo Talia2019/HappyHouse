@@ -33,7 +33,14 @@ public class BoardController {
 	@ApiOperation(value = "게시판 글목록", notes = "모든 게시글의 정보를 반환한다.", response = List.class)
 	@GetMapping
 	public ResponseEntity<List<BoardDto>> listArticle(@ApiParam(value = "게시글을 얻기위한 부가정보.", required = true) BoardParameterDto boardParameterDto) throws Exception {
+//		int totalCount = boardService.getTotalCount(boardParameterDto);
 		return new ResponseEntity<List<BoardDto>>(boardService.listArticle(boardParameterDto), HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "게시판 글수", notes = "모든 게시글의 수를 반환한다.", response = List.class)
+	@GetMapping("/total")
+	public ResponseEntity<Integer> totalArticle(@ApiParam(value = "게시글을 얻기위한 부가정보.", required = true) BoardParameterDto boardParameterDto) throws Exception {
+		return new ResponseEntity<Integer>(boardService.getTotalCount(boardParameterDto), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "게시판 글작성", notes = "새로운 게시글 정보를 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
@@ -69,6 +76,8 @@ public class BoardController {
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
+	
+	
 //	@ApiOperation(value = "글번호에 해당하는 게시글의 정보를 반환한다.", response = BoardDto.class)
 //	@GetMapping("{no}")
 //	public ResponseEntity<BoardDto> detailBoard(@PathVariable int no) {
