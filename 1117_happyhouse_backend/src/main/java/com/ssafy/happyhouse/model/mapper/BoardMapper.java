@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.happyhouse.model.BoardDto;
 import com.ssafy.happyhouse.model.BoardParameterDto;
+import com.ssafy.happyhouse.model.CommentDto;
 
 @Mapper
 public interface BoardMapper {
@@ -19,4 +20,5 @@ public interface BoardMapper {
 	public int modifyArticle(BoardDto boardDto) throws SQLException;
 	public void deleteMemo(int articleno) throws SQLException;
 	public int deleteArticle(int articleno) throws SQLException;
+	public int writeComment(CommentDto commentDto) throws SQLException;
 }

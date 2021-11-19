@@ -82,6 +82,12 @@
 	</update>
 	
 	
+<!-- 	댓글 -->
+		<!-- 댓글 등록 -->
+	<insert id="writeComment" parameterType="commentDto">
+		insert into comment (boardno, userid, content)
+		values (#{boardNo}, #{userId}, #{content})
+	</insert>
 
 </mapper>
 

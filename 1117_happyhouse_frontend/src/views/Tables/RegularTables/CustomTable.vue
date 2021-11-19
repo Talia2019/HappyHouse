@@ -3,7 +3,7 @@
     <template v-slot:header>
       <b-row align-v="center">
         <b-col>
-          <h3 class="mb-0">자유 게시판</h3>
+          <h2 class="mb-0">자유 게시판</h2>
         </b-col>
         <b-col class="text-right">
           <b-button @click="moveWrite()" class="btn" variant="primary"

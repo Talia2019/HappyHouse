@@ -4,7 +4,7 @@
       <b-card-header class="text-center border-0">
         <div class="d-flex justify-content-center">
           <div>
-            <h2 class="mb-0">자유 게시판</h2>
+            <h1 class="mb-0">자유 게시판</h1>
           </div>
         </div>
       </b-card-header>
@@ -14,7 +14,7 @@
           <b-col>
             <div class="d-flex justify-content-center">
               <div>
-                <h3 class="mb-0">{{ article.subject }}</h3>
+                <h2 class="mb-0">{{ article.subject }}</h2>
               </div>
             </div>
           </b-col>
@@ -35,13 +35,13 @@
         </b-row>
         <hr class="my-4" />
         <b-row>
-          <div class="row-vh">
+          <div class="ml-4 my-4 row-vh">
             <div class="content">
               {{ article.content }}
             </div>
           </div>
         </b-row>
-        <b-row>
+        <b-row class="my-4">
           <b-col class="text-right">
             <b-button
               variant="outline-info"
@@ -57,6 +57,11 @@
             >
           </b-col>
         </b-row>
+
+        <hr class="my-4" />
+        <b-row>
+          <comment v-on:write-comment="registerComment" prop=""></comment>
+        </b-row>
       </b-card-body>
     </card>
     <div class="buttonclass d-flex justify-content-center">
@@ -67,11 +72,13 @@
   </div>
 </template>
 <script>
-import { getArticle, deleteArticle } from "@/api/board";
+import { getArticle, deleteArticle, writeComment } from "@/api/board";
+import Comment from "@/components/Comment";
 
 export default {
   name: "boardView",
   components: {
+    Comment,
     // contentArea: {
     //   template: this.article.content,
     // },
@@ -108,6 +115,16 @@ export default {
     listArticle() {
       this.$router.push({ name: "boardList" });
     },
+    refreshArticle() {
+      this.$router.push({
+        name: "boardView",
+        params: { articleno: this.article.articleno },
+      });
+      // :to="{
+      //   name: 'boardView',
+      //   params: { articleno: row.boardNo },
+      // }"
+    },
     moveModifyArticle() {
       this.$router.replace({
         name: "boardUpdate",
@@ -121,6 +138,28 @@ export default {
           this.$router.push({ name: "boardList" });
         });
       }
+    },
+    registerComment(value) {
+      // console.log(this.article.articleno);
+      writeComment(
+        // boardno, userid, content
+        {
+          boardNo: this.article.boardNo,
+          userId: this.article.userId,
+          content: value,
+        },
+        ({ data }) => {
+          // let msg = "등록 처리시 문제가 발생했습니다.";
+          if (data === "success") {
+            // msg = "등록이 완료되었습니다.";
+          }
+          // alert(msg);
+          this.refreshArticle();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
   },
 };

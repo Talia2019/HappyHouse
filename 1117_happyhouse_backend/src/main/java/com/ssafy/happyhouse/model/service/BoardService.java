@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ssafy.happyhouse.model.BoardDto;
 import com.ssafy.happyhouse.model.BoardParameterDto;
+import com.ssafy.happyhouse.model.CommentDto;
 
 public interface BoardService {
 
@@ -14,5 +15,6 @@ public interface BoardService {
 	public boolean modifyArticle(BoardDto boardDto) throws Exception;
 	public boolean deleteArticle(int articleno) throws Exception;
 	public int getTotalCount(BoardParameterDto boardParameterDto) throws Exception;
+	public boolean writeComment(CommentDto commentDto) throws Exception;
 	
 }

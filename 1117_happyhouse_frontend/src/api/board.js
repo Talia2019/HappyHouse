@@ -30,6 +30,10 @@ function totalArticle(param, success, fail) {
   api.get(`/board/total`, { params: param }).then(success).catch(fail);
 }
 
+function writeComment(comment, success, fail) {
+  api.post(`/board/comment`, JSON.stringify(comment)).then(success).catch(fail);
+}
+
 export {
   listArticle,
   writeArticle,
@@ -38,4 +42,5 @@ export {
   deleteArticle,
   searchArticle,
   totalArticle,
+  writeComment,
 };

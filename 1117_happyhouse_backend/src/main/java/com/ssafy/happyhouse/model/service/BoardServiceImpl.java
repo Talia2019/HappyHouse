@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.happyhouse.model.BoardDto;
 import com.ssafy.happyhouse.model.BoardParameterDto;
+import com.ssafy.happyhouse.model.CommentDto;
 import com.ssafy.happyhouse.model.mapper.BoardMapper;
 
 @Service
@@ -54,6 +55,14 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int getTotalCount(BoardParameterDto boardParameterDto) throws Exception {
 		return boardMapper.getTotalCount(boardParameterDto);
+	}
+
+	@Override
+	public boolean writeComment(CommentDto commentDto) throws Exception {
+		if(commentDto.getContent() == null) {
+			throw new Exception();
+		}
+		return boardMapper.writeComment(commentDto) == 1;
 	}
 
 }
