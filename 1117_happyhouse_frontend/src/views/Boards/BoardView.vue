@@ -36,7 +36,7 @@
         <hr class="my-4" />
         <b-row>
           <div class="row-vh">
-            <div class="h-50 content">
+            <div class="content">
               {{ article.content }}
             </div>
           </div>
@@ -133,9 +133,11 @@ export default {
   margin-top: 20px;
 }
 .row-vh {
-  height: 300px;
+  height: auto;
 }
 .content {
   white-space: pre-line;
+  overflow: hidden;
+  height: auto;
 }
 </style>

@@ -14,7 +14,8 @@
     </template>
 
     <el-table
-      class="table"
+      v-if="articles.length > 0"
+      class="table hover-table"
       header-row-class-name="thead-light"
       hover
       :data="articles"
@@ -57,6 +58,9 @@
       </el-table-column>
     </el-table>
 
+    <div v-if="articles.length == 0" class="my-4 d-flex justify-content-center">
+      <h3 class="mb-0">게시물이 없습니다!</h3>
+    </div>
     <b-card-footer class="py-4 table-light">
       <b-row>
         <div class="pb-5">
@@ -202,6 +206,13 @@ export default {
 };
 </script>
 <style>
+.hover-table:hover tbody tr:hover td {
+  background: #fff6e6;
+  color: black;
+}
+.router-link {
+  color: black;
+}
 /* .table-light,
 .table-responsive,
 .el-table.table {

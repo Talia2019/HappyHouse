@@ -53,7 +53,7 @@
           >
             <b-form-textarea
               wrap="hard"
-              rows="6"
+              rows="20"
               value=""
               id="content"
               placeholder=""
