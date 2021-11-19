@@ -1,6 +1,6 @@
 import DashboardLayout from '@/views/Layout/DashboardLayout.vue';
 import AuthLayout from '@/views/Pages/AuthLayout.vue';
-
+import HouseDeal from '@/views/HouseDeal.vue';
 import NotFound from '@/views/NotFoundPage.vue';
 
 const routes = [
@@ -22,7 +22,7 @@ const routes = [
       {
         path: '/maps',
         name: 'maps',
-        component: () => import('../views/HouseDeal.vue')
+        component: HouseDeal,
       },
       {
         path: '/tables',

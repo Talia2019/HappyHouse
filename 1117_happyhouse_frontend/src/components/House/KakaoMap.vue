@@ -12,20 +12,6 @@ export default {
       locations: [],
       map: null,
       geocoder: null,
-      markerPositions1: [
-        [33.452278, 126.567803],
-        [33.452671, 126.574792],
-        [33.451744, 126.572441],
-      ],
-      markerPositions2: [
-        [37.499590490909185, 127.0263723554437],
-        [37.499427948430814, 127.02794423197847],
-        [37.498553760499505, 127.02882598822454],
-        [37.497625593121384, 127.02935713582038],
-        [37.49629291770947, 127.02587362608637],
-        [37.49754540521486, 127.02546694890695],
-        [37.49646391248451, 127.02675574250912],
-      ],
       markers: [],
       infowindow: null,
     }
@@ -38,14 +24,9 @@ export default {
     getLocation(val) {
       console.log("houses watch", val);
       if (val.length != 0){
-        console.log(val)
-        val.forEach(house => {
-          this.locations.push(house["법정동"] + " " + house["지번"]);
-        })
-        console.log(this.locations);
         this.getLatLng(val);
       }
-    }
+    },
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -58,9 +39,6 @@ export default {
         "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=915cffed372954b7b44804ed422b9cf0&libraries=services";
       document.head.appendChild(script);
     }
-  },
-  updated() {
-    console.log(this.houses);
   },
   methods: {
     getLatLng(houses) {
@@ -83,14 +61,49 @@ export default {
             // 결과값으로 받은 위치를 마커로 표시합니다
             var marker = new kakao.maps.Marker({
               map: map,
-              position: coords
+              position: coords,
+              clickable: true
             });
-                // 인포윈도우로 장소에 대한 설명을 표시합니다
-            var infowindow = new kakao.maps.InfoWindow({
-                content: '<div style="width:150px;text-align:center;padding:6px 0;">'+ house['아파트'] + ':' + house['거래금액'] +'</div>'
+    
+            marker.setMap(map);
+
+            var content =  
+            '<div class="wrap">' + 
+            '    <div class="info">' + 
+            '        <div class="title">' + 
+                        house['아파트'] + 
+            '        </div>' + 
+            '        <div class="body">' + 
+            '            <div class="img">' +
+            '                <img src="https://image.newdaily.co.kr/site/data/img/2021/01/22/2021012200134_0.png" width="73" height="70">' +
+            '           </div>' + 
+            '            <div class="desc">' + 
+            '                <div class="ellipsis"> 거래금액 : ' + house['거래금액'] + '</div>' + 
+            '                <div class="jibun ellipsis"> 전용면적 : ' + house['전용면적'] + '</div>' + 
+            '            </div>' + 
+            '        </div>' + 
+            '    </div>' +    
+            '</div>';
+            
+            var overlay = new kakao.maps.CustomOverlay({
+              content : content,
+              map: map,
+              position: marker.getPosition(),
+              clickable: true,
+              });
+
+            overlay.setMap(null);
+
+            kakao.maps.event.addListener(marker, 'click', function() {
+                overlay.setMap(null);
+                overlay.setMap(map);
+                map.setCenter(coords);
             });
-            infowindow.open(map, marker);
-  
+
+            kakao.maps.event.addListener(marker, 'rightclick', function() {
+                overlay.setMap(null);
+            });
+
             // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
             map.setCenter(coords);
           } 
@@ -103,7 +116,17 @@ export default {
         center: new kakao.maps.LatLng(33.450701, 126.570667),
         level: 5,
       };
-      this.map = new kakao.maps.Map(container, options);
+      var map = new kakao.maps.Map(container, options);
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var lat = position.coords.latitude;
+          var lon = position.coords.longitude;
+
+          var locPosition = new kakao.maps.LatLng(lat, lon);
+          map.setCenter(locPosition);
+        })
+      }
     },
     changeSize(size) {
       const container = document.getElementById("map");
@@ -111,56 +134,23 @@ export default {
       container.style.height = `${size}px`;
       this.map.relayout();
     },
-    displayMarker(markerPositions) {
-      if (this.markers.length > 0) {
-        this.markers.forEach((marker) => marker.setMap(null));
-      }
-
-      const positions = markerPositions.map(
-        (position) => new kakao.maps.LatLng(...position)
-      );
-
-      if (positions.length > 0) {
-        this.markers = positions.map(
-          (position) =>
-            new kakao.maps.Marker({
-              map: this.map,
-              position,
-            })
-        );
-
-        const bounds = positions.reduce(
-          (bounds, latlng) => bounds.extend(latlng),
-          new kakao.maps.LatLngBounds()
-        );
-
-        this.map.setBounds(bounds);
-      }
-    },
-    displayInfoWindow() {
-      if (this.infowindow && this.infowindow.getMap()) {
-        //이미 생성한 인포윈도우가 있기 때문에 지도 중심좌표를 인포윈도우 좌표로 이동시킨다.
-        this.map.setCenter(this.infowindow.getPosition());
-        return;
-      }
-
-      var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-        iwPosition = new kakao.maps.LatLng(33.450701, 126.570667), //인포윈도우 표시 위치입니다
-        iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-
-      this.infowindow = new kakao.maps.InfoWindow({
-        map: this.map, // 인포윈도우가 표시될 지도
-        position: iwPosition,
-        content: iwContent,
-        removable: iwRemoveable,
-      });
-
-      this.map.setCenter(iwPosition);
-    },
   } 
 }
 </script>
 
 <style>
-
+    .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
+    .wrap * {padding: 0;margin: 0;}
+    .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
+    .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
+    .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
+    .info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
+    .info .close:hover {cursor: pointer;}
+    .info .body {position: relative;overflow: hidden;}
+    .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
+    .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+    .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
+    .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
+    .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+    .info .link {color: #5085BB;}
 </style>

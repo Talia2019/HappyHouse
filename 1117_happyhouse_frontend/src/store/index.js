@@ -11,11 +11,31 @@ export default new Vuex.Store({
     guguns: [{ value: null, text: "선택하세요" }],
     dongs: [{ value: null, text: "선택하세요" }],
     houses: [],
+    overlaps: [],
     house: null,
+    flag: false,
   },
   getters: {
     getLocation(state) {
       return state.houses;
+    },
+    overlapHouse(state) {
+      state.overlaps = [];
+      state.houses.forEach(house => {
+        state.flag = false;
+        for (let i = 0; i < state.overlaps.length; i++) {
+          if (house["아파트"] === state.overlaps[i]["아파트"]){
+            if (house["거래금액"].replace(",", "")*1 > state.overlaps[i]["거래금액"].replace(",", "")*1){
+              state.overlaps[i] = house;
+            }
+            state.flag = true;
+          }
+        }
+        if (!state.flag) {
+          state.overlaps.push(house);
+        }
+      })
+      return state.overlaps;
     }
   },
   mutations: {
@@ -36,7 +56,10 @@ export default new Vuex.Store({
     },
     SET_HOUSE_LIST(state, houses){
       state.houses = houses;
-    }, 
+    },
+    SET_DETAIL_HOUSE(state, house) {
+      state.house = house;
+    } ,
     CLEAR_SIDO_LIST(state) {
       state.sidos = [{ value: null, text: "선택하세요" }];
     },
@@ -85,8 +108,6 @@ export default new Vuex.Store({
         .get("/map/apt", { params }).then((res) => {
           // console.log(res.data.response.body.items.item, commit);
           const items = res.data.response.body.items.item;
-          console.log(dongCode);
-          console.log(items);
           const houseList = [];
           items.forEach(item => {
             if (item["법정동읍면동코드"] === dongCode){
@@ -97,6 +118,9 @@ export default new Vuex.Store({
         }).catch((err) => {
           console.log(err);
         })
+    },
+    detailHouse({ commit }, house) {
+      commit("SET_DETAIL_HOUSE", house)
     },
   },
   modules: {
