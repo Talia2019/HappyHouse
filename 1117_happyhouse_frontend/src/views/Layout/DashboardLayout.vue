@@ -59,7 +59,15 @@
           :link="{
             name: 'Board',
             path: '/board',
-            icon: 'ni ni-bullet-list-67 text-red',
+            icon: 'ni ni-bullet-list-67 text-green',
+          }"
+        >
+        </sidebar-item>
+        <sidebar-item
+          :link="{
+            name: 'Notice',
+            path: '/notice',
+            icon: 'ni ni-air-baloon text-red',
           }"
         >
         </sidebar-item>

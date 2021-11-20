@@ -21,18 +21,6 @@
     </b-row>
     <div class="pl-lg-4">
       <b-row>
-        <!-- <b-col lg="6">
-          <base-input
-            id="userid"
-            type="text"
-            label="작성자"
-            :disabled="isUserid"
-            placeholder=""
-            required
-            v-model="article.userId"
-          >
-          </base-input>
-        </b-col> -->
         <b-col lg="12">
           <base-input
             id="subject"
@@ -63,40 +51,25 @@
           </b-form-group>
         </b-col>
       </b-row>
-      <!-- <b-row class="buttonstyle">
-          <b-button
-            type="submit"
-            variant="primary"
-            class="m-1"
-            v-if="this.type === 'register'"
-            >글작성</b-button
-          >
-          <b-button type="submit" variant="primary" class="m-1" v-else
-            >글수정</b-button
-          >
-          <b-button type="reset" variant="danger" class="m-1"
-            >초기화</b-button
-          >
-          </b-row> -->
     </div>
   </b-form>
 </template>
 
 <script>
-import { writeArticle, getArticle, modifyArticle } from "@/api/board";
+import { writeNotice, getNotice, modifyNotice } from "@/api/notice";
 import { mapState } from "vuex";
 
 const memberStore = "memberStore";
 
 export default {
-  name: "BoardWriteForm",
+  name: "NoticeWriteForm",
   computed: {
     ...mapState(memberStore, ["userInfo"]),
   },
   data() {
     return {
       article: {
-        boardNo: 0,
+        noticeNo: 0,
         userId: "",
         subject: "",
         content: "",
@@ -109,7 +82,7 @@ export default {
   },
   created() {
     if (this.type === "modify") {
-      getArticle(
+      getNotice(
         this.$route.params.articleno,
         ({ data }) => {
           this.article = data;
@@ -148,14 +121,14 @@ export default {
     },
     onReset(event) {
       event.preventDefault();
-      this.article.boardNo = 0;
+      this.article.noticeNo = 0;
       this.article.userId = "";
       this.article.subject = "";
       this.article.content = "";
-      this.$router.push({ name: "boardWrite" });
+      this.$router.push({ name: "noticeWrite" });
     },
     registArticle() {
-      writeArticle(
+      writeNotice(
         {
           userId: this.userInfo.userid,
           subject: this.article.subject,
@@ -175,9 +148,9 @@ export default {
       );
     },
     updateArticle() {
-      modifyArticle(
+      modifyNotice(
         {
-          boardNo: this.article.boardNo,
+          noticeNo: this.article.noticeNo,
           userId: this.article.userId,
           subject: this.article.subject,
           content: this.article.content,
@@ -189,7 +162,7 @@ export default {
           }
           // alert(msg);
           // 현재 route를 /list로 변경.
-          this.$router.push({ name: "boardList" });
+          this.$router.push({ name: "noticeList" });
         },
         (error) => {
           console.log(error);
@@ -197,7 +170,7 @@ export default {
       );
     },
     moveList() {
-      this.$router.push({ name: "boardList" });
+      this.$router.push({ name: "noticeList" });
     },
   },
 };

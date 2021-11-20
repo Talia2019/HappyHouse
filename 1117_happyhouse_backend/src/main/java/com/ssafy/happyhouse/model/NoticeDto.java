@@ -1,16 +1,16 @@
 package com.ssafy.happyhouse.model;
 
-public class BoardDto {
-	private int boardNo;
+public class NoticeDto {
+	private int noticeNo;
 	private String userId;
 	private String subject;
 	private String content;
 	private int hit;
 	private String regTime;
 
-	public BoardDto(int boardNo, String userId, String subject, String content, int hit, String regTime) {
+	public NoticeDto(int noticeNo, String userId, String subject, String content, int hit, String regTime) {
 		super();
-		this.boardNo = boardNo;
+		this.noticeNo = noticeNo;
 		this.userId = userId;
 		this.subject = subject;
 		this.content = content;
@@ -18,16 +18,16 @@ public class BoardDto {
 		this.regTime = regTime;
 	}
 
-	public BoardDto() {
+	public NoticeDto() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public int getBoardNo() {
-		return boardNo;
+	public int getnoticeNo() {
+		return noticeNo;
 	}
 
-	public void setBoardNo(int boardNo) {
-		this.boardNo = boardNo;
+	public void setnoticeNo(int noticeNo) {
+		this.noticeNo = noticeNo;
 	}
 
 	public String getUserId() {
