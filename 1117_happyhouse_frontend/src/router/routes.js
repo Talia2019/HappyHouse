@@ -71,16 +71,19 @@ const routes = [
           {
             path: "write",
             name: "boardWrite",
+            beforeEnter: onlyAuthUser,
             component: () => import("../views/Boards/BoardWrite.vue"),
           },
           {
             path: "update/:articleno",
             name: "boardUpdate",
+            beforeEnter: onlyAuthUser,
             component: () => import("../views/Boards/BoardUpdate.vue"),
           },
           {
             path: "delete/:articleno",
             name: "boardDelete",
+            beforeEnter: onlyAuthUser,
             component: () => import("../views/FreeBoard.vue"),
           },
         ],

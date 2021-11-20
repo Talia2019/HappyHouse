@@ -41,7 +41,10 @@
             </div>
           </div>
         </b-row>
-        <b-row class="my-4">
+        <b-row
+          class="my-4"
+          v-if="userInfo.userid == article.userId || userInfo.userid == 'admin'"
+        >
           <b-col class="text-right">
             <b-button
               variant="outline-info"
@@ -83,6 +86,9 @@ import {
   listComment,
 } from "@/api/board";
 import Comment from "@/components/Comment";
+import { mapState } from "vuex";
+
+const memberStore = "memberStore";
 
 export default {
   name: "boardView",
@@ -99,6 +105,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(memberStore, ["userInfo"]),
     message() {
       if (this.article.content)
         return this.article.content.split("\r\n").join("<br>");
@@ -161,7 +168,7 @@ export default {
         {
           boardNo: this.article.boardNo,
           //수정필요!!!!!!!!!!!!!!!!! article.userId 아니고 현재 로그인한사람으로 돼야함!!!!!!
-          userId: this.article.userId,
+          userId: this.userInfo.userid,
           content: value,
         },
         ({ data }) => {

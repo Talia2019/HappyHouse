@@ -21,7 +21,7 @@
     </b-row>
     <div class="pl-lg-4">
       <b-row>
-        <b-col lg="6">
+        <!-- <b-col lg="6">
           <base-input
             id="userid"
             type="text"
@@ -32,8 +32,8 @@
             v-model="article.userId"
           >
           </base-input>
-        </b-col>
-        <b-col lg="6">
+        </b-col> -->
+        <b-col lg="12">
           <base-input
             id="subject"
             type="text"
@@ -84,9 +84,15 @@
 
 <script>
 import { writeArticle, getArticle, modifyArticle } from "@/api/board";
+import { mapState } from "vuex";
+
+const memberStore = "memberStore";
 
 export default {
   name: "BoardWriteForm",
+  computed: {
+    ...mapState(memberStore, ["userInfo"]),
+  },
   data() {
     return {
       article: {
@@ -121,12 +127,12 @@ export default {
 
       let err = true;
       let msg = "";
-      !this.article.userId &&
-        ((msg = "작성자를 입력해주세요"),
-        (err = false),
-        this.$refs.userid.focus());
-      err &&
-        !this.article.subject &&
+      // !this.article.userId &&
+      //   ((msg = "작성자를 입력해주세요"),
+      //   (err = false),
+      //   this.$refs.userid.focus());
+      // err &&
+      !this.article.subject &&
         ((msg = "제목을 입력해주세요"),
         (err = false),
         this.$refs.subject.focus());
@@ -151,7 +157,7 @@ export default {
     registArticle() {
       writeArticle(
         {
-          userId: this.article.userId,
+          userId: this.userInfo.userid,
           subject: this.article.subject,
           content: this.article.content,
         },

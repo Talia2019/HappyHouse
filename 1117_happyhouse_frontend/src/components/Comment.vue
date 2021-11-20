@@ -50,6 +50,10 @@
                 class="btn"
                 variant="outline-warning"
                 @click="deleteComment(comment.commentNo)"
+                v-if="
+                  userInfo.userid == comment.userId ||
+                  userInfo.userid == 'admin'
+                "
               >
                 삭제
               </b-button>
@@ -66,7 +70,14 @@
 
 <script>
 import { deleteComment } from "@/api/board";
+import { mapState } from "vuex";
+
+const memberStore = "memberStore";
+
 export default {
+  computed: {
+    ...mapState(memberStore, ["userInfo"]),
+  },
   data() {
     return {
       commentText: "",
@@ -96,7 +107,7 @@ export default {
         ((msg = "댓글 내용을 입력해주세요"), (err = false));
 
       if (!err) {
-        console.log("댓글입력안함");
+        // console.log("댓글입력안함");
         alert(msg);
       }
       // console.log("부모호출.." + this.value + " " + this.pagevalue);
