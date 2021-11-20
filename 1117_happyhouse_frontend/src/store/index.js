@@ -32,11 +32,16 @@ export default new Vuex.Store({
   },
   actions: {
     getSido({ commit }) {
+      http.get("/map/sido").then((res) => {
+        // console.log(res);
+        commit("SET_SIDO_LIST", res.data);
+      });
+      const params = { gugun: "11110" };
+      console.log(params);
       http
-        .get("/map/sido")
+        .get("/map/dong", params)
         .then((res) => {
-          // console.log(res);
-          commit("SET_SIDO_LIST", res.data);
+          console.log(res);
         })
         .catch((err) => {
           console.log(err);
