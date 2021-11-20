@@ -6,6 +6,7 @@ import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex);
 
 import boardStore from "@/store/modules/boardStore.js";
+import memberStore from "@/store/modules/memberStore.js";
 
 export default new Vuex.Store({
   state: {
@@ -32,12 +33,18 @@ export default new Vuex.Store({
   },
   actions: {
     getSido({ commit }) {
+      http.get("/map/sido").then((res) => {
+        // console.log(res);
+        commit("SET_SIDO_LIST", res.data);
+      });
+      const params = { gugun: "11110" };
+      console.log(params);
       http
-        .get("/map/sido")
+        .get("/map/dong", params)
         .then((res) => {
-          // console.log(res);
-          commit("SET_SIDO_LIST", res.data);
+          console.log(res);
         })
+<<<<<<< HEAD
 <<<<<<< HEAD
         .catch((err) => {
           console.log(err);
@@ -51,6 +58,11 @@ export default new Vuex.Store({
         console.log(err);
       })
 >>>>>>> 5caafcd06b7792f8e76396af369b1051cc64a7c7
+=======
+        .catch((err) => {
+          console.log(err);
+        });
+>>>>>>> dc652601ce0ed566bb38d80d30e03e2b9dd8db54
     },
     getGugun({ commit }, sidoCode) {
       const params = { sido: sidoCode };
@@ -66,6 +78,7 @@ export default new Vuex.Store({
   },
   modules: {
     boardStore,
+    memberStore,
   },
   plugins: [
     createPersistedState({

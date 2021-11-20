@@ -25,7 +25,7 @@ import com.ssafy.happyhouse.model.service.UserService;
 
 @Controller
 @CrossOrigin("*")
-@RequestMapping("/user")
+@RequestMapping("/userss")
 public class UserController {
 
 	@Autowired
