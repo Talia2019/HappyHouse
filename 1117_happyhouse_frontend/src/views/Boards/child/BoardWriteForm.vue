@@ -52,7 +52,8 @@
             label-for="content"
           >
             <b-form-textarea
-              rows="6"
+              wrap="hard"
+              rows="20"
               value=""
               id="content"
               placeholder=""

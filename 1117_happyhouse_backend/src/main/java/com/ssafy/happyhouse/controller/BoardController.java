@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ssafy.happyhouse.model.BoardDto;
 import com.ssafy.happyhouse.model.BoardParameterDto;
+import com.ssafy.happyhouse.model.CommentDto;
 import com.ssafy.happyhouse.model.service.BoardService;
 
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +34,14 @@ public class BoardController {
 	@ApiOperation(value = "게시판 글목록", notes = "모든 게시글의 정보를 반환한다.", response = List.class)
 	@GetMapping
 	public ResponseEntity<List<BoardDto>> listArticle(@ApiParam(value = "게시글을 얻기위한 부가정보.", required = true) BoardParameterDto boardParameterDto) throws Exception {
+//		int totalCount = boardService.getTotalCount(boardParameterDto);
 		return new ResponseEntity<List<BoardDto>>(boardService.listArticle(boardParameterDto), HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "게시판 글수", notes = "모든 게시글의 수를 반환한다.", response = List.class)
+	@GetMapping("/total")
+	public ResponseEntity<Integer> totalArticle(@ApiParam(value = "게시글을 얻기위한 부가정보.", required = true) BoardParameterDto boardParameterDto) throws Exception {
+		return new ResponseEntity<Integer>(boardService.getTotalCount(boardParameterDto), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "게시판 글작성", notes = "새로운 게시글 정보를 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
@@ -68,7 +76,35 @@ public class BoardController {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}	
+	
+	@ApiOperation(value = "댓글목록", notes = "댓글들을 반환.", response = List.class)
+	@GetMapping("/comment/{articleno}")
+	public ResponseEntity<List<CommentDto>> listComment(@PathVariable("articleno") @ApiParam(value = "댓글들을 얻기위한 부가정보.", required = true)int articleno) throws Exception {
+		return new ResponseEntity<List<CommentDto>>(boardService.listComment(articleno), HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "댓글작성", notes = "새로운 댓글 정보를 입력한다.(100자제한) 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PostMapping("/comment")
+	public ResponseEntity<String> writeComment(@RequestBody @ApiParam(value = "게시글 정보.", required = true) CommentDto commentDto) throws Exception {
+		if(commentDto.getContent().length()>100) { //100자제한
+			commentDto.setContent(commentDto.getContent().substring(0,100));
+		}
+		if (boardService.writeComment(commentDto)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+	
+	@ApiOperation(value = "댓글 삭제", notes = "댓글 번호에 맞는 댓글의 정보를 삭제한다. 그리고 DB삭제 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@DeleteMapping("/comment/{commentno}")
+	public ResponseEntity<String> deleteComment(@PathVariable("commentno") @ApiParam(value = "삭제할 댓글번호.", required = true) int commentno) throws Exception {
+		if (boardService.deleteComment(commentno)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}	
+	
 //	@ApiOperation(value = "글번호에 해당하는 게시글의 정보를 반환한다.", response = BoardDto.class)
 //	@GetMapping("{no}")
 //	public ResponseEntity<BoardDto> detailBoard(@PathVariable int no) {

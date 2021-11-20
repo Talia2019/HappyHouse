@@ -4,7 +4,7 @@
       <b-card-header class="text-center border-0">
         <div class="d-flex justify-content-center">
           <div>
-            <h2 class="mb-0">자유 게시판</h2>
+            <h1 class="mb-0">자유 게시판</h1>
           </div>
         </div>
       </b-card-header>
@@ -14,7 +14,7 @@
           <b-col>
             <div class="d-flex justify-content-center">
               <div>
-                <h3 class="mb-0">{{ article.subject }}</h3>
+                <h2 class="mb-0">{{ article.subject }}</h2>
               </div>
             </div>
           </b-col>
@@ -35,13 +35,13 @@
         </b-row>
         <hr class="my-4" />
         <b-row>
-          <div class="row-vh">
-            <div class="h-50">
+          <div class="ml-4 my-4 row-vh">
+            <div class="content">
               {{ article.content }}
             </div>
           </div>
         </b-row>
-        <b-row>
+        <b-row class="my-4">
           <b-col class="text-right">
             <b-button
               variant="outline-info"
@@ -57,6 +57,15 @@
             >
           </b-col>
         </b-row>
+
+        <hr class="my-4" />
+        <b-row>
+          <comment
+            v-on:write-comment="registerComment"
+            :comments="comments"
+            :boardno="article.boardNo"
+          ></comment>
+        </b-row>
       </b-card-body>
     </card>
     <div class="buttonclass d-flex justify-content-center">
@@ -67,20 +76,32 @@
   </div>
 </template>
 <script>
-import { getArticle, deleteArticle } from "@/api/board";
+import {
+  getArticle,
+  deleteArticle,
+  writeComment,
+  listComment,
+} from "@/api/board";
+import Comment from "@/components/Comment";
 
 export default {
   name: "boardView",
-  components: {},
+  components: {
+    Comment,
+    // contentArea: {
+    //   template: this.article.content,
+    // },
+  },
   data() {
     return {
       article: {},
+      comments: [],
     };
   },
   computed: {
     message() {
       if (this.article.content)
-        return this.article.content.split("\n").join("<br>");
+        return this.article.content.split("\r\n").join("<br>");
       return "";
     },
   },
@@ -89,7 +110,16 @@ export default {
       this.$route.params.articleno,
       (response) => {
         this.article = response.data;
-        console.log(this.article);
+        listComment(
+          this.article.boardNo,
+          (response) => {
+            this.comments = response.data;
+            // console.log(this.comments);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
       },
       (error) => {
         console.log("게시글 얻어오기 에러", error);
@@ -99,6 +129,16 @@ export default {
   methods: {
     listArticle() {
       this.$router.push({ name: "boardList" });
+    },
+    refreshArticle() {
+      this.$router.go({
+        name: "boardView",
+        params: { articleno: this.article.boardNo },
+      });
+      // :to="{
+      //   name: 'boardView',
+      //   params: { articleno: row.boardNo },
+      // }"
     },
     moveModifyArticle() {
       this.$router.replace({
@@ -114,6 +154,29 @@ export default {
         });
       }
     },
+    registerComment(value) {
+      // console.log(this.article.articleno);
+      writeComment(
+        // boardno, userid, content
+        {
+          boardNo: this.article.boardNo,
+          //수정필요!!!!!!!!!!!!!!!!! article.userId 아니고 현재 로그인한사람으로 돼야함!!!!!!
+          userId: this.article.userId,
+          content: value,
+        },
+        ({ data }) => {
+          // let msg = "등록 처리시 문제가 발생했습니다.";
+          if (data === "success") {
+            // msg = "등록이 완료되었습니다.";
+          }
+          // alert(msg);
+          this.refreshArticle();
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
   },
 };
 </script>
@@ -125,6 +188,11 @@ export default {
   margin-top: 20px;
 }
 .row-vh {
-  height: 300px;
+  height: auto;
+}
+.content {
+  white-space: pre-line;
+  overflow: hidden;
+  height: auto;
 }
 </style>

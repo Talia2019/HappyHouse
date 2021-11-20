@@ -1,9 +1,9 @@
 <template>
-  <b-card body-class="p-0">
+  <b-card body-class="p-0" class="table-light">
     <template v-slot:header>
       <b-row align-v="center">
         <b-col>
-          <h3 class="mb-0">자유 게시판</h3>
+          <h2 class="mb-0">자유 게시판</h2>
         </b-col>
         <b-col class="text-right">
           <b-button @click="moveWrite()" class="btn" variant="primary"
@@ -14,7 +14,8 @@
     </template>
 
     <el-table
-      class="table"
+      v-if="articles.length > 0"
+      class="table hover-table"
       header-row-class-name="thead-light"
       hover
       :data="articles"
@@ -57,6 +58,9 @@
       </el-table-column>
     </el-table>
 
+    <div v-if="articles.length == 0" class="my-4 d-flex justify-content-center">
+      <h3 class="mb-0">게시물이 없습니다!</h3>
+    </div>
     <b-card-footer class="py-4 table-light">
       <b-row>
         <div class="pb-5">
@@ -74,10 +78,10 @@
                 }}</b-dropdown-item>
               </b-dropdown>
             </template>
-            <b-form-input></b-form-input>
+            <b-form-input v-model="searchWord"></b-form-input>
 
             <b-input-group-append>
-              <b-button variant="primary">검색</b-button>
+              <b-button @click="searchList()" variant="primary">검색</b-button>
             </b-input-group-append>
           </b-input-group>
         </div>
@@ -86,15 +90,16 @@
         <base-pagination
           class="d-flex justify-content-end"
           v-model="currentPage"
+          v-on:change-page="changePage"
           :per-page="10"
-          :total="50"
+          :total="totalPages"
         ></base-pagination>
       </div>
     </b-card-footer>
   </b-card>
 </template>
 <script>
-import { listArticle } from "@/api/board";
+import { listArticle, searchArticle, totalArticle } from "@/api/board";
 import { Table, TableColumn } from "element-ui";
 
 export default {
@@ -106,9 +111,11 @@ export default {
   data() {
     return {
       currentPage: 1,
+      totalPages: 10,
       articles: [],
       dropdown: ["제목", "작성자"],
       selecteddrop: 0,
+      searchWord: "",
     };
   },
   created() {
@@ -122,11 +129,20 @@ export default {
       param,
       (response) => {
         this.articles = response.data;
+        // console.log(this.articles);
       },
       (error) => {
         console.log(error);
       }
     );
+    totalArticle(param, (response) => {
+      this.totalPages = response.data;
+      // console.log("개수:" + this.totalPages);
+    });
+    // this.$on("changePage", (val) => {
+    //   console.log("페이지:" + val);
+    //   alert(val);
+    // });
   },
   methods: {
     moveWrite() {
@@ -134,6 +150,75 @@ export default {
     },
     changeDropdown(index) {
       this.selecteddrop = index;
+    },
+    searchList() {
+      let keyWord;
+      if (this.selecteddrop == 0) keyWord = "subject";
+      else keyWord = "userId";
+      let param = {
+        pg: 1,
+        spp: 10,
+        key: keyWord,
+        word: this.searchWord,
+      };
+      searchArticle(
+        param,
+        (response) => {
+          this.articles = response.data;
+          // console.log(response.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+      totalArticle(param, (response) => {
+        this.totalPages = response.data;
+        // console.log("개수:" + this.totalPages);
+      });
+    },
+    testFunc() {
+      console.log("test" + this.currentPage);
+    },
+    changePage(value) {
+      // // console.log("불렸는가?" + this.currentPage + " " + value);
+      // let param = {
+      //   pg: value,
+      //   spp: 10,
+      //   key: null,
+      //   word: null,
+      // };
+      // listArticle(
+      //   param,
+      //   (response) => {
+      //     this.articles = response.data;
+      //   },
+      //   (error) => {
+      //     console.log(error);
+      //   }
+      // );
+      let keyWord;
+      if (this.selecteddrop == 0) keyWord = "subject";
+      else keyWord = "userId";
+      let param = {
+        pg: value,
+        spp: 10,
+        key: keyWord,
+        word: this.searchWord,
+      };
+      searchArticle(
+        param,
+        (response) => {
+          this.articles = response.data;
+          // console.log(response.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+      totalArticle(param, (response) => {
+        this.totalPages = response.data;
+        // console.log("개수:" + this.totalPages);
+      });
     },
     // viewArticle(article) {
     //   this.$router.go({
@@ -145,6 +230,13 @@ export default {
 };
 </script>
 <style>
+.hover-table:hover tbody tr:hover td {
+  background: #fff6e6;
+  color: black;
+}
+.router-link {
+  color: black;
+}
 /* .table-light,
 .table-responsive,
 .el-table.table {
