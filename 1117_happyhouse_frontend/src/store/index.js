@@ -38,9 +38,19 @@ export default new Vuex.Store({
           // console.log(res);
           commit("SET_SIDO_LIST", res.data);
         })
+<<<<<<< HEAD
         .catch((err) => {
           console.log(err);
         });
+=======
+      const params = { gugun: '11110' };
+      console.log(params)
+      http.get("/map/dong", params).then((res) => {
+        console.log(res);
+      }).catch((err) => {
+        console.log(err);
+      })
+>>>>>>> 5caafcd06b7792f8e76396af369b1051cc64a7c7
     },
     getGugun({ commit }, sidoCode) {
       const params = { sido: sidoCode };
