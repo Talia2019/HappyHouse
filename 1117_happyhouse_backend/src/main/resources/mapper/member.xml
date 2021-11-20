@@ -16,4 +16,40 @@
 		where userid = #{userid}
 	</select>
 	
+	<select id="idCheck" parameterType="string" resultType="int">
+		select count(userid)
+		from user
+		where userid = #{userid}
+	</select>
+
+	<insert id="registerMember" parameterType="MemberDto">
+		insert into user (userid, username, userpwd, email, joindate)
+		values (#{userId}, #{userName}, #{userPwd}, #{email}, now())
+	</insert>
+
+	<select id="listMember" resultType="memberDto">
+		select userid, userpwd, username, email, date_format(joindate, '%y.%m.%d') joindate
+		from user
+		order by joindate desc;
+	</select>
+	
+	<select id="getMember" parameterType="String" resultType="memberdto">
+		select userid, userpwd, username, email, date_format(joindate, '%y.%m.%d') joindate
+		from user
+		where userid = #{userid}
+	</select>
+	
+	<update id="updateMember" parameterType="MemberDto">
+		update user
+		<trim prefix="set" suffixOverrides=",">
+			<if test="userPwd != null">userpwd = #{userPwd},</if>
+			<if test="email != null">email = #{email},</if>
+		</trim>
+		where userid = #{userId}
+	</update>
+	
+	<delete id="deleteMember" parameterType="String">
+		delete from user
+		where userid = #{userid}
+	</delete>
 </mapper>
