@@ -174,6 +174,7 @@ export default {
       searchNotice(
         param,
         (response) => {
+          // this.currentPage = 1;
           this.articles = response.data;
           // console.log(response.data);
         },

@@ -3,7 +3,7 @@
     <template v-slot:header>
       <b-row align-v="center">
         <b-col>
-          <h2 class="mb-0 ml-2">자유 게시판</h2>
+          <h2 class="mb-0">자유 게시판</h2>
         </b-col>
         <b-col class="text-right">
           <b-button @click="moveWrite()" class="btn" variant="primary"
@@ -152,6 +152,7 @@ export default {
       this.selecteddrop = index;
     },
     searchList() {
+      this.currentPage = 0;
       let keyWord;
       if (this.selecteddrop == 0) keyWord = "subject";
       else keyWord = "userId";
