@@ -44,25 +44,9 @@ export default new Vuex.Store({
         .then((res) => {
           console.log(res);
         })
-<<<<<<< HEAD
-<<<<<<< HEAD
         .catch((err) => {
           console.log(err);
         });
-=======
-      const params = { gugun: '11110' };
-      console.log(params)
-      http.get("/map/dong", params).then((res) => {
-        console.log(res);
-      }).catch((err) => {
-        console.log(err);
-      })
->>>>>>> 5caafcd06b7792f8e76396af369b1051cc64a7c7
-=======
-        .catch((err) => {
-          console.log(err);
-        });
->>>>>>> dc652601ce0ed566bb38d80d30e03e2b9dd8db54
     },
     getGugun({ commit }, sidoCode) {
       const params = { sido: sidoCode };
