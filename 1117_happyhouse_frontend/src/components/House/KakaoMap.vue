@@ -97,7 +97,7 @@ export default {
             kakao.maps.event.addListener(marker, 'click', function() {
                 overlay.setMap(null);
                 overlay.setMap(map);
-                map.setCenter(coords);
+                // map.setCenter(coords);
             });
 
             kakao.maps.event.addListener(marker, 'rightclick', function() {
