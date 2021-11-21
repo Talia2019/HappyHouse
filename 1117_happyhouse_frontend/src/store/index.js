@@ -35,6 +35,9 @@ export default new Vuex.Store({
           state.overlaps.push(house);
         }
       })
+      state.overlaps.sort((a, b) => {
+        return a["아파트"] < b["아파트"] ? -1 : a["아파트"] > b["아파트"] ? 1 : 0;
+      })
       return state.overlaps;
     }
   },
@@ -71,7 +74,7 @@ export default new Vuex.Store({
     },
     CLEAR_HOUSE_LIST(state) {
       state.houses = [];
-    }
+    },
   },
   actions: {
     getSido({ commit }) {
@@ -120,7 +123,7 @@ export default new Vuex.Store({
         })
     },
     detailHouse({ commit }, house) {
-      commit("SET_DETAIL_HOUSE", house)
+      commit("SET_DETAIL_HOUSE", house);
     },
   },
   modules: {
