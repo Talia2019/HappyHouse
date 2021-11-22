@@ -20,17 +20,17 @@
       delete from user
       where userid = #{userId}
    </delete>
+   
+   	<insert id="registerMember" parameterType="memberDto">
+		insert into user (userid, username, userpwd, email, joindate)
+		values (#{userid}, #{username}, #{userpwd}, #{email}, now())
+	</insert>
 	
 	<select id="idCheck" parameterType="string" resultType="int">
 		select count(userid)
 		from user
 		where userid = #{userid}
 	</select>
-
-	<insert id="registerMember" parameterType="MemberDto">
-		insert into user (userid, username, userpwd, email, joindate)
-		values (#{userId}, #{userName}, #{userPwd}, #{email}, now())
-	</insert>
 
 	<select id="listMember" resultType="memberDto">
 		select userid, userpwd, username, email, date_format(joindate, '%y.%m.%d') joindate
