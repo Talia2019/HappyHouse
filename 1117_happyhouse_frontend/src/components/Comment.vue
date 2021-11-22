@@ -50,10 +50,7 @@
                 class="btn"
                 variant="outline-warning"
                 @click="deleteComment(comment.commentNo)"
-                v-if="
-                  userInfo.userid == comment.userId ||
-                  userInfo.userid == 'admin'
-                "
+                v-if="isOwner(article.userId)"
               >
                 삭제
               </b-button>
@@ -99,6 +96,14 @@ export default {
     this.commentText = this.commentValue;
   },
   methods: {
+    isOwner(id) {
+      // console.log(this.isLogin);
+      if (this.userInfo) {
+        if (this.userInfo.userid == id || this.userInfo.userid == "admin")
+          return true;
+      }
+      return false;
+    },
     writeComment() {
       let err = true;
       let msg = "";

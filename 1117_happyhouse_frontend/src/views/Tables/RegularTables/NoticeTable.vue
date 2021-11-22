@@ -10,7 +10,7 @@
             @click="moveWrite()"
             class="btn"
             variant="primary"
-            v-if="userInfo.userid == 'admin'"
+            v-if="isOwner()"
             >글쓰기</b-button
           >
         </b-col>
@@ -155,6 +155,13 @@ export default {
     // });
   },
   methods: {
+    isOwner() {
+      // console.log(this.isLogin);
+      if (this.userInfo) {
+        if (this.userInfo.userid == "admin") return true;
+      }
+      return false;
+    },
     moveWrite() {
       this.$router.push({ name: "noticeWrite" });
     },

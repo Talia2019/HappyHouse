@@ -41,10 +41,7 @@
             </div>
           </div>
         </b-row>
-        <b-row
-          class="my-4"
-          v-if="userInfo.userid == article.userId || userInfo.userid == 'admin'"
-        >
+        <b-row class="my-4" v-if="isOwner(article.userId)">
           <b-col class="text-right">
             <b-button
               variant="outline-info"
@@ -134,6 +131,14 @@ export default {
     );
   },
   methods: {
+    isOwner(id) {
+      // console.log(this.isLogin);
+      if (this.userInfo) {
+        if (this.userInfo.userid == id || this.userInfo.userid == "admin")
+          return true;
+      }
+      return false;
+    },
     listArticle() {
       this.$router.push({ name: "boardList" });
     },
