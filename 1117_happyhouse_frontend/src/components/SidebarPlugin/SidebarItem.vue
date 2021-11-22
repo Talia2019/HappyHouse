@@ -115,7 +115,9 @@ export default {
       if (this.link.name) {
         let words = this.link.name.split(' ');
         return words.map(word => word.substring(0, 1)).join('');
-      }
+      } else {
+        return null;
+      } 
     },
     isMenu() {
       return this.children.length > 0 || this.menu === true;

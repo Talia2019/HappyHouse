@@ -40,14 +40,14 @@ public class HappyHouseMapServiceImpl implements HappyHouseMapService {
 	}
 
 	@Override
-	public String getAptInDong(String gugun) throws Exception {
+	public String getAptInDong(String gugun, String time) throws Exception {
 		String SERVICE_URL = "http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev";
 		String SERVICE_KEY = "u44MPChIFRDby2KFIAjIZaKd2UzE5VLo0eStZUpzw80TOlqhr7JQpMVWNYTzWtnjyVodAPwD%2B81urU1N7DVv%2FQ%3D%3D";
 		StringBuilder urlBuilder = new StringBuilder(SERVICE_URL);
 		urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + SERVICE_KEY);
 		urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=1000");
 		urlBuilder.append("&" + URLEncoder.encode("LAWD_CD", "UTF-8") + "=" + gugun);
-		urlBuilder.append("&" + URLEncoder.encode("DEAL_YMD", "UTF-8") + "=202110");
+		urlBuilder.append("&" + URLEncoder.encode("DEAL_YMD", "UTF-8") + "=" + time);
 		URL url = new URL(urlBuilder.toString());
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");

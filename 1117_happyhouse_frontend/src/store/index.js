@@ -10,15 +10,15 @@ import memberStore from "@/store/modules/memberStore.js";
 
 export default new Vuex.Store({
   state: {
-    sidos: [{ value: null, text: "선택하세요" }],
-    guguns: [{ value: null, text: "선택하세요" }],
-    dongs: [{ value: null, text: "선택하세요" }],
+    sidos: [{ value: null, text: "시도" }],
+    guguns: [{ value: null, text: "군구" }],
+    dongs: [{ value: null, text: "읍면동" }],
     houses: [],
     overlaps: [],
     house: null,
     flag: false,
     selected: false,
-    apts: [{ value: null, text: "선택하세요" }],
+    apts: [{ value: null, text: "아파트" }],
     aptLists: [],
     gudong: null,
   },
@@ -45,7 +45,7 @@ export default new Vuex.Store({
       state.overlaps.sort((a, b) => {
         return a["아파트"] < b["아파트"] ? -1 : a["아파트"] > b["아파트"] ? 1 : 0;
       })
-      state.apts = [{ value: null, text: "선택하세요" }];
+      state.apts = [{ value: null, text: "아파트" }];
       state.overlaps.forEach(over => {
         state.apts.push({ value: over.지번, text: over.아파트 })
       })
@@ -86,19 +86,19 @@ export default new Vuex.Store({
       state.aptLists = aptList;
     },
     CLEAR_SIDO_LIST(state) {
-      state.sidos = [{ value: null, text: "선택하세요" }];
+      state.sidos = [{ value: null, text: "시도" }];
     },
     CLEAR_GUGUN_LIST(state) {
-      state.guguns = [{ value: null, text: "선택하세요" }];
+      state.guguns = [{ value: null, text: "군구" }];
     },
     CLEAR_DONG_LIST(state) {
-      state.dongs = [{ value: null, text: "선택하세요 "}];
+      state.dongs = [{ value: null, text: "읍면동"}];
     },
     CLEAR_HOUSE_LIST(state) {
       state.houses = [];
     },
     CLEAR_APT_LIST(state) {
-      state.apts = [{ value: null, text: "선택하세요 "}];
+      state.apts = [{ value: null, text: "아파트"}];
     },
     CLEAR_DEAL_LIST(state) {
       state.aptLists = [];
@@ -112,17 +112,10 @@ export default new Vuex.Store({
       http.get("/map/sido").then((res) => {
         // console.log(res);
         commit("SET_SIDO_LIST", res.data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-      const params = { gugun: "11110" };
-      console.log(params);
-      http
-        .get("/map/dong", params)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     },
     getGugun({ commit }, sidoCode) {
       const params = { sido: sidoCode };
@@ -146,7 +139,7 @@ export default new Vuex.Store({
     },
     getHouse({ commit }, code) {
       const dongCode = code.dongCode*1;
-      const params = { gugun: code.gugunCode.code };
+      const params = { gugun: code.gugunCode.code, time: 202110 };
       http
       .get("/map/apt", { params }).then((res) => {
         // console.log(res.data.response.body.items.item, commit);
