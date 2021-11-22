@@ -1,4 +1,3 @@
-
 import DashboardLayout from "@/views/Layout/DashboardLayout.vue";
 import HouseDeal from '@/views/HouseDeal.vue';
 // import NotFound from '@/views/NotFoundPage.vue';
