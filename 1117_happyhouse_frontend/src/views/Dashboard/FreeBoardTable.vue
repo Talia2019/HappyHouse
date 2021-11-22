@@ -14,6 +14,7 @@
     </template>
 
     <el-table
+      v-if="articles.length > 0"
       class="table-responsive table hover-table"
       :data="articles"
       header-row-class-name="thead-light"
@@ -44,6 +45,9 @@
         </template>
       </el-table-column>
     </el-table>
+    <div v-if="articles.length == 0" class="my-4 d-flex justify-content-center">
+      <h3 class="mb-0">게시물이 없습니다!</h3>
+    </div>
   </b-card>
 </template>
 <script>
