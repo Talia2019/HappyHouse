@@ -1,7 +1,6 @@
 <template>
   <div>
     <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
-      <b-button variant="outline-primary">Button</b-button>
       <b-row class="mt-4 mb-4 text-center">
         <b-col class="sm-3">
           <b-form-select v-model="sidoCode" :options="sidos" @change="gugunList"></b-form-select>
@@ -79,11 +78,6 @@ import { mapActions, mapMutations, mapState } from 'vuex';
       if (this.houses.length != 0){
         this.findLocation();
       }
-    },
-    findLocation() {
-      this.houses.forEach(house => {
-        console.log(house);
-      })
     },
   },
 };

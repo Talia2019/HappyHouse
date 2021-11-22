@@ -1,4 +1,7 @@
+
 import DashboardLayout from "@/views/Layout/DashboardLayout.vue";
+import HouseDeal from '@/views/HouseDeal.vue';
+// import NotFound from '@/views/NotFoundPage.vue';
 
 import Member from "@/views/Member.vue";
 import MemberLogin from "@/components/user/MemberLogin.vue";
@@ -45,7 +48,7 @@ const routes = [
       {
         path: '/maps',
         name: 'maps',
-        component: () => import('../views/HouseDeal.vue')
+        component: HouseDeal,
       },
       {
         path: "/tables",
