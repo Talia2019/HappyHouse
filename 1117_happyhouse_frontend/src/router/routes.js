@@ -44,6 +44,7 @@ const routes = [
       {
         path: "/profile",
         name: "profile",
+        beforeEnter: onlyAuthUser,
         component: () => import("../views/Pages/UserProfile.vue"),
       },
       {
