@@ -16,4 +16,12 @@
 		where userid = #{userid}
 	</select>
 	
+	<!-- 사용자 수정 -->
+	<update id="updateMember" parameterType="memberDto">
+		update user
+		set username = #{username}, 
+			email = #{email}
+		 where userid = #{userid}
+	</update>
+	
 </mapper>

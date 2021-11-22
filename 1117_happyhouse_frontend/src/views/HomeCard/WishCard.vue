@@ -151,7 +151,7 @@ export default {
   created() {
     topWish((response) => {
       this.cardList = response.data;
-      console.log(this.cardList);
+      // console.log(this.cardList);
     });
   },
 };

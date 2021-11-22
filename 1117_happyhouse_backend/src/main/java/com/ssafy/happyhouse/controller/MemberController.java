@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,11 +14,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.happyhouse.model.BoardDto;
 import com.ssafy.happyhouse.model.MemberDto;
+import com.ssafy.happyhouse.model.UserDto;
 import com.ssafy.happyhouse.model.service.JwtServiceImpl;
 import com.ssafy.happyhouse.model.service.MemberService;
 
@@ -95,4 +99,11 @@ public class MemberController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
+	@PutMapping("/update")
+	public ResponseEntity<String> updateMember(@RequestBody MemberDto memberDto) throws Exception {
+		if (memberService.updateMember(memberDto)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+	}
 }
