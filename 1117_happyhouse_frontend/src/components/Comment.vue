@@ -110,13 +110,12 @@ export default {
       err &&
         !this.commentText &&
         ((msg = "댓글 내용을 입력해주세요"), (err = false));
+      err && !this.userInfo && ((msg = "로그인이 필요합니다"), (err = false));
 
       if (!err) {
         // console.log("댓글입력안함");
         alert(msg);
-      }
-      // console.log("부모호출.." + this.value + " " + this.pagevalue);
-      else {
+      } else {
         this.$emit("write-comment", this.commentText);
         this.commentText = "";
       }
