@@ -1,20 +1,12 @@
 <template>
-  <b-row
-    class="m-2"
-    @click="selectHouse"
+<b-list-group-item @click="selectHouse"
     @mouseover="colorChange(true)"
     @mouseout="colorChange(false)"
-    :class="{ 'mouse-over-bgcolor': isColor }"
-  >
-    <b-col cols="2" class="text-center align-self-center">
-      <b-img
-        thumbnail
-        src="https://picsum.photos/250/250/?image=58"
-        alt="Image 1"
-      ></b-img>
-    </b-col>
-    <b-col cols="10" class="align-self-center"> [{{ house.일련번호 }}] {{ house.아파트 }} </b-col>
+    :class="{ 'mouse-over-bgcolor': isColor }">
+  <b-row class="m-2">
+    <b-col cols="10" class="align-self-center"> {{ house.아파트 }} : {{ house.거래금액 }} </b-col>
   </b-row>
+</b-list-group-item>
 </template>
 
 <script>
@@ -47,5 +39,9 @@ export default {
 }
 .mouse-over-bgcolor {
   background-color: lightblue;
+}
+.list-group-item {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 </style>
