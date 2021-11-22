@@ -26,7 +26,7 @@
       <b-col xl="4" md="6">
         <wish-card
           title="Top 2"
-          type="gradient-red"
+          type="gradient-orange"
           v-if="cardList.length > 0"
           :sub-title="cardList[1].houseName"
           icon="ni ni-favourite-28"
@@ -48,7 +48,7 @@
       <b-col xl="4" md="6">
         <wish-card
           title="Top 3"
-          type="gradient-red"
+          type="gradient-green"
           v-if="cardList.length > 0"
           :sub-title="cardList[2].houseName"
           icon="ni ni-favourite-28"
