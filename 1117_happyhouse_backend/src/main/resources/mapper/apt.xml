@@ -47,4 +47,10 @@
 		where aptName like concat('%',#{name}, '%')  and dongCode=#{dong}
 		order by aptName
 	</select>
+	
+	<!-- 관심부동산 등록 -->
+	<insert id="checkStar" parameterType="houseDealDto">
+		insert into housedeal (houseName, dealAmount, dealYear, dealMonth, dealDay, area, floor, jibun, dongName, starCount)
+		values (#{houseName}, #{dealAmount}, #{dealYear}, #{dealMonth}, #{dealDay}, #{area}, #{floor}, #{jibun}, #{dongName}, #{starCount});
+	</insert>
 </mapper>

@@ -3,9 +3,13 @@ package com.ssafy.happyhouse.model.mapper;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
+
+import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 
+@Mapper
 public interface HouseMapMapper {
 	
 	List<SidoGugunCodeDto> getSido() throws SQLException;
@@ -13,5 +17,5 @@ public interface HouseMapMapper {
 	List<HouseInfoDto> getDongInGugun(String gugun) throws SQLException;
 	List<HouseInfoDto> getAptInDong(String gugun) throws SQLException;
 	List<HouseInfoDto> getAptInName(String name, String dong) throws SQLException;
-	
+	int checkStar(HouseDealDto houseDealDto) throws SQLException;
 }
