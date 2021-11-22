@@ -1,5 +1,5 @@
 import DashboardLayout from "@/views/Layout/DashboardLayout.vue";
-import HouseDeal from '@/views/HouseDeal.vue';
+import HouseDeal from "@/views/HouseDeal.vue";
 // import NotFound from '@/views/NotFoundPage.vue';
 
 import Member from "@/views/Member.vue";
@@ -38,6 +38,28 @@ const routes = [
         path: "/dashboard",
         name: "dashboard",
         component: () => import("../views/Dashboard.vue"),
+        children: [
+          {
+            path: "/card",
+            name: "card",
+            component: () => import("@/views/HomeCard/Card.vue"),
+          },
+          {
+            path: "/boardcard",
+            name: "boardcard",
+            component: () => import("@/views/HomeCard/BoardCard.vue"),
+          },
+          {
+            path: "/wishcard",
+            name: "wishcard",
+            component: () => import("@/views/HomeCard/WishCard.vue"),
+          },
+          {
+            path: "/moneycard",
+            name: "moneycard",
+            component: () => import("@/views/HomeCard/MoneyCard.vue"),
+          },
+        ],
       },
       {
         path: "/profile",
@@ -45,8 +67,8 @@ const routes = [
         component: () => import("../views/Pages/UserProfile.vue"),
       },
       {
-        path: '/maps',
-        name: 'maps',
+        path: "/maps",
+        name: "maps",
         component: HouseDeal,
       },
       {

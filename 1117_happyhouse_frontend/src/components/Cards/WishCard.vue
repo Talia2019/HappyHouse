@@ -6,17 +6,9 @@
           <h5 class="card-title text-uppercase text-muted mb-0" v-if="title">
             {{ title }}
           </h5>
-          <span class="h2 font-weight-bold mb-0" v-if="subTitle">
-            <router-link
-              v-if="articleno > 0"
-              :to="{
-                name: 'boardView',
-                params: { articleno: `${articleno}` },
-              }"
-              >{{ subTitle }}</router-link
-            >
-            <div v-else>{{ subTitle }}</div>
-          </span>
+          <span class="h2 font-weight-bold mb-0" v-if="subTitle">{{
+            subTitle
+          }}</span>
         </slot>
       </b-col>
 
@@ -54,10 +46,6 @@ export default {
     title: String,
     subTitle: String,
     iconClasses: [String, Array],
-    articleno: {
-      type: Number,
-      default: null,
-    },
   },
 };
 </script>

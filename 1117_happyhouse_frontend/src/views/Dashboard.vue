@@ -1,63 +1,59 @@
 <template>
   <div>
-    <base-header class="pb-6 pb-8 pt-5 pt-md-5 bg-gradient-success">
+    <!-- Cards -->
+    <base-header
+      class="pb-6 pb-8 pt-5 pt-md-5 bg-gradient-success"
+      style="height: 400px"
+    >
       <!-- Card stats -->
-      <b-row v-if="topHits.length == 3" class="top-title pl-4 pb-4">
-        <b> 실시간 인기글</b></b-row
-      >
-      <b-row v-if="topHits.length == 3">
-        <b-col xl="4" md="6">
-          <board-card
-            title="Top 1"
-            type="gradient-red"
-            :sub-title="topHits[0].subject"
-            :articleno="topHits[0].boardNo"
-            icon="ni ni-like-2"
-            class="mb-4"
-          >
-            <template slot="footer">
-              <span class="text-nowrap">작성자 {{ topHits[0].userId }}</span>
-              <br />
-              <span class="text-success mr-2">조회수 {{ topHits[0].hit }}</span>
-            </template>
-          </board-card>
-        </b-col>
-        <b-col xl="4" md="6">
-          <board-card
-            title="Top 2"
-            type="gradient-orange"
-            :sub-title="topHits[1].subject"
-            :articleno="topHits[1].boardNo"
-            icon="ni ni-like-2"
-            class="mb-4"
-          >
-            <template slot="footer">
-              <span class="text-nowrap">작성자 {{ topHits[1].userId }}</span>
-              <br />
-              <span class="text-success mr-2">조회수 {{ topHits[1].hit }}</span>
-            </template>
-          </board-card>
-        </b-col>
-        <b-col xl="4" md="6">
-          <board-card
-            title="Top 3"
-            type="gradient-green"
-            :sub-title="topHits[2].subject"
-            :articleno="topHits[2].boardNo"
-            icon="ni ni-like-2"
-            class="mb-4"
-          >
-            <template slot="footer">
-              <!-- <span class="text-danger mr-2">5.72%</span> -->
-              <span class="text-nowrap">작성자 {{ topHits[2].userId }}</span>
-              <br />
-              <span class="text-success mr-2">조회수 {{ topHits[2].hit }}</span>
-            </template>
-          </board-card>
+      <!-- <b-row class="pl-4 pb-4">
+        <div class="top-title-selected pr-3" @click="boardcard()">
+          실시간 인기글
+        </div>
+        <div class="top-title-selected pl-2 pr-2">|</div>
+        <div class="top-title-unselected pr-3" @click="boardcard()">
+          관심 지역
+        </div>
+        <div class="top-title-selected pl-2 pr-2">|</div>
+        <div class="top-title-unselected pr-2" @click="boardcard()">
+          거래 금액
+        </div>
+      </b-row> -->
+      <b-row>
+        <b-col cols="4">
+          <div>
+            <!-- <b-tabs content-class="mt-3 " fill>
+              <b-tab
+                title="인기글"
+                title-item-class="mytab"
+                active
+                @click="boardcard()"
+              ></b-tab>
+              <b-tab
+                title="관심 지역"
+                title-item-class="mytab"
+                @click="wishcard()"
+              ></b-tab>
+              <b-tab
+                title="거래 금액"
+                title-item-class="mytab"
+                @click="moneycard()"
+              ></b-tab>
+            </b-tabs> -->
+            <div class="mb-4">
+              <span :class="firstClass" @click="boardcard()">인기 게시물</span>
+              <span :class="secondClass" @click="wishcard()"
+                >인기 관심지역</span
+              >
+              <!-- <hr style="border: solid; height: 3px background: #ccc;" /> -->
+            </div>
+          </div>
         </b-col>
       </b-row>
+      <!-- <board-card></board-card> -->
+      <!-- <card></card> -->
+      <router-view></router-view>
     </base-header>
-
     <!--Charts-->
     <b-container fluid class="mt--7">
       <!-- <b-row>
@@ -140,7 +136,6 @@ import BarChart from "@/components/Charts/BarChart";
 
 // Components
 import BaseProgress from "@/components/BaseProgress";
-import BoardCard from "@/components/Cards/BoardCard";
 
 // Tables
 // import SocialTrafficTable from './Dashboard/SocialTrafficTable';
@@ -148,20 +143,22 @@ import BoardCard from "@/components/Cards/BoardCard";
 import FreeBoardTable from "./Dashboard/FreeBoardTable";
 import NoticeBoardTable from "./Dashboard/NoticeBoardTable";
 
-import { topArticle } from "@/api/board";
+import Card from "@/views/HomeCard/Card.vue";
 
 export default {
   components: {
     LineChart,
     BarChart,
     BaseProgress,
-    BoardCard,
+    Card,
     FreeBoardTable,
     NoticeBoardTable,
   },
   data() {
     return {
       topHits: [],
+      firstClass: "spread-underline",
+      secondClass: "spread-underline-selected",
       bigLineChart: {
         allData: [
           [0, 20, 10, 30, 15, 40, 20, 60, 60],
@@ -193,6 +190,9 @@ export default {
       },
     };
   },
+  created() {
+    this.boardcard();
+  },
   methods: {
     initBigChart(index) {
       let chartData = {
@@ -207,15 +207,23 @@ export default {
       this.bigLineChart.chartData = chartData;
       this.bigLineChart.activeIndex = index;
     },
+    boardcard() {
+      // this.$router.replace({ name: "card", params: { type: "board" } });
+      this.firstClass = "spread-underline-selected";
+      this.secondClass = "spread-underline";
+      this.$router.push({ name: "boardcard" });
+    },
+    wishcard() {
+      this.secondClass = "spread-underline-selected";
+      this.firstClass = "spread-underline";
+      this.$router.push({ name: "wishcard" });
+    },
+    // moneycard() {
+    //   this.$router.push({ name: "moneycard" });
+    // },
   },
   mounted() {
     this.initBigChart(0);
-  },
-  created() {
-    topArticle((response) => {
-      this.topHits = response.data;
-      console.log(this.topHits);
-    });
   },
 };
 </script>
@@ -227,8 +235,82 @@ export default {
 .bg-success {
   background: #2186c4 !important;
 }
-.top-title {
-  color: cornsilk;
+.top-title-selected {
+  color: whitesmoke;
   font-size: 20px;
+  font-weight: bold;
 }
+.top-title-unselected {
+  color: dark-gray;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* .mytab .nav-link:not(.active) {
+  background-color: red !important;
+  color: darkslategray;
+  font-size: 20px;
+  font-weight: bold;
+}
+.mytab .nav-link {
+  color: darkslategray;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: blue !important;
+} */
+
+/* .tab-content > .tab-pane {
+  border: 1px solid;
+  border-left: 0px none;
+} */
+
+/*가운데서 좌우로 펼쳐지는 라인 에니메이션*/
+span {
+  animation-fill-mode: forwards;
+}
+.spread-underline {
+  color: #333;
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 0;
+  margin-right: 20px;
+  position: relative;
+  font-weight: bold;
+  font-size: 18px;
+}
+.spread-underline:after {
+  color: whitesmoke;
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  background: whitesmoke;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  width: 0;
+}
+.spread-underline:hover:after {
+  color: whitesmoke;
+  width: 100%;
+  left: 0;
+}
+.spread-underline:hover {
+  color: whitesmoke;
+  transition: 0.3s;
+  left: 0;
+}
+.spread-underline-selected {
+  color: whitesmoke;
+  /* text-decoration: underline; */
+  /* text-underline-position: under; */
+  bottom: 0;
+  display: inline-block;
+  margin-right: 20px;
+  /* position: relative; */
+  font-weight: bold;
+  font-size: 18px;
+}
+/*가운데서 좌우로 펼쳐지는 라인 에니메이션:끝*/
 </style>
