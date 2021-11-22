@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -102,58 +103,14 @@ public class MemberController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	@GetMapping("/register")
-	public String register() {
-		return "user/join";
-	}
-	
-	@GetMapping("/idcheck")
-//	@ResponseBody
-	public @ResponseBody String idCheck(@RequestParam("ckid") String checkId) throws Exception {
-		int idCount = memberService.idCheck(checkId);
-		JSONObject json = new JSONObject();
-		json.put("idcount", idCount);
-		return json.toString();
-	}
-
-	@PostMapping("/register")
-	public String register(MemberDto memberDto, Model model) throws Exception {
-		logger.debug("memberDto info : {}", memberDto);
-		memberService.registerMember(memberDto);
-		return "redirect:/user/login";
-	}
-
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
-		return "redirect:/";
-	}
-	
-	@GetMapping("/list")
-	public String list() {
-		return "user/list";
-	}
-	
-	@GetMapping("/modify")
-	public String modify() {
-		return "user/userupdate";
-	}
-	
-	
-	@PostMapping("/modify")
-	public String modify(MemberDto memberDto, Model model)
-			throws Exception {
-		memberService.updateMember(memberDto);
-		return "redirect:/";
-	}
-
-	@GetMapping("/deletemember")
-	public String delete(@RequestParam Map<String, String> map, Model model, HttpSession session,
-			HttpServletResponse response) throws Exception {
-		String id = map.get("id");
-		memberService.deleteMember(id);
-		session.invalidate();
-		return "redirect:/";
-	}
-
+	@ApiOperation(value = "회원 탈퇴", notes="유저 아이디에 해당하는 회원을 탈퇴한다.", response = String.class)
+	   @DeleteMapping("/{userid}")
+	   public ResponseEntity<String> deleteMember(
+	         @PathVariable("userid") @ApiParam(value = "삭제할 유저의 아이디.", required = true) String userid) throws Exception {
+	      logger.info("deleteMember - 호출");
+	      if(memberService.deleteMember(userid)) {
+	         return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	      }
+	      return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	   }
 }
