@@ -8,8 +8,11 @@
         <b-col class="sm-3">
           <b-form-select v-model="gugunCode" :options="guguns" @change="dongList"></b-form-select>
         </b-col>
-        <b-col class="sm-3">
+        <b-col class="sm-3" @click="getDongName">
           <b-form-select v-model="dongCode" :options="dongs" @change="searchApt"></b-form-select>
+        </b-col>
+        <b-col class="sm-3">
+          <b-form-select v-model="jibunCode" :options="apts" @change="aptList"></b-form-select>
         </b-col>
       </b-row>
     </base-header>
@@ -40,10 +43,11 @@ import { mapActions, mapMutations, mapState } from 'vuex';
     KakaoMap,
   },
   computed: {
-    ...mapState(["sidos", "guguns", "dongs", "houses"]),
+    ...mapState(["sidos", "guguns", "dongs", "houses", "apts"]),
   },
   created() {
     this.CLEAR_SIDO_LIST();
+    this.CLEAR_DEAL_LIST();
     this.sidoList();
   },
   data() {
@@ -51,11 +55,12 @@ import { mapActions, mapMutations, mapState } from 'vuex';
       sidoCode: null,
       gugunCode: null,
       dongCode: null,
+      jibunCode: null,
     };
   },
   methods: {
-    ...mapActions(["getSido", "getGugun", "getDong", "getHouse"]),
-    ...mapMutations(["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_DONG_LIST", "CLEAR_HOUSE_LIST"]),
+    ...mapActions(["getSido", "getGugun", "getDong", "getHouse", "getOverlapHouse"]),
+    ...mapMutations(["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_DONG_LIST", "CLEAR_HOUSE_LIST", "CLEAR_APT_LIST", "CLEAR_DEAL_LIST"]),
     sidoList() {
       this.getSido();
     },
@@ -66,19 +71,29 @@ import { mapActions, mapMutations, mapState } from 'vuex';
       if(this.sidoCode) this.getGugun(this.sidoCode);
     },
     dongList() {
-      console.log(this.gugunCode);
       this.CLEAR_DONG_LIST();
       this.CLEAR_HOUSE_LIST();
+      this.CLEAR_APT_LIST();
+      this.CLEAR_DEAL_LIST();
       this.dongCode = null;
-      if(this.gugunCode) this.getDong(this.gugunCode);
+      this.jibunCode = null;
+      if(this.gugunCode.code) this.getDong(this.gugunCode.code);
     },
     searchApt() {
-      const code = { gugunCode: this.gugunCode, dongCode: this.dongCode.slice(5) };
-      if(this.gugunCode) this.getHouse(code);
-      if (this.houses.length != 0){
-        this.findLocation();
-      }
+      console.log(this.gugunCode.name, this.dongCode.name);
+      const code = { gugunCode: this.gugunCode, dongCode: this.dongCode.code.slice(5), gudongName: this.gugunCode.name + " " + this.dongCode.name };
+      this.CLEAR_APT_LIST();
+      this.jibunCode = null;
+      if(this.gugunCode.code) this.getHouse(code);
     },
+    aptList() {
+      this.CLEAR_APT_LIST();
+      this.CLEAR_DEAL_LIST();
+      this.getOverlapHouse(this.jibunCode);
+    },
+    getDongName(val) {
+      console.log(val);
+    }
   },
 };
 </script>
