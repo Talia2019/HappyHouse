@@ -38,5 +38,10 @@ public class MemberServiceImpl implements MemberService {
 		return sqlSession.getMapper(MemberMapper.class).registerMember(memberDto) == true;
 	}
 
+	@Override
+	public boolean updateMember(MemberDto memberDto) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).updateMember(memberDto) == true;
+	}
+
 
 }

@@ -26,6 +26,15 @@
 		values (#{userid}, #{username}, #{userpwd}, #{email}, now())
 	</insert>
 	
+	<update id="updateMember" parameterType="memberDto">
+		update user
+		<trim prefix="set" suffixOverrides=",">
+			<if test="userpwd != null">userpwd = #{userpwd},</if>
+			<if test="email != null">email = #{email},</if>
+		</trim>
+		where userid = #{userid}
+	</update>
+	
 	<select id="idCheck" parameterType="string" resultType="int">
 		select count(userid)
 		from user
@@ -43,13 +52,4 @@
 		from user
 		where userid = #{userid}
 	</select>
-	
-	<update id="updateMember" parameterType="MemberDto">
-		update user
-		<trim prefix="set" suffixOverrides=",">
-			<if test="userPwd != null">userpwd = #{userPwd},</if>
-			<if test="email != null">email = #{email},</if>
-		</trim>
-		where userid = #{userId}
-	</update>
 </mapper>
