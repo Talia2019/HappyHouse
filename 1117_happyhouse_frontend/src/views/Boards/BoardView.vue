@@ -64,6 +64,7 @@
             v-on:write-comment="registerComment"
             :comments="comments"
             :boardno="article.boardNo"
+            :userid="article.userId"
           ></comment>
         </b-row>
       </b-card-body>
@@ -143,10 +144,14 @@ export default {
       this.$router.push({ name: "boardList" });
     },
     refreshArticle() {
-      this.$router.go({
-        name: "boardView",
-        params: { articleno: this.article.boardNo },
-      });
+      this.$router
+        .go({
+          name: "boardView",
+          params: { articleno: this.article.boardNo },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       // :to="{
       //   name: 'boardView',
       //   params: { articleno: row.boardNo },

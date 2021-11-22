@@ -42,6 +42,10 @@ function deleteComment(commentno, success, fail) {
   api.delete(`/board/comment/${commentno}`).then(success).catch(fail);
 }
 
+function topArticle(success, fail) {
+  api.get(`/board/top`).then(success).catch(fail);
+}
+
 export {
   listArticle,
   writeArticle,
@@ -53,4 +57,5 @@ export {
   writeComment,
   listComment,
   deleteComment,
+  topArticle,
 };

@@ -75,4 +75,9 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.deleteComment(commentno) == 1;
 	}
 
+	@Override
+	public List<BoardDto> topArticle() throws Exception {
+		return boardMapper.topArticle();
+	}
+
 }

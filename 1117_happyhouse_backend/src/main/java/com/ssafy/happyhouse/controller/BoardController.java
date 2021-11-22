@@ -104,6 +104,12 @@ public class BoardController {
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}	
+
+	@ApiOperation(value = "인기글", notes = "조회수 기준 top 3 반환.", response = List.class)
+	@GetMapping("/top")
+	public ResponseEntity<List<BoardDto>> topArticle() throws Exception {
+		return new ResponseEntity<List<BoardDto>>(boardService.topArticle(), HttpStatus.OK);
+	}
 	
 //	@ApiOperation(value = "글번호에 해당하는 게시글의 정보를 반환한다.", response = BoardDto.class)
 //	@GetMapping("{no}")

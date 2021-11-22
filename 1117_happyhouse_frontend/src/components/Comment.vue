@@ -5,7 +5,7 @@
         <h3 class="mb-0">댓글 남기기</h3>
       </b-col>
       <b-col cols="2" class="d-flex justify-content-end">
-        <b-button class="btn" variant="primary" @click="writeComment()"
+        <b-button class="btn" variant="primary" @click.prevent="writeComment()"
           >등록</b-button
         ></b-col
       >
@@ -50,7 +50,7 @@
                 class="btn"
                 variant="outline-warning"
                 @click="deleteComment(comment.commentNo)"
-                v-if="isOwner(article.userId)"
+                v-if="isOwner(userid)"
               >
                 삭제
               </b-button>
@@ -84,6 +84,9 @@ export default {
     commentValue: {
       type: String,
       default: "",
+    },
+    userid: {
+      type: String,
     },
     comments: {
       type: Array,
