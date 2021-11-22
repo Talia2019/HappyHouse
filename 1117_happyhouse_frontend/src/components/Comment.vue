@@ -5,7 +5,7 @@
         <h3 class="mb-0">댓글 남기기</h3>
       </b-col>
       <b-col cols="2" class="d-flex justify-content-end">
-        <b-button class="btn" variant="primary" @click="writeComment()"
+        <b-button class="btn" variant="primary" @click.prevent="writeComment()"
           >등록</b-button
         ></b-col
       >
@@ -50,6 +50,7 @@
                 class="btn"
                 variant="outline-warning"
                 @click="deleteComment(comment.commentNo)"
+                v-if="isOwner(userid)"
               >
                 삭제
               </b-button>
@@ -66,7 +67,14 @@
 
 <script>
 import { deleteComment } from "@/api/board";
+import { mapState } from "vuex";
+
+const memberStore = "memberStore";
+
 export default {
+  computed: {
+    ...mapState(memberStore, ["userInfo"]),
+  },
   data() {
     return {
       commentText: "",
@@ -76,6 +84,9 @@ export default {
     commentValue: {
       type: String,
       default: "",
+    },
+    userid: {
+      type: String,
     },
     comments: {
       type: Array,
@@ -88,19 +99,26 @@ export default {
     this.commentText = this.commentValue;
   },
   methods: {
+    isOwner(id) {
+      // console.log(this.isLogin);
+      if (this.userInfo) {
+        if (this.userInfo.userid == id || this.userInfo.userid == "admin")
+          return true;
+      }
+      return false;
+    },
     writeComment() {
       let err = true;
       let msg = "";
       err &&
         !this.commentText &&
         ((msg = "댓글 내용을 입력해주세요"), (err = false));
+      err && !this.userInfo && ((msg = "로그인이 필요합니다"), (err = false));
 
       if (!err) {
-        console.log("댓글입력안함");
+        // console.log("댓글입력안함");
         alert(msg);
-      }
-      // console.log("부모호출.." + this.value + " " + this.pagevalue);
-      else {
+      } else {
         this.$emit("write-comment", this.commentText);
         this.commentText = "";
       }

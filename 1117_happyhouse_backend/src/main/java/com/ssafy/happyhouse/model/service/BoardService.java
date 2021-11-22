@@ -18,5 +18,6 @@ public interface BoardService {
 	public boolean writeComment(CommentDto commentDto) throws Exception;
 	public List<CommentDto> listComment(int articleno) throws Exception;
 	public boolean deleteComment(int commentno) throws Exception;
+	public List<BoardDto> topArticle() throws Exception;
 	
 }

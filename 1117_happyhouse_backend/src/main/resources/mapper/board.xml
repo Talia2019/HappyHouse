@@ -81,6 +81,14 @@
 		where boardno = #{no}
 	</update>
 	
+		<!-- 인기글 -->
+	<select id="topArticle" resultType="boardDto">
+		select boardno, userid, subject, content, hit
+		from board 
+		 order by hit desc
+		limit 3
+	</select>
+	
 	
 <!-- 	댓글 -->
 		<!-- 댓글 등록 -->

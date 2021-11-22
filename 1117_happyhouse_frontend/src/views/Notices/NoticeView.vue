@@ -4,7 +4,7 @@
       <b-card-header class="text-center border-0">
         <div class="d-flex justify-content-center">
           <div>
-            <h1 class="mb-0">자유 게시판</h1>
+            <h1 class="mb-0">공지사항</h1>
           </div>
         </div>
       </b-card-header>
@@ -41,7 +41,7 @@
             </div>
           </div>
         </b-row>
-        <b-row class="my-4" v-if="isOwner(article.userId)">
+        <b-row class="my-4" v-if="isOwner()">
           <b-col class="text-right">
             <b-button
               variant="outline-info"
@@ -57,16 +57,6 @@
             >
           </b-col>
         </b-row>
-
-        <hr class="my-4" />
-        <b-row>
-          <comment
-            v-on:write-comment="registerComment"
-            :comments="comments"
-            :boardno="article.boardNo"
-            :userid="article.userId"
-          ></comment>
-        </b-row>
       </b-card-body>
     </card>
     <div class="buttonclass d-flex justify-content-center">
@@ -77,29 +67,16 @@
   </div>
 </template>
 <script>
-import {
-  getArticle,
-  deleteArticle,
-  writeComment,
-  listComment,
-} from "@/api/board";
-import Comment from "@/components/Comment";
+import { getNotice, deleteNotice } from "@/api/notice";
 import { mapState } from "vuex";
 
 const memberStore = "memberStore";
 
 export default {
-  name: "boardView",
-  components: {
-    Comment,
-    // contentArea: {
-    //   template: this.article.content,
-    // },
-  },
+  name: "noticeView",
   data() {
     return {
       article: {},
-      comments: [],
     };
   },
   computed: {
@@ -111,47 +88,32 @@ export default {
     },
   },
   created() {
-    getArticle(
+    getNotice(
       this.$route.params.articleno,
       (response) => {
         this.article = response.data;
-        listComment(
-          this.article.boardNo,
-          (response) => {
-            this.comments = response.data;
-            // console.log(this.comments);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
       },
       (error) => {
-        console.log("게시글 얻어오기 에러", error);
+        console.log("공지사항 얻어오기 에러", error);
       }
     );
   },
   methods: {
-    isOwner(id) {
+    isOwner() {
       // console.log(this.isLogin);
       if (this.userInfo) {
-        if (this.userInfo.userid == id || this.userInfo.userid == "admin")
-          return true;
+        if (this.userInfo.userid == "admin") return true;
       }
       return false;
     },
     listArticle() {
-      this.$router.push({ name: "boardList" });
+      this.$router.push({ name: "noticeList" });
     },
     refreshArticle() {
-      this.$router
-        .go({
-          name: "boardView",
-          params: { articleno: this.article.boardNo },
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      this.$router.go({
+        name: "noticeView",
+        params: { articleno: this.article.noticeNo },
+      });
       // :to="{
       //   name: 'boardView',
       //   params: { articleno: row.boardNo },
@@ -159,40 +121,17 @@ export default {
     },
     moveModifyArticle() {
       this.$router.replace({
-        name: "boardUpdate",
-        params: { articleno: this.article.boardNo },
+        name: "noticeUpdate",
+        params: { articleno: this.article.noticeNo },
       });
       //   this.$router.push({ path: `/board/modify/${this.article.articleno}` });
     },
     removeArticle() {
       if (confirm("삭제 하시겠습니까?")) {
-        deleteArticle(this.article.boardNo, () => {
-          this.$router.push({ name: "boardList" });
+        deleteNotice(this.article.noticeNo, () => {
+          this.$router.push({ name: "noticeList" });
         });
       }
-    },
-    registerComment(value) {
-      // console.log(this.article.articleno);
-      writeComment(
-        // boardno, userid, content
-        {
-          boardNo: this.article.boardNo,
-          //수정필요!!!!!!!!!!!!!!!!! article.userId 아니고 현재 로그인한사람으로 돼야함!!!!!!
-          userId: this.userInfo.userid,
-          content: value,
-        },
-        ({ data }) => {
-          // let msg = "등록 처리시 문제가 발생했습니다.";
-          if (data === "success") {
-            // msg = "등록이 완료되었습니다.";
-          }
-          // alert(msg);
-          this.refreshArticle();
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
     },
   },
 };

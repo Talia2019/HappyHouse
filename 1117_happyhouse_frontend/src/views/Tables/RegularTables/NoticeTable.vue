@@ -3,10 +3,14 @@
     <template v-slot:header>
       <b-row align-v="center">
         <b-col>
-          <h2 class="mb-0">자유 게시판</h2>
+          <h2 class="mb-0 ml-2">공지사항</h2>
         </b-col>
         <b-col class="text-right">
-          <b-button @click="moveWrite()" class="btn" variant="primary"
+          <b-button
+            @click="moveWrite()"
+            class="btn"
+            variant="primary"
+            v-if="isOwner()"
             >글쓰기</b-button
           >
         </b-col>
@@ -26,8 +30,8 @@
             <span class="font-weight-600 name mb-0 text-sm">
               <router-link
                 :to="{
-                  name: 'boardView',
-                  params: { articleno: row.boardNo },
+                  name: 'noticeView',
+                  params: { articleno: row.noticeNo },
                 }"
                 >{{ row.subject }}</router-link
               >
@@ -99,14 +103,20 @@
   </b-card>
 </template>
 <script>
-import { listArticle, searchArticle, totalArticle } from "@/api/board";
+import { listNotice, searchNotice, totalNotice } from "@/api/notice";
 import { Table, TableColumn } from "element-ui";
+import { mapState } from "vuex";
+
+const memberStore = "memberStore";
 
 export default {
-  name: "custom-table",
+  name: "notice-table",
   components: {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
+  },
+  computed: {
+    ...mapState(memberStore, ["userInfo"]),
   },
   data() {
     return {
@@ -125,7 +135,7 @@ export default {
       key: null,
       word: null,
     };
-    listArticle(
+    listNotice(
       param,
       (response) => {
         this.articles = response.data;
@@ -135,7 +145,7 @@ export default {
         console.log(error);
       }
     );
-    totalArticle(param, (response) => {
+    totalNotice(param, (response) => {
       this.totalPages = response.data;
       // console.log("개수:" + this.totalPages);
     });
@@ -145,14 +155,20 @@ export default {
     // });
   },
   methods: {
+    isOwner() {
+      // console.log(this.isLogin);
+      if (this.userInfo) {
+        if (this.userInfo.userid == "admin") return true;
+      }
+      return false;
+    },
     moveWrite() {
-      this.$router.push({ name: "boardWrite" });
+      this.$router.push({ name: "noticeWrite" });
     },
     changeDropdown(index) {
       this.selecteddrop = index;
     },
     searchList() {
-      this.currentPage = 0;
       let keyWord;
       if (this.selecteddrop == 0) keyWord = "subject";
       else keyWord = "userId";
@@ -162,9 +178,10 @@ export default {
         key: keyWord,
         word: this.searchWord,
       };
-      searchArticle(
+      searchNotice(
         param,
         (response) => {
+          // this.currentPage = 1;
           this.articles = response.data;
           // console.log(response.data);
         },
@@ -172,31 +189,12 @@ export default {
           console.log(error);
         }
       );
-      totalArticle(param, (response) => {
+      totalNotice(param, (response) => {
         this.totalPages = response.data;
         // console.log("개수:" + this.totalPages);
       });
     },
-    testFunc() {
-      console.log("test" + this.currentPage);
-    },
     changePage(value) {
-      // // console.log("불렸는가?" + this.currentPage + " " + value);
-      // let param = {
-      //   pg: value,
-      //   spp: 10,
-      //   key: null,
-      //   word: null,
-      // };
-      // listArticle(
-      //   param,
-      //   (response) => {
-      //     this.articles = response.data;
-      //   },
-      //   (error) => {
-      //     console.log(error);
-      //   }
-      // );
       let keyWord;
       if (this.selecteddrop == 0) keyWord = "subject";
       else keyWord = "userId";
@@ -206,7 +204,7 @@ export default {
         key: keyWord,
         word: this.searchWord,
       };
-      searchArticle(
+      searchNotice(
         param,
         (response) => {
           this.articles = response.data;
@@ -216,17 +214,10 @@ export default {
           console.log(error);
         }
       );
-      totalArticle(param, (response) => {
+      totalNotice(param, (response) => {
         this.totalPages = response.data;
-        // console.log("개수:" + this.totalPages);
       });
     },
-    // viewArticle(article) {
-    //   this.$router.go({
-    //     name: "boardView",
-    //     params: { articleno: article.boardNo },
-    //   });
-    // },
   },
 };
 </script>

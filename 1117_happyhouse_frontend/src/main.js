@@ -17,19 +17,19 @@
 import Vue from "vue";
 import DashboardPlugin from "./plugins/dashboard-plugin";
 import App from "./App.vue";
-import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
+// import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 // router setup
 import router from "./router/router.js";
 
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-vue/dist/bootstrap-vue.css";
+// import "bootstrap/dist/css/bootstrap.css";
+// import "bootstrap-vue/dist/bootstrap-vue.css";
 
 import store from "./store/index.js";
 import memberStore from "./store/modules/memberStore";
 // plugin setup
 Vue.use(DashboardPlugin);
-Vue.use(BootstrapVue);
-Vue.use(IconsPlugin);
+// Vue.use(BootstrapVue);
+// Vue.use(IconsPlugin);
 Vue.config.productionTip = false;
 /* eslint-disable no-new */
 new Vue({

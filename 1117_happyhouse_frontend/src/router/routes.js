@@ -1,4 +1,6 @@
 import DashboardLayout from "@/views/Layout/DashboardLayout.vue";
+import HouseDeal from '@/views/HouseDeal.vue';
+// import NotFound from '@/views/NotFoundPage.vue';
 
 import Member from "@/views/Member.vue";
 import MemberLogin from "@/components/user/MemberLogin.vue";
@@ -43,9 +45,9 @@ const routes = [
         component: () => import("../views/Pages/UserProfile.vue"),
       },
       {
-        path: "/maps",
-        name: "maps",
-        component: () => import("../views/KakaoMaps.vue"),
+        path: '/maps',
+        name: 'maps',
+        component: HouseDeal,
       },
       {
         path: "/tables",
@@ -71,17 +73,56 @@ const routes = [
           {
             path: "write",
             name: "boardWrite",
+            beforeEnter: onlyAuthUser,
             component: () => import("../views/Boards/BoardWrite.vue"),
           },
           {
             path: "update/:articleno",
             name: "boardUpdate",
+            beforeEnter: onlyAuthUser,
             component: () => import("../views/Boards/BoardUpdate.vue"),
           },
           {
             path: "delete/:articleno",
             name: "boardDelete",
+            beforeEnter: onlyAuthUser,
             component: () => import("../views/FreeBoard.vue"),
+          },
+        ],
+      },
+      {
+        path: "/notice",
+        name: "notices",
+        component: () => import("../views/NoticeBoard.vue"),
+        redirect: "/notice/list",
+        children: [
+          {
+            path: "list",
+            name: "noticeList",
+            component: () => import("../views/Notices/NoticeList.vue"),
+          },
+          {
+            path: "detail/:articleno",
+            name: "noticeView",
+            component: () => import("../views/Notices/NoticeView.vue"),
+          },
+          {
+            path: "write",
+            name: "noticeWrite",
+            beforeEnter: onlyAuthUser,
+            component: () => import("../views/Notices/NoticeWrite.vue"),
+          },
+          {
+            path: "update/:articleno",
+            name: "noticeUpdate",
+            beforeEnter: onlyAuthUser,
+            component: () => import("../views/Notices/NoticeUpdate.vue"),
+          },
+          {
+            path: "delete/:articleno",
+            name: "noticeDelete",
+            beforeEnter: onlyAuthUser,
+            component: () => import("../views/NoticeBoard.vue"),
           },
         ],
       },
