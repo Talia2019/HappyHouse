@@ -38,6 +38,7 @@
         </sidebar-item>
 
         <sidebar-item
+          v-if="userInfo"
           :link="{
             name: 'User Profile',
             path: '/profile',
@@ -56,6 +57,7 @@
         </sidebar-item> -->
 
         <sidebar-item
+          v-if="!userInfo"
           :link="{
             name: 'Login',
             path: '/login',
@@ -64,6 +66,7 @@
         >
         </sidebar-item>
         <sidebar-item
+          v-if="!userInfo"
           :link="{
             name: 'Register',
             path: '/register',
@@ -87,6 +90,9 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
+
+const memberStore = "memberStore";
 /* eslint-disable no-new */
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
@@ -128,6 +134,9 @@ export default {
   },
   mounted() {
     this.initScrollbar();
+  },
+  computed: {
+    ...mapState(memberStore, ["userInfo"]),
   },
 };
 </script>
