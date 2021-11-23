@@ -183,6 +183,15 @@ export default new Vuex.Store({
       });
       commit("SET_OVERLAP_LIST", aptList);
     },
+    checkStar({ commit }, house) {
+      const params = { houseName: house.아파트, dealAmount: house.거래금액, dealYear: house.년, dealMonth: house.월, dealDay: house.일, area: house.전용면적, floor: house.층, jibun: house.지번, dongName: house.법정동, starCount: 1 }
+      http
+        .post("/map/star", JSON.stringify(params)).then((res) => {
+          console.log(commit, res);
+        }).catch((err) => {
+          console.log(err);
+        })
+    }
   },
   modules: {
     boardStore,

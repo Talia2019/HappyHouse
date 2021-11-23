@@ -1,10 +1,17 @@
 <template>
-<b-list-group-item @click="selectHouse"
+<b-list-group-item
     @mouseover="colorChange(true)"
     @mouseout="colorChange(false)"
     :class="{ 'mouse-over-bgcolor': isColor }">
   <b-row class="m-2">
-    <b-col cols="10" class="align-self-center"><strong> {{ house.아파트 }} </strong></b-col>
+    <b-img id="star"
+      @click="toggleStar"
+      :src="star" 
+      style="width:30px;height:30px;"></b-img>
+    <b-col 
+      @click="selectHouse"
+      cols="10" 
+      class="align-self-center"><strong> {{ house.아파트 }} </strong></b-col>
   </b-row>
     <b-row ref="built" style="display: none;">
       <b-col>
@@ -44,6 +51,7 @@ export default {
   data() {
     return {
       isColor: false,
+      star: require("@/assets/img/gray.png"),
     };
   },
   props: {
@@ -60,7 +68,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["detailHouse"]),
+    ...mapActions(["detailHouse", "checkStar"]),
     colorChange(flag) {
       this.isColor = flag;
     },
@@ -83,6 +91,14 @@ export default {
         }
       })
     },
+    toggleStar() {
+      if (this.star.slice(5, 9) === 'star'){
+        this.star = require("@/assets/img/gray.png");
+      } else if (this.star.slice(5, 9) === 'gray') {
+        this.star = require("@/assets/img/star.png");
+        this.checkStar(this.house);
+      }
+    }
   },
 };
 </script>
