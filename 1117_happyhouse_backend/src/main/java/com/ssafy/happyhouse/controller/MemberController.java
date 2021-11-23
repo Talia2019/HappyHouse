@@ -105,11 +105,6 @@ public class MemberController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-<<<<<<< HEAD
-
-	@PutMapping("/update")
-	public ResponseEntity<String> updateMember(@RequestBody MemberDto memberDto) throws Exception {
-=======
 	
 	@ApiOperation(value = "회원 탈퇴", notes="유저 아이디에 해당하는 회원을 탈퇴한다.", response = String.class)
 	   @DeleteMapping("/{userid}")
@@ -136,8 +131,6 @@ public class MemberController {
 	@PutMapping
 	public ResponseEntity<String> updateMember(@RequestBody @ApiParam(value = "수정할 글정보.", required = true) MemberDto memberDto) throws Exception {
 		logger.info("updateMember - 호출");
-		
->>>>>>> d09d82deafe1b23619a1baab715c7818a784c0f2
 		if (memberService.updateMember(memberDto)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
