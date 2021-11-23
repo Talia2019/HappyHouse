@@ -36,16 +36,16 @@
           }"
         >
         </sidebar-item>
-
-        <sidebar-item
-          :link="{
-            name: 'User Profile',
-            path: '/profile',
-            icon: 'ni ni-single-02 text-yellow',
-          }"
-        >
-        </sidebar-item>
-
+        <div v-if="userInfo">
+          <sidebar-item
+            :link="{
+              name: 'User Profile',
+              path: '/profile',
+              icon: 'ni ni-single-02 text-yellow',
+            }"
+          >
+          </sidebar-item>
+        </div>
         <!-- <sidebar-item
           :link="{
             name: 'Tables',
@@ -54,23 +54,24 @@
           }"
         >
         </sidebar-item> -->
-
-        <sidebar-item
-          :link="{
-            name: 'Login',
-            path: '/login',
-            icon: 'ni ni-key-25 text-info',
-          }"
-        >
-        </sidebar-item>
-        <sidebar-item
-          :link="{
-            name: 'Register',
-            path: '/register',
-            icon: 'ni ni-circle-08 text-pink',
-          }"
-        >
-        </sidebar-item>
+        <div v-if="!userInfo">
+          <sidebar-item
+            :link="{
+              name: 'Login',
+              path: '/login',
+              icon: 'ni ni-key-25 text-info',
+            }"
+          >
+          </sidebar-item>
+          <sidebar-item
+            :link="{
+              name: 'Register',
+              path: '/register',
+              icon: 'ni ni-circle-08 text-pink',
+            }"
+          >
+          </sidebar-item>
+        </div>
       </template>
     </side-bar>
     <div class="main-content">
@@ -110,6 +111,9 @@ import DashboardNavbar from "./DashboardNavbar.vue";
 import ContentFooter from "./ContentFooter.vue";
 import DashboardContent from "./Content.vue";
 import { FadeTransition } from "vue2-transitions";
+import { mapState } from "vuex";
+
+const memberStore = "memberStore";
 
 export default {
   components: {
@@ -128,6 +132,9 @@ export default {
   },
   mounted() {
     this.initScrollbar();
+  },
+  computed: {
+    ...mapState(memberStore, ["userInfo"]),
   },
 };
 </script>
