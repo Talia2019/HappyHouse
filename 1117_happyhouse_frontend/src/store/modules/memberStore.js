@@ -59,7 +59,7 @@ const memberStore = {
         }
       );
     },
-    setUserInfo({ commit }, user) {
+    setRegister({ commit }, user) {
       registerMember(
         user,
         (response) => {
