@@ -37,6 +37,7 @@ const routes = [
       {
         path: "/dashboard",
         name: "dashboard",
+        redirect: "/boardcard",
         component: () => import("../views/Dashboard.vue"),
         children: [
           {
