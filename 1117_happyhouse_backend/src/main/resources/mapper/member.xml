@@ -17,12 +17,12 @@
 	</select>
 	
 	<!-- 사용자 수정 -->
-	<!-- <update id="updateMember" parameterType="memberDto">
+	<update id="updateMember" parameterType="memberDto">
 		update user
 		set username = #{username}, 
 			email = #{email}
 		 where userid = #{userid}
-	</update> -->
+	</update>
 	
 	<delete id="deleteMember" parameterType="String">
       delete from user
@@ -34,14 +34,14 @@
 		values (#{userid}, #{username}, #{userpwd}, #{email}, now())
 	</insert>
 	
-	<update id="updateMember" parameterType="memberDto">
-		update user
-		<trim prefix="set" suffixOverrides=",">
-			<if test="userpwd != null">userpwd = #{userpwd},</if>
-			<if test="email != null">email = #{email},</if>
-		</trim>
-		where userid = #{userid}
-	</update>
+<!-- 	<update id="updateMember" parameterType="memberDto"> -->
+<!-- 		update user -->
+<!-- 		<trim prefix="set" suffixOverrides=","> -->
+<!-- 			<if test="userpwd != null">userpwd = #{userpwd},</if> -->
+<!-- 			<if test="email != null">email = #{email},</if> -->
+<!-- 		</trim> -->
+<!-- 		where userid = #{userid} -->
+<!-- 	</update> -->
 	
 	<select id="idCheck" parameterType="string" resultType="int">
 		select count(userid)
