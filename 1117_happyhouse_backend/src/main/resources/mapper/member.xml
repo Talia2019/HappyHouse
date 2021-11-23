@@ -55,7 +55,7 @@
 		order by joindate desc;
 	</select>
 	
-	<select id="getMember" parameterType="String" resultType="memberdto">
+	<select id="getMember" parameterType="String" resultType="int">
 		select userid, userpwd, username, email, date_format(joindate, '%y.%m.%d') joindate
 		from user
 		where userid = #{userid}
