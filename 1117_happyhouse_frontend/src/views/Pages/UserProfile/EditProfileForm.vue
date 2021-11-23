@@ -67,21 +67,31 @@
       <!-- <hr class="my-4" /> -->
 
       <!-- Address -->
-      <!-- <h6 class="heading-small text-muted mb-4">Contact information</h6>
+      <!-- <h6 class="heading-small text-muted mb-4">Contact information</h6> -->
 
       <div class="pl-lg-4">
         <b-row>
-          <b-col md="12">
+          <b-col md="6">
             <base-input
               type="text"
-              label="Address"
-              placeholder="Home Address"
+              label="주소"
+              placeholder="주소"
               v-model="user.address"
             >
             </base-input>
           </b-col>
+          <b-col md="6">
+            <base-input
+              type="tel"
+              label="전화번호"
+              placeholder="전화번호"
+              v-model="user.contact"
+              @keyup="filterContact()"
+            >
+            </base-input>
+          </b-col>
         </b-row>
-        <b-row>
+        <!-- <b-row>
           <b-col lg="4">
             <base-input
               type="text"
@@ -108,10 +118,10 @@
             >
             </base-input>
           </b-col>
-        </b-row>
+        </b-row> -->
       </div>
 
-      <hr class="my-4" /> -->
+      <!-- <hr class="my-4" /> -->
       <!-- Description -->
       <!-- <h6 class="heading-small text-muted mb-4">About me</h6>
       <div class="pl-lg-4">
@@ -161,11 +171,19 @@ export default {
     ...mapActions(memberStore, ["setUserInfo"]),
     async updateProfile() {
       this.user.username = this.username;
+      console.log(this.user);
       await this.setUserInfo(this.user);
     },
-    setUser() {
-      this.user = this.userInfo;
+    filterContact() {
+      let p = this.user.contact;
+      if (!p || !(p.length === 11)) return;
+      p = p.replace(/^(\d{3})(\d{3,4})(\d{4})/g, "$1-$2-$3");
+      this.user.contact = p;
+      console.log(p);
     },
+    // setUser() {
+    //   this.user = this.userInfo;
+    // },
   },
   computed: {
     ...mapState(memberStore, ["userInfo"]),
@@ -173,7 +191,13 @@ export default {
   created() {
     this.user = this.userInfo;
     this.username = this.user.username;
-    console.log(this.username);
+    // console.log(this.user);
+  },
+  filters: {
+    phone(value) {
+      if (!value || !(value.length === 10 || value.length === 11)) return value;
+      return value.replace(/^(\d{3})(\d{3,4})(\d{4})/g, "$1-$2-$3");
+    },
   },
 };
 </script>

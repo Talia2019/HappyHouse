@@ -11,7 +11,7 @@
 	</select>
 	
 	<select id="userInfo" parameterType="String" resultType="memberDto">
-		select username, userid, email, joindate
+		select username, userid, email, address, contact, joindate
 		from user
 		where userid = #{userid}
 	</select>
@@ -20,7 +20,9 @@
 	<update id="updateMember" parameterType="memberDto">
 		update user
 		set username = #{username}, 
-			email = #{email}
+			email = #{email},
+			address = #{address},
+			contact = #{contact}
 		 where userid = #{userid}
 	</update>
 	
@@ -30,8 +32,8 @@
    </delete>
    
    	<insert id="registerMember" parameterType="memberDto">
-		insert into user (userid, username, userpwd, email, joindate)
-		values (#{userid}, #{username}, #{userpwd}, #{email}, now())
+		insert into user (userid, username, userpwd, email, address, contact, joindate)
+		values (#{userid}, #{username}, #{userpwd}, #{email}, #{address}, #{contact}, now())
 	</insert>
 	
 <!-- 	<update id="updateMember" parameterType="memberDto"> -->
@@ -50,13 +52,13 @@
 	</select>
 
 	<select id="listMember" resultType="memberDto">
-		select userid, userpwd, username, email, date_format(joindate, '%y.%m.%d') joindate
+		select userid, userpwd, username, email, address, contact, date_format(joindate, '%y.%m.%d') joindate
 		from user
 		order by joindate desc;
 	</select>
 	
 	<select id="getMember" parameterType="String" resultType="memberdto">
-		select userid, userpwd, username, email, date_format(joindate, '%y.%m.%d') joindate
+		select userid, userpwd, username, email, address, contact, date_format(joindate, '%y.%m.%d') joindate
 		from user
 		where userid = #{userid}
 	</select>
