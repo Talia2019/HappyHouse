@@ -1,5 +1,5 @@
 import jwt_decode from "jwt-decode";
-import { login, findById, updateMember, registerMember } from "@/api/member.js";
+import { login, findById, updateMember, registerMember, deleteMember } from "@/api/member.js";
 
 const memberStore = {
   namespaced: true,
@@ -83,6 +83,21 @@ const memberStore = {
             commit("SET_USER_INFO", user);
           } else {
             console.log("회원가입 실패!!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    memberDelete({ commit }, user) {
+      deleteMember(
+        user,
+        (response) => {
+          if (response.data === "success") {
+            commit("SET_USER_INFO", user);
+          } else {
+            console.log("회원 탈퇴 실패!!");
           }
         },
         (error) => {
