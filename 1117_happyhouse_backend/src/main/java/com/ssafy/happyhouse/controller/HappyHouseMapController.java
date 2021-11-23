@@ -37,8 +37,8 @@ public class HappyHouseMapController {
 	}
 
 	@GetMapping("/apt")
-	public ResponseEntity<String> apt(@RequestParam("gugun") String gugun) throws Exception {
-		return new ResponseEntity<String>(happyHouseMapService.getAptInDong(gugun), HttpStatus.OK);
+	public ResponseEntity<String> apt(@RequestParam("gugun") String gugun, @RequestParam("time") String time) throws Exception {
+		return new ResponseEntity<String>(happyHouseMapService.getAptInDong(gugun, time), HttpStatus.OK);
 	}
 
 	@GetMapping("/aptSearch")

@@ -109,8 +109,8 @@ export default {
             '                <img src="https://image.newdaily.co.kr/site/data/img/2021/01/22/2021012200134_0.png" width="73" height="70">' +
             '           </div>' + 
             '            <div class="desc">' + 
-            '                <div class="ellipsis"> 거래금액 : ' + house['거래금액'] + '</div>' + 
-            '                <div class="jibun ellipsis"> 전용면적 : ' + house['전용면적'] + '</div>' + 
+            '                <div class="ellipsis"> 최근거래금액 : ' + house['거래금액'] + '</div>' + 
+            '                <div class="jibun ellipsis"> 전용면적 : ' + (parseFloat(house['전용면적']) * 0.3025).toFixed(2) + '평</div>' + 
             '            </div>' + 
             '        </div>' + 
             '    </div>' +    
