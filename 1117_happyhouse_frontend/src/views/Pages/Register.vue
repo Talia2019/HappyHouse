@@ -61,7 +61,7 @@
                     prepend-icon="ni ni-email-83"
                     placeholder="Email"
                     id="email"
-                    :rules="{ required: true }"
+                    :rules="{ required: true, email: true }"
                     v-model="user.email"
                   >
                   </base-input>
@@ -98,7 +98,7 @@
   </div>
 </template>
 <script>
-import { registerMember } from "@/api/member";
+//import { registerMember } from "@/api/member";
 import { mapState, mapActions } from "vuex";
 
 const memberStore = "memberStore";
@@ -119,39 +119,11 @@ export default {
     ...mapState(memberStore, ["isLogin", "isLoginError"]),
   },
   methods: {
-    ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
-    onSubmit(event) {
-      event.preventDefault();
-      registerMember();
-    },
-    registerMember() {
-      registerMember(
-        {
-          userid: this.user.userid,
-          username: this.user.username,
-          userpwd: this.user.userpwd,
-          email: this.user.email,
-        },
-        ({ data }) => {
-          // let msg = "등록 처리시 문제가 발생했습니다.";
-          if (data === "success") {
-            // msg = "등록이 완료되었습니다.";
-          }
-          // alert(msg);
-          this.moveList();
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    },
+    ...mapActions(memberStore, ["setRegister"]),
+
     async confirm() {
-      await this.userConfirm(this.user);
-      let token = sessionStorage.getItem("access-token");
-      if (this.isLogin) {
-        await this.getUserInfo(token);
-        this.$router.push({ name: "dashboard" });
-      }
+      this.setRegister(this.user);
+      this.$router.push({ name: "dashboard" });
     },
   },
 };
