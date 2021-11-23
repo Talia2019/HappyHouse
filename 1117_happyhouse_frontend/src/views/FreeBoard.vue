@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <base-header class="pb-6 pb-8 pt-4 pt-md-4 bg-gradient-success">
+      <base-header class="pb-6 pb-8 pt-4 pt-md-8 bg-gradient-success">
         <b-row> </b-row>
       </base-header>
       <b-container fluid class="mt--7">

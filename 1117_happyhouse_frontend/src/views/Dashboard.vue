@@ -2,8 +2,8 @@
   <div>
     <!-- Cards -->
     <base-header
-      class="pb-6 pb-8 pt-5 pt-md-5 bg-gradient-success"
-      style="height: 400px"
+      class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success"
+      style="height: 450px"
     >
       <!-- Card stats -->
       <!-- <b-row class="pl-4 pb-4">

@@ -4,10 +4,10 @@ import AuthLayout from "@/views/Pages/AuthLayout.vue";
 import HouseDeal from "@/views/HouseDeal.vue";
 import NotFound from "@/views/NotFoundPage.vue";
 
-import Member from "@/views/Member.vue";
-import MemberLogin from "@/components/user/MemberLogin.vue";
-import MemberJoin from "@/components/user/MemberJoin.vue";
-import MemberMyPage from "@/components/user/MemberMyPage.vue";
+// import Member from "@/views/Member.vue";
+// import MemberLogin from "@/components/user/MemberLogin.vue";
+// import MemberJoin from "@/components/user/MemberJoin.vue";
+// import MemberMyPage from "@/components/user/MemberMyPage.vue";
 
 import store from "@/store/index.js";
 import router from "./router";
@@ -157,24 +157,26 @@ const routes = [
   {
     path: "/user",
     name: "Member",
-    component: Member,
+    component: AuthLayout,
     children: [
       {
         path: "singin",
         name: "SignIn",
-        // component: () => import("@/views/Login.vue"),
-        component: MemberLogin,
+        component: () => import("@/views/Pages/Login.vue"),
+        // component: MemberLogin,
       },
       {
         path: "singup",
         name: "SignUp",
-        component: MemberJoin,
+        component: () => import("@/views/Pages/Register.vue"),
+        // component: MemberJoin,
       },
       {
         path: "mypage",
         name: "MyPage",
         beforeEnter: onlyAuthUser,
-        component: MemberMyPage,
+        component: () => import("@/views/Pages/UserProfile.vue"),
+        // component: MemberMyPage,
       },
     ],
   },
