@@ -1,5 +1,8 @@
 package com.ssafy.happyhouse.model.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +29,19 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	   public boolean deleteMember(String userid) throws Exception {
+	      return sqlSession.getMapper(MemberMapper.class).deleteMember(userid) == true;
+	   }
+
+	@Override
+	public boolean registerMember(MemberDto memberDto) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).registerMember(memberDto) == true;
+	}
+
+	@Override
 	public boolean updateMember(MemberDto memberDto) throws Exception {
 		return sqlSession.getMapper(MemberMapper.class).updateMember(memberDto) == 1;
 	}
+
 
 }

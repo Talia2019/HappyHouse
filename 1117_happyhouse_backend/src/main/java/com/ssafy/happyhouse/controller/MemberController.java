@@ -3,20 +3,27 @@ package com.ssafy.happyhouse.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happyhouse.model.BoardDto;
@@ -98,9 +105,39 @@ public class MemberController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+<<<<<<< HEAD
 
 	@PutMapping("/update")
 	public ResponseEntity<String> updateMember(@RequestBody MemberDto memberDto) throws Exception {
+=======
+	
+	@ApiOperation(value = "회원 탈퇴", notes="유저 아이디에 해당하는 회원을 탈퇴한다.", response = String.class)
+	   @DeleteMapping("/{userid}")
+	   public ResponseEntity<String> deleteMember(
+	         @PathVariable("userid") @ApiParam(value = "삭제할 유저의 아이디.", required = true) String userid) throws Exception {
+	      logger.info("deleteMember - 호출");
+	      if(memberService.deleteMember(userid)) {
+	         return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	      }
+	      return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	   }
+	
+	@ApiOperation(value = "회원 가입", notes = "새로운 회원 정보를 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PostMapping
+	public ResponseEntity<String> registerMember(@RequestBody @ApiParam(value = "게시글 정보.", required = true) MemberDto memberDto) throws Exception {
+		logger.info("registerMember - 호출");
+		if (memberService.registerMember(memberDto)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+	
+	@ApiOperation(value = "회원 정보 수정", notes = "회원 정보를 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PutMapping
+	public ResponseEntity<String> updateMember(@RequestBody @ApiParam(value = "수정할 글정보.", required = true) MemberDto memberDto) throws Exception {
+		logger.info("updateMember - 호출");
+		
+>>>>>>> d09d82deafe1b23619a1baab715c7818a784c0f2
 		if (memberService.updateMember(memberDto)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}

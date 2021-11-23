@@ -36,7 +36,7 @@
       <b-row class="justify-content-center">
         <b-col lg="5" md="7">
           <b-card no-body class="bg-secondary border-0 mb-0">
-            <b-card-header class="bg-transparent pb-5">
+            <!-- <b-card-header class="bg-transparent pb-5">
               <div class="text-muted text-center mt-2 mb-3">
                 <small>Sign in with</small>
               </div>
@@ -54,10 +54,10 @@
                   <span class="btn-inner--text">Google</span>
                 </a>
               </div>
-            </b-card-header>
+            </b-card-header> -->
             <b-card-body class="px-lg-5 py-lg-5">
               <div class="text-center text-muted mb-4">
-                <small>Or sign in with credentials</small>
+                <h2>Login</h2>
               </div>
               <validation-observer
                 v-slot="{ handleSubmit }"
@@ -65,36 +65,29 @@
               >
                 <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
                   <base-input
-                    alternative
-                    class="mb-3"
-                    name="Email"
-                    :rules="{ required: true, email: true }"
-                    prepend-icon="ni ni-email-83"
-                    placeholder="Email"
+                    id="userid"
                     v-model="user.userid"
+                    required
+                    placeholder="ID"
+                    @keyup.enter="confirm"
                   >
                   </base-input>
 
                   <base-input
-                    alternative
-                    class="mb-3"
-                    name="Password"
-                    :rules="{ required: true, min: 6 }"
-                    prepend-icon="ni ni-lock-circle-open"
                     type="password"
-                    placeholder="Password"
-                    v-model="model.password"
+                    id="userpwd"
+                    v-model="user.userpwd"
+                    required
+                    placeholder="PASSWORD"
+                    @keyup.enter="confirm"
                   >
                   </base-input>
-
-                  <b-form-checkbox v-model="model.rememberMe"
-                    >Remember me</b-form-checkbox
-                  >
                   <div class="text-center">
                     <base-button
                       type="primary"
-                      native-type="submit"
+                      variant="primary"
                       class="my-4"
+                      @click="confirm"
                       >Sign in</base-button
                     >
                   </div>
@@ -120,23 +113,35 @@
   </div>
 </template>
 <script>
+import { mapState, mapActions } from "vuex";
+
+const memberStore = "memberStore";
+
 export default {
+  name: "MemberLogin",
   data() {
     return {
-      model: {
-        email: "",
-        password: "",
-        rememberMe: false,
-      },
       user: {
-        userid: "",
-        userpwd: "",
+        userid: null,
+        userpwd: null,
       },
     };
   },
+  computed: {
+    ...mapState(memberStore, ["isLogin", "isLoginError"]),
+  },
   methods: {
-    onSubmit() {
-      // this will be called only after form is valid. You can do api call here to login
+    ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
+    async confirm() {
+      await this.userConfirm(this.user);
+      let token = sessionStorage.getItem("access-token");
+      if (this.isLogin) {
+        await this.getUserInfo(token);
+        this.$router.push({ name: "dashboard" });
+      }
+    },
+    movePage() {
+      this.$router.push({ name: "SignUp" });
     },
   },
 };
