@@ -89,8 +89,8 @@
                   </base-input>
                   <div class="text-center">
                     <div class="text-center">
-                      <b-button variant="primary" @click="idcheckssss"
-                        >ID 중복검사</b-button
+                      <b-button variant="primary" @click="idcheck"
+                        >ID 중복체크</b-button
                       >
                       <base-button
                         type="primary"
@@ -136,11 +136,29 @@ export default {
     ...mapActions(memberStore, ["setRegister", "ckId"]),
 
     async confirm() {
+      if (this.user.idck == "생성가능한 ID입니다.") {
+        this.setRegister(this.user);
+        alert("가입을 축하드립니다.");
+        this.$router.push({ name: "dashboard" });
+      } else if (this.user.idck == "중복된 ID입니다.") {
+        alert("새로운 ID를 입력해주세요.");
+      } else {
+        alert("ID 중복체크 버튼을 눌러 중복여부를 확인해주세요.");
+      }
+    },
+
+    async confirm2() {
       this.setRegister(this.user);
       this.$router.push({ name: "dashboard" });
     },
 
-    async idcheckssss() {
+    async idcheck() {
+      this.ckId(this.user.userid);
+      console.log(this.idckstate);
+      this.user.idck = this.idckstate;
+    },
+
+    async idcheck2() {
       this.ckId(this.user.userid);
       console.log(this.idckstate);
       this.user.idck = this.idckstate;
