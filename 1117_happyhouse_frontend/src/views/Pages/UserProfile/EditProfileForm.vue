@@ -7,6 +7,7 @@
       <b-col cols="4" class="text-right">
         <!-- btn-sm  -->
         <b-button variant="primary" @click="updateProfile">수정</b-button>
+        <b-button variant="primary" @click="deleteUser">탈퇴</b-button>
       </b-col>
     </b-row>
 
@@ -158,13 +159,17 @@ export default {
     };
   },
   methods: {
-    ...mapActions(memberStore, ["setUserInfo"]),
+    ...mapActions(memberStore, ["setUserInfo", "memberDelete"]),
     async updateProfile() {
       this.user.username = this.username;
       await this.setUserInfo(this.user);
     },
     setUser() {
       this.user = this.userInfo;
+    },
+    async deleteUser() {
+      await this.memberDelete(this.user.userid);
+      this.$router.push({ name: "dashboard" });
     },
   },
   computed: {
