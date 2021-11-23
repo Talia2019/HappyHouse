@@ -72,8 +72,5 @@ public class HouseDealDto {
 	public void setStarCount(int starCount) {
 		this.starCount = starCount;
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 02bce06 (interested list proceeding)
+
