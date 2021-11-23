@@ -13,6 +13,7 @@ import org.json.XML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
 import com.ssafy.happyhouse.model.mapper.HouseMapMapper;
@@ -23,6 +24,7 @@ public class HappyHouseMapServiceImpl implements HappyHouseMapService {
 	
 	@Autowired
 	private SqlSession sqlSession;
+	private HouseMapMapper houseMapMapper;
 	
 	@Override
 	public List<SidoGugunCodeDto> getSido() throws Exception {
@@ -76,6 +78,14 @@ public class HappyHouseMapServiceImpl implements HappyHouseMapService {
 	@Override
 	public List<HouseInfoDto> getAptInName(String name, String dong) throws Exception {
 		return sqlSession.getMapper(HouseMapMapper.class).getAptInName(name, dong);
+	}
+
+	@Override
+	public boolean checkStar(HouseDealDto houseDealDto) throws Exception {
+		if (houseDealDto.getHouseName() == null) {
+			throw new Exception();
+		}
+		return sqlSession.getMapper(HouseMapMapper.class).checkStar(houseDealDto) == 1;
 	}
 
 }
