@@ -1,7 +1,10 @@
 package com.ssafy.happyhouse.model;
 
 public class WishListDto {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 02bce06 (interested list proceeding)
    private String userid;
    private String aptno;
 
@@ -31,4 +34,8 @@ public class WishListDto {
       this.aptno = aptno;
    }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 02bce06 (interested list proceeding)
