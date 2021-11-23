@@ -160,13 +160,13 @@ const routes = [
     component: AuthLayout,
     children: [
       {
-        path: "singin",
+        path: "signin",
         name: "SignIn",
         component: () => import("@/views/Pages/Login.vue"),
         // component: MemberLogin,
       },
       {
-        path: "singup",
+        path: "signup",
         name: "SignUp",
         component: () => import("@/views/Pages/Register.vue"),
         // component: MemberJoin,
