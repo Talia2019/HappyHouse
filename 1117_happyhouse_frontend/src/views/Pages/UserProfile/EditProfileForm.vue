@@ -91,6 +91,17 @@
             </base-input>
           </b-col>
         </b-row>
+        <b-row>
+          <b-col md="12">
+            <base-input
+              type="password"
+              label="비밀번호"
+              placeholder="비밀번호"
+              v-model="user.userpwd"
+            >
+            </base-input>
+          </b-col>
+        </b-row>
         <!-- <b-row>
           <b-col lg="4">
             <base-input

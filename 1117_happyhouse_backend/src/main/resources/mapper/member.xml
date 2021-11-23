@@ -22,7 +22,8 @@
 		set username = #{username}, 
 			email = #{email},
 			address = #{address},
-			contact = #{contact}
+			contact = #{contact},
+			userpwd = #{userpwd}
 		 where userid = #{userid}
 	</update>
 	
