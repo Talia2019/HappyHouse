@@ -2,19 +2,6 @@
   <div>
     <!-- Header -->
     <div class="header bg-gradient-success py-7 py-lg-8 pt-lg-9">
-      <b-container class="container">
-        <div class="header-body text-center mb-7">
-          <b-row class="justify-content-center">
-            <b-col xl="5" lg="6" md="8" class="px-5">
-              <h1 class="text-white">Create an account</h1>
-              <p class="text-lead text-white">
-                Use these awesome forms to login or create new account in your
-                project for free.
-              </p>
-            </b-col>
-          </b-row>
-        </div>
-      </b-container>
       <div class="separator separator-bottom separator-skew zindex-100">
         <svg
           x="0"
@@ -74,7 +61,7 @@
                     prepend-icon="ni ni-email-83"
                     placeholder="Email"
                     id="email"
-                    :rules="{ required: true, email: true }"
+                    :rules="{ required: true }"
                     v-model="user.email"
                   >
                   </base-input>
@@ -91,9 +78,15 @@
                   >
                   </base-input>
                   <div class="text-center">
-                    <b-button type="submit" variant="primary" class="mt-4"
-                      >Create account</b-button
-                    >
+                    <div class="text-center">
+                      <base-button
+                        type="primary"
+                        variant="primary"
+                        class="my-4"
+                        @click="confirm"
+                        >Create account</base-button
+                      >
+                    </div>
                   </div>
                 </b-form>
               </validation-observer>
@@ -151,6 +144,14 @@ export default {
           console.log(error);
         }
       );
+    },
+    async confirm() {
+      await this.userConfirm(this.user);
+      let token = sessionStorage.getItem("access-token");
+      if (this.isLogin) {
+        await this.getUserInfo(token);
+        this.$router.push({ name: "dashboard" });
+      }
     },
   },
 };
