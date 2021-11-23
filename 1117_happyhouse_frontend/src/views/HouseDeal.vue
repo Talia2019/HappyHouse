@@ -1,6 +1,12 @@
 <template>
   <div>
-    <base-header class="pb-6 pb-8 pt-5 pt-md-8 bg-gradient-success">
+    <base-header class="pb-6 pb-8 pt-5 pt-md-6 bg-gradient-success">
+    <h1>부동산 실시간 거래정보</h1>
+      <!-- <b-row align-h="end">
+        <b-col cols="2">
+          <b-form-select v-model="year" :options="years"></b-form-select>
+        </b-col>
+      </b-row> -->
       <b-row class="mt-4 mb-4 text-center">
         <b-col class="sm-3">
           <b-form-select v-model="sidoCode" :options="sidos" @change="gugunList"></b-form-select>
@@ -56,6 +62,8 @@ import { mapActions, mapMutations, mapState } from 'vuex';
       gugunCode: null,
       dongCode: null,
       jibunCode: null,
+      year: null,
+      month: null
     };
   },
   methods: {
