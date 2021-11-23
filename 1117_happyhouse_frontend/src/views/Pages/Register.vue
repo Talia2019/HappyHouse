@@ -36,6 +36,16 @@
                   <base-input
                     alternative
                     class="mb-3"
+                    placeholder="Id 중복여부"
+                    id="check"
+                    v-model="user.idck"
+                    readonly
+                  >
+                  </base-input>
+
+                  <base-input
+                    alternative
+                    class="mb-3"
                     prepend-icon="ni ni-hat-3"
                     placeholder="Id"
                     id="userid"
@@ -79,6 +89,9 @@
                   </base-input>
                   <div class="text-center">
                     <div class="text-center">
+                      <b-button variant="primary" @click="idcheckssss"
+                        >ID 중복검사</b-button
+                      >
                       <base-button
                         type="primary"
                         variant="primary"
@@ -112,19 +125,39 @@ export default {
         username: null,
         userpwd: null,
         email: null,
+        idck: null,
       },
     };
   },
   computed: {
-    ...mapState(memberStore, ["isLogin", "isLoginError"]),
+    ...mapState(memberStore, ["isLogin", "isLoginError", "idckstate"]),
   },
   methods: {
-    ...mapActions(memberStore, ["setRegister"]),
+    ...mapActions(memberStore, ["setRegister", "ckId"]),
 
     async confirm() {
       this.setRegister(this.user);
       this.$router.push({ name: "dashboard" });
     },
+
+    async idcheckssss() {
+      this.ckId(this.user.userid);
+      console.log(this.idckstate);
+      this.user.idck = this.idckstate;
+    },
+    // idcheckssss() {
+    //   console.log(this.idckstate);
+    //   this.ckId(this.user.userid);
+    //   console.log(this.idckstate);
+    //   this.user.username = this.idckstate;
+    //   console.log(this.idckstate);
+    //   // this.user.email = this.ckId(this.user.userid);
+    // },
+    // idcheckssss2() {
+    //   console.log(this.idckstate);
+    //   this.user.username = this.idckstate;
+    //   console.log(this.idckstate);
+    // },
   },
 };
 </script>

@@ -1,9 +1,17 @@
 import jwt_decode from "jwt-decode";
-import { login, findById, updateMember, registerMember, deleteMember } from "@/api/member.js";
+import {
+  login,
+  findById,
+  updateMember,
+  registerMember,
+  deleteMember,
+  idCheck,
+} from "@/api/member.js";
 
 const memberStore = {
   namespaced: true,
   state: {
+    idckstate: false,
     isLogin: false,
     isLoginError: false,
     userInfo: null,
@@ -14,6 +22,14 @@ const memberStore = {
     },
   },
   mutations: {
+    SET_ID_CHECK_SUCCESS: (state) => {
+      state.idckstate = "중복된 ID입니다.";
+      // state.idckstate = true;
+    },
+    SET_ID_CHECK_FAIL: (state) => {
+      state.idckstate = "생성가능한 ID입니다.";
+      // state.idckstate = false;
+    },
     SET_IS_LOGIN: (state, isLogin) => {
       state.isLogin = isLogin;
     },
@@ -102,6 +118,25 @@ const memberStore = {
         },
         (error) => {
           console.log(error);
+        }
+      );
+    },
+
+    ckId({ commit }, user) {
+      idCheck(
+        user,
+        (response) => {
+          if (response.data === "success") {
+            console.log(response.data);
+            commit("SET_ID_CHECK_SUCCESS", user);
+          } else {
+            console.log("ID 중복확인 실패");
+            commit("SET_ID_CHECK_FAIL", user);
+          }
+        },
+        (error) => {
+          console.log(error);
+          console.log("에러발생");
         }
       );
     },
