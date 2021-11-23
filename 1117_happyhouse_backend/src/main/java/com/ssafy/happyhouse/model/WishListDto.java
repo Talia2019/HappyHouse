@@ -1,7 +1,6 @@
 package com.ssafy.happyhouse.model;
 
 public class WishListDto {
-
    private String userid;
    private String aptno;
 

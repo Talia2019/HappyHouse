@@ -73,4 +73,3 @@ public class HouseDealDto {
 		this.starCount = starCount;
 	}
 }
-
