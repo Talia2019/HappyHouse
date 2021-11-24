@@ -29,6 +29,26 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public boolean deleteComment(String userid) throws Exception {
+	      return sqlSession.getMapper(MemberMapper.class).deleteComment(userid) == true;
+	}
+
+	@Override
+	public boolean deleteBoard(String userid) throws Exception {
+	      return sqlSession.getMapper(MemberMapper.class).deleteBoard(userid) == true;
+	}
+
+	@Override
+	public boolean deleteWishList(String userid) throws Exception {
+	      return sqlSession.getMapper(MemberMapper.class).deleteWishList(userid) == true;
+	}
+
+	@Override
+	public boolean deleteNotice(String userid) throws Exception {
+	      return sqlSession.getMapper(MemberMapper.class).deleteNotice(userid) == true;
+	}
+	
+	@Override
 	   public boolean deleteMember(String userid) throws Exception {
 	      return sqlSession.getMapper(MemberMapper.class).deleteMember(userid) == true;
 	   }

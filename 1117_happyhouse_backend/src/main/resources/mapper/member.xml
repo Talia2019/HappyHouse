@@ -26,7 +26,27 @@
 			userpwd = #{userpwd}
 		 where userid = #{userid}
 	</update>
-	
+   
+	<delete id="deleteComment" parameterType="String">
+      delete from comment
+      where userid = #{userId}
+   </delete>
+   
+	<delete id="deleteBoard" parameterType="String">
+      delete from board
+      where userid = #{userId}
+   </delete>
+   
+	<delete id="deleteWishList" parameterType="String">
+      delete from wishlist
+      where userid = #{userId}
+   </delete>
+   
+	<delete id="deleteNotice" parameterType="String">
+      delete from notice
+      where userid = #{userId}
+   </delete>
+   	
 	<delete id="deleteMember" parameterType="String">
       delete from user
       where userid = #{userId}
