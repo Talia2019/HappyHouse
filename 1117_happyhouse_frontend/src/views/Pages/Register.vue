@@ -57,7 +57,7 @@
                   <base-input
                     alternative
                     class="mb-3"
-                    prepend-icon="ni ni-hat-3"
+                    prepend-icon="ni ni-single-02"
                     placeholder="Id"
                     id="userid"
                     :rules="{ required: true }"
@@ -68,7 +68,7 @@
                   <base-input
                     alternative
                     class="mb-3"
-                    prepend-icon="ni ni-hat-3"
+                    prepend-icon="ni ni-tag"
                     placeholder="Name"
                     id="username"
                     :rules="{ required: true }"
@@ -108,7 +108,7 @@
                         variant="primary"
                         class="my-4"
                         @click="confirm"
-                        >Create account</base-button
+                        >계정 생성</base-button
                       >
                     </div>
                   </div>
