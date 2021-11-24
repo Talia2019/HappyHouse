@@ -58,7 +58,9 @@
           <b-dropdown-item href="#!">
             <i class="ni ni-single-02"></i>
             <!-- <span>프로필</span> -->
-            <router-link :to="{ name: 'MyPage' }" class="link align-self-center"
+            <router-link
+              :to="{ name: 'profile' }"
+              class="link align-self-center"
               >프로필</router-link
             >
           </b-dropdown-item>

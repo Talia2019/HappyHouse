@@ -24,10 +24,10 @@
       <b-row class="justify-content-center">
         <b-col lg="6" md="8">
           <b-card no-body class="bg-secondary border-0">
-            <div class="text-muted text-center mt-5 mb-5">
+            <div class="text-muted text-center mt-5 mb-4">
               <h2>Regist</h2>
             </div>
-            <div class="text-center">
+            <!-- <div class="text-center">
               <base-button
                 type="warning"
                 variant="warning"
@@ -35,7 +35,7 @@
                 @click="loginWithKakao()"
                 >Kakao account</base-button
               >
-            </div>
+            </div> -->
             <div class="text-center"></div>
             <b-card-body class="px-lg-5 py-lg-5">
               <validation-observer
