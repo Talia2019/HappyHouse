@@ -54,6 +54,13 @@
                   >
                   </base-input>
 
+                  <b-button
+                    variant="primary"
+                    @click="idcheck"
+                    class="btn float-right"
+                    >ID 중복체크</b-button
+                  >
+
                   <base-input
                     alternative
                     class="mb-3"
@@ -100,9 +107,6 @@
                   </base-input>
                   <div class="text-center">
                     <div class="text-center">
-                      <b-button variant="primary" @click="idcheck"
-                        >ID 중복체크</b-button
-                      >
                       <base-button
                         type="primary"
                         variant="primary"
