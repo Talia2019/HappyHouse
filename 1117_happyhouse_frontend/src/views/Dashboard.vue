@@ -145,6 +145,14 @@ import NoticeBoardTable from "./Dashboard/NoticeBoardTable";
 
 import Card from "@/views/HomeCard/Card.vue";
 
+//kakao
+import { getKakaoToken, getKakaoUserInfo } from "@/api/login";
+import { mapState, mapActions } from "vuex";
+
+const memberStore = "memberStore";
+
+window.Kakao.init("da17ab51974602aad4f466bacd9024f3");
+
 export default {
   components: {
     LineChart,
@@ -191,9 +199,13 @@ export default {
     };
   },
   created() {
-    this.boardcard();
+    if (this.$route.query.code) {
+      this.setKakaoToken();
+    }
+    // this.boardcard();
   },
   methods: {
+    ...mapActions(memberStore, ["userConfirm", "getUserInfo", "setRegister"]),
     initBigChart(index) {
       let chartData = {
         datasets: [
@@ -218,12 +230,69 @@ export default {
       this.firstClass = "spread-underline";
       this.$router.push({ name: "wishcard" });
     },
+    async setKakaoToken() {
+      // console.log("카카오 인증 코드", this.$route.query.code);
+      const { data } = await getKakaoToken(this.$route.query.code);
+      // console.log(data);
+      // if (data.error) {
+      //   alert("카카오톡 로그인 오류입니다.");
+      //   this.$router.replace("/login");
+      //   return;
+      // }
+
+      window.Kakao.Auth.setAccessToken(data.access_token);
+      // this.$cookies.set("access-token", data.access_token, "1d");
+      // this.$cookies.set("refresh-token", data.refresh_token, "1d");
+
+      const res = await getKakaoUserInfo();
+      let user = {
+        userid: res.kakao_account.email.split("@")[0],
+        userpwd: "wlqdjqqlqjs1",
+      };
+      //login
+      await this.userConfirm(user);
+      let token = sessionStorage.getItem("access-token");
+      if (this.isLogin) {
+        // console.log("카카오 로그인");
+        await this.getUserInfo(token);
+        this.$router.push({ name: "dashboard" });
+      } else {
+        // console.log("카카오 회원가입");
+        let user = {
+          userid: res.kakao_account.email.split("@")[0],
+          username: res.kakao_account.profile.nickname,
+          userpwd: "wlqdjqqlqjs1",
+          // 이거 보안상 문제되지만...일단이렇게...ㅎ
+        };
+        this.setRegister(user);
+        this.$router.push({ name: "dashboard" });
+      }
+      //register
+      // this.setRegister(this.user);
+
+      // await this.setUserInfo();
+      // this.$router.replace("/");
+    },
+    async setUserInfo() {
+      const res = await getKakaoUserInfo();
+      const userInfo = {
+        name: res.kakao_account.profile.nickname,
+        platform: "kakao",
+      };
+      this.$store.commit("setUser", userInfo);
+    },
+    // getInfo() {
+    //   naverService().getUserInfo();
+    // },
     // moneycard() {
     //   this.$router.push({ name: "moneycard" });
     // },
   },
   mounted() {
     this.initBigChart(0);
+  },
+  computed: {
+    ...mapState(memberStore, ["isLogin", "isLoginError"]),
   },
 };
 </script>

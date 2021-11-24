@@ -11,18 +11,21 @@
 	</select>
 	
 	<select id="userInfo" parameterType="String" resultType="memberDto">
-		select username, userid, email, joindate
+		select username, userid, email, address, contact, joindate
 		from user
 		where userid = #{userid}
 	</select>
 	
 	<!-- 사용자 수정 -->
-	<!-- <update id="updateMember" parameterType="memberDto">
+	<update id="updateMember" parameterType="memberDto">
 		update user
 		set username = #{username}, 
-			email = #{email}
+			email = #{email},
+			address = #{address},
+			contact = #{contact},
+			userpwd = #{userpwd}
 		 where userid = #{userid}
-	</update> -->
+	</update>
 	
 	<delete id="deleteMember" parameterType="String">
       delete from user
@@ -30,18 +33,18 @@
    </delete>
    
    	<insert id="registerMember" parameterType="memberDto">
-		insert into user (userid, username, userpwd, email, joindate)
-		values (#{userid}, #{username}, #{userpwd}, #{email}, now())
+		insert into user (userid, username, userpwd, email, address, contact, joindate)
+		values (#{userid}, #{username}, #{userpwd}, #{email}, #{address}, #{contact}, now())
 	</insert>
 	
-	<update id="updateMember" parameterType="memberDto">
-		update user
-		<trim prefix="set" suffixOverrides=",">
-			<if test="userpwd != null">userpwd = #{userpwd},</if>
-			<if test="email != null">email = #{email},</if>
-		</trim>
-		where userid = #{userid}
-	</update>
+<!-- 	<update id="updateMember" parameterType="memberDto"> -->
+<!-- 		update user -->
+<!-- 		<trim prefix="set" suffixOverrides=","> -->
+<!-- 			<if test="userpwd != null">userpwd = #{userpwd},</if> -->
+<!-- 			<if test="email != null">email = #{email},</if> -->
+<!-- 		</trim> -->
+<!-- 		where userid = #{userid} -->
+<!-- 	</update> -->
 	
 	<select id="idCheck" parameterType="string" resultType="int">
 		select count(userid)
@@ -50,13 +53,13 @@
 	</select>
 
 	<select id="listMember" resultType="memberDto">
-		select userid, userpwd, username, email, date_format(joindate, '%y.%m.%d') joindate
+		select userid, userpwd, username, email, address, contact, date_format(joindate, '%y.%m.%d') joindate
 		from user
 		order by joindate desc;
 	</select>
 	
-	<select id="getMember" parameterType="String" resultType="int">
-		select userid, userpwd, username, email, date_format(joindate, '%y.%m.%d') joindate
+	<select id="getMember" parameterType="String" resultType="memberdto">
+		select userid, userpwd, username, email, address, contact, date_format(joindate, '%y.%m.%d') joindate
 		from user
 		where userid = #{userid}
 	</select>

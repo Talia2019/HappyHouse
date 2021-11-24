@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.ssafy.happyhouse.model.UserDto;
+import com.ssafy.happyhouse.model.MemberDto;
 
 @Component
 @SuppressWarnings("deprecation")
@@ -17,8 +17,8 @@ public class ConfirmInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		HttpSession session = request.getSession();
-		UserDto userDto = (UserDto) session.getAttribute("userinfo");
-		if(userDto == null) {
+		MemberDto memberDto = (MemberDto) session.getAttribute("userinfo");
+		if(memberDto == null) {
 			response.sendRedirect(request.getContextPath() + "/index");
 			return false;
 		}

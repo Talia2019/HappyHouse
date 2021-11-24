@@ -78,6 +78,16 @@
                       >Sign in</base-button
                     >
                   </div>
+                  <hr />
+                  <div class="text-center">
+                    <base-button
+                      type="warning"
+                      variant="warning"
+                      class="my-4"
+                      @click="loginWithKakao()"
+                      >Kakao Login</base-button
+                    >
+                  </div>
                 </b-form>
               </validation-observer>
             </b-card-body>
@@ -129,6 +139,12 @@ export default {
     },
     movePage() {
       this.$router.push({ name: "SignUp" });
+    },
+    loginWithKakao() {
+      const params = {
+        redirectUri: "http://localhost:8080/dashboard",
+      };
+      window.Kakao.Auth.authorize(params);
     },
   },
 };

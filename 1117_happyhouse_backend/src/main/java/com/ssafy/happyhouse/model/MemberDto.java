@@ -14,6 +14,27 @@ public class MemberDto {
 	private String userpwd;
 	@ApiModelProperty(value = "회원 이메일")
 	private String email;
+	@ApiModelProperty(value = "회원 주소")
+	private String address;
+	@ApiModelProperty(value = "회원 휴대폰번호")
+	private String contact;
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
 	@ApiModelProperty(value = "회원 가입일")
 	private String joindate;
 
