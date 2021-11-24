@@ -6,8 +6,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
+import com.ssafy.happyhouse.model.WishListDto;
 import com.ssafy.happyhouse.model.service.HappyHouseMapService;
 
 @RestController
@@ -46,10 +50,52 @@ public class HappyHouseMapController {
 	public ResponseEntity<String> apt(@RequestParam("gugun") String gugun, @RequestParam("time") String time) throws Exception {
 		return new ResponseEntity<String>(happyHouseMapService.getAptInDong(gugun, time), HttpStatus.OK);
 	}
+
+	@GetMapping("/check")
+	public ResponseEntity<Integer> check(@RequestParam Map<String, String> param) throws Exception {
+		return new ResponseEntity<Integer>(happyHouseMapService.checkUserHouse(param.get("houseName"), param.get("dongName")), HttpStatus.OK);
+	}
+	
+	@GetMapping("/starhouse")
+	public ResponseEntity<List<HouseDealDto>> starhouse(@RequestParam("userid") String userid) throws Exception {
+		return new ResponseEntity<List<HouseDealDto>>(happyHouseMapService.getStarHouse(userid), HttpStatus.OK);
+	}
+	
+	@PostMapping("/userhouse")
+	public ResponseEntity<String> userhouse(@RequestBody WishListDto wishListDto) throws Exception {
+		if (happyHouseMapService.putUserHouse(wishListDto)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
 	
 	@PostMapping("/star")
 	public ResponseEntity<String> star(@RequestBody HouseDealDto houseDealDto) throws Exception {
 		if (happyHouseMapService.checkStar(houseDealDto)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+	
+	@PutMapping("/plus")
+	public ResponseEntity<String> plus(@RequestBody HouseDealDto houseDealDto) throws Exception {
+		if (happyHouseMapService.plusStar(houseDealDto)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+	
+	@PutMapping("/minus")
+	public ResponseEntity<String> minus(@RequestBody HouseDealDto houseDealDto) throws Exception {
+		if (happyHouseMapService.minusStar(houseDealDto)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+	
+	@DeleteMapping("/delete/{userid}&{aptname}&{dongname}")
+	public ResponseEntity<String> nohouse(@PathVariable String userid, @PathVariable String aptname, @PathVariable String dongname) throws Exception {
+		if (happyHouseMapService.deleteUserHouse(userid, aptname, dongname)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

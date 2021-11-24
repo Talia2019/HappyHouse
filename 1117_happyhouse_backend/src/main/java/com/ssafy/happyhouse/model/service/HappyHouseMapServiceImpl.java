@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.happyhouse.model.HouseDealDto;
 import com.ssafy.happyhouse.model.HouseInfoDto;
 import com.ssafy.happyhouse.model.SidoGugunCodeDto;
+import com.ssafy.happyhouse.model.WishListDto;
 import com.ssafy.happyhouse.model.mapper.HouseMapMapper;
 
 @Service
@@ -85,7 +86,47 @@ public class HappyHouseMapServiceImpl implements HappyHouseMapService {
 		if (houseDealDto.getHouseName() == null) {
 			throw new Exception();
 		}
+		
 		return sqlSession.getMapper(HouseMapMapper.class).checkStar(houseDealDto) == 1;
+	}
+
+	@Override
+	public boolean putUserHouse(WishListDto wishListDto) throws Exception{
+		return sqlSession.getMapper(HouseMapMapper.class).putUserHouse(wishListDto) == 1;
+	}
+
+	@Override
+	public int checkUserHouse(String houseName, String dongName) throws Exception {
+		if (houseName == null) {
+			throw new Exception();
+		}
+		return sqlSession.getMapper(HouseMapMapper.class).checkUserHouse(houseName, dongName).size();
+	}
+
+	@Override
+	public boolean plusStar(HouseDealDto houseDealDto) throws Exception{
+		if (houseDealDto.getHouseCode() == null) {
+			throw new Exception();
+		}
+		return sqlSession.getMapper(HouseMapMapper.class).plusStar(houseDealDto) == 1;
+	}
+
+	@Override
+	public boolean minusStar(HouseDealDto houseDealDto) throws Exception{
+		if (houseDealDto.getHouseCode() == null) {
+			throw new Exception();
+		}
+		return sqlSession.getMapper(HouseMapMapper.class).minusStar(houseDealDto) == 1;
+	}
+
+	@Override
+	public boolean deleteUserHouse(String userid, String aptname, String dongname) throws Exception {
+		return sqlSession.getMapper(HouseMapMapper.class).deleteUserHouse(userid, aptname, dongname) == 1;
+	}
+
+	@Override
+	public List<HouseDealDto> getStarHouse(String userid) throws Exception {
+		return sqlSession.getMapper(HouseMapMapper.class).getStarHouse(userid);
 	}
 
 }

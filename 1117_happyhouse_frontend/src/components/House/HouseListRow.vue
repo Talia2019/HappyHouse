@@ -42,8 +42,10 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import SideBar from '../SidebarPlugin/SideBar.vue';
+
+const memberStore = "memberStore";
 
 export default {
   components: { SideBar },
@@ -67,8 +69,43 @@ export default {
       return 2021 - parseInt(value);
     }
   },
+  created() {
+    console.log('houselistrow creat!!!!')
+    this.stars.forEach((star) => {
+      if (star.houseName === this.house.아파트) {
+        console.log("same!!");
+        this.star = require("@/assets/img/star.png");
+        return;
+      } else {
+        console.log("no same");
+      }
+    })
+  },
+  updated() {
+    console.log('houselistrow update!!!!')
+    this.getStarHouse(this.userInfo.userid);
+    var flag = false;
+    console.log(this.stars);
+    this.stars.forEach((star) => {
+      if (star.houseName === this.house.아파트) {
+        console.log("same!!");
+        this.star = require("@/assets/img/star.png");
+        flag = true;
+        return;
+      } else {
+        console.log("no same");
+      }
+    })
+    if (!flag) {
+      this.star = require("@/assets/img/gray.png");
+    }
+  },
+  computed: {
+    ...mapState(memberStore, ["userInfo"]),
+    ...mapState(["stars"])
+  },
   methods: {
-    ...mapActions(["detailHouse", "checkStar"]),
+    ...mapActions(["detailHouse", "checkStar", "unCheckStar", "getStarHouse", "putWishList"]),
     colorChange(flag) {
       this.isColor = flag;
     },
@@ -94,9 +131,17 @@ export default {
     toggleStar() {
       if (this.star.slice(5, 9) === 'star'){
         this.star = require("@/assets/img/gray.png");
+        const params = [this.house, this.userInfo.userid] ;
+        if (this.unCheckStar(params)) {
+          this.getStarHouse(this.userInfo.userid);
+        }
       } else if (this.star.slice(5, 9) === 'gray') {
         this.star = require("@/assets/img/star.png");
-        this.checkStar(this.house);
+        const params = [this.house, this.userInfo.userid] ;
+        if (this.checkStar(params)) {
+          this.putWishList(params);
+          this.getStarHouse(this.userInfo.userid);
+        }
       }
     }
   },

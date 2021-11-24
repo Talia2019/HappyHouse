@@ -7,7 +7,7 @@
     </b-row>
     <b-row class="m-2">
       <b-col>
-        거래금액 : {{ (parseInt(apt.거래금액.replace(",", ""))) | price}}만원
+        거래금액 : {{ (parseInt(apt.거래금액.replace(",", ""))) | price}}원
       </b-col>
     </b-row>
 </b-list-group-item>
