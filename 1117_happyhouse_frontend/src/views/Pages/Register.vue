@@ -161,22 +161,15 @@ export default {
       this.setRegister(this.user);
       this.$router.push({ name: "dashboard" });
     },
-<<<<<<< HEAD
+
     loginWithKakao() {
       const params = {
         redirectUri: "http://localhost:8080/dashboard",
       };
       window.Kakao.Auth.authorize(params);
     },
-=======
 
     async idcheck() {
-      this.ckId(this.user.userid);
-      console.log(this.idckstate);
-      this.user.idck = this.idckstate;
-    },
-
-    async idcheck2() {
       this.ckId(this.user.userid);
       console.log(this.idckstate);
       this.user.idck = this.idckstate;
@@ -194,7 +187,6 @@ export default {
     //   this.user.username = this.idckstate;
     //   console.log(this.idckstate);
     // },
->>>>>>> origin/bjh
   },
 };
 </script>
