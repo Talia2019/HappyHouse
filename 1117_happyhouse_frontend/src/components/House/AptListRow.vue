@@ -2,12 +2,12 @@
 <b-list-group-item>
     <b-row class="m-2">
       <b-col>
-        계약일자 : {{ apt.년 }}.{{ apt.월 }}.{{ apt.일 }}
+        계약일자 : {{ apt.년 }}년 {{ apt.월 }}월 {{ apt.일 }}일
       </b-col>
     </b-row>
     <b-row class="m-2">
       <b-col>
-        거래금액 : {{ (parseInt(apt.거래금액.replace(",", ""))) | price}}만원
+        거래금액 : {{ (parseInt(apt.거래금액.replace(",", ""))) | price}}원
       </b-col>
     </b-row>
 </b-list-group-item>

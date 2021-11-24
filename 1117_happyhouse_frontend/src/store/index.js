@@ -10,17 +10,18 @@ import memberStore from "@/store/modules/memberStore.js";
 
 export default new Vuex.Store({
   state: {
-    sidos: [{ value: null, text: "선택하세요" }],
-    guguns: [{ value: null, text: "선택하세요" }],
-    dongs: [{ value: null, text: "선택하세요" }],
+    sidos: [{ value: null, text: "시도" }],
+    guguns: [{ value: null, text: "군구" }],
+    dongs: [{ value: null, text: "읍면동" }],
     houses: [],
     overlaps: [],
     house: null,
     flag: false,
     selected: false,
-    apts: [{ value: null, text: "선택하세요" }],
+    apts: [{ value: null, text: "아파트" }],
     aptLists: [],
     gudong: null,
+    stars: [],
   },
   getters: {
     getLocation(state) {
@@ -46,16 +47,12 @@ export default new Vuex.Store({
         }
       });
       state.overlaps.sort((a, b) => {
-        return a["아파트"] < b["아파트"]
-          ? -1
-          : a["아파트"] > b["아파트"]
-          ? 1
-          : 0;
-      });
-      state.apts = [{ value: null, text: "선택하세요" }];
-      state.overlaps.forEach((over) => {
-        state.apts.push({ value: over.지번, text: over.아파트 });
-      });
+        return a["아파트"] < b["아파트"] ? -1 : a["아파트"] > b["아파트"] ? 1 : 0;
+      })
+      state.apts = [{ value: null, text: "아파트" }];
+      state.overlaps.forEach(over => {
+        state.apts.push({ value: over.지번, text: over.아파트 })
+      })
       return state.overlaps;
     },
     getAptList(state) {
@@ -98,20 +95,23 @@ export default new Vuex.Store({
       state.selected = false;
       state.aptLists = aptList;
     },
+    SET_STAR_HOUSE(state, houses) {
+      state.stars = houses;
+    },
     CLEAR_SIDO_LIST(state) {
-      state.sidos = [{ value: null, text: "선택하세요" }];
+      state.sidos = [{ value: null, text: "시도" }];
     },
     CLEAR_GUGUN_LIST(state) {
-      state.guguns = [{ value: null, text: "선택하세요" }];
+      state.guguns = [{ value: null, text: "군구" }];
     },
     CLEAR_DONG_LIST(state) {
-      state.dongs = [{ value: null, text: "선택하세요 " }];
+      state.dongs = [{ value: null, text: "읍면동"}];
     },
     CLEAR_HOUSE_LIST(state) {
       state.houses = [];
     },
     CLEAR_APT_LIST(state) {
-      state.apts = [{ value: null, text: "선택하세요 " }];
+      state.apts = [{ value: null, text: "아파트"}];
     },
     CLEAR_DEAL_LIST(state) {
       state.aptLists = [];
@@ -125,17 +125,10 @@ export default new Vuex.Store({
       http.get("/map/sido").then((res) => {
         // console.log(res);
         commit("SET_SIDO_LIST", res.data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-      const params = { gugun: "11110" };
-      console.log(params);
-      http
-        .get("/map/dong", params)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     },
     getGugun({ commit }, sidoCode) {
       const params = { sido: sidoCode };
@@ -160,8 +153,8 @@ export default new Vuex.Store({
         });
     },
     getHouse({ commit }, code) {
-      const dongCode = code.dongCode * 1;
-      const params = { gugun: code.gugunCode.code };
+      const dongCode = code.dongCode*1;
+      const params = { gugun: code.gugunCode.code, time: 202110 };
       http
         .get("/map/apt", { params })
         .then((res) => {
@@ -194,6 +187,83 @@ export default new Vuex.Store({
       });
       commit("SET_OVERLAP_LIST", aptList);
     },
+    checkStar({ commit }, param) {
+      const params = { houseName: param[0].아파트, dealAmount: param[0].거래금액, dealYear: param[0].년, 
+        dealMonth: param[0].월, dealDay: param[0].일, area: param[0].전용면적, floor: param[0].층, 
+        jibun: param[0].지번, dongName: param[0].법정동, houseCode: param[0].일련번호, 
+        houseDong: param[0].법정동+" "+param[0].아파트, starCount: 1};
+      
+        http
+        .get("/map/check", { params }) // housedeal에 아파트가 등록되어 있는지 확인
+        .then((res) => {
+          console.log(res, commit);
+          var size = res.data;
+          if (size === 0) {
+            http // 등록되어 있지 않으면 housedeal에 등록하기
+            .post("/map/star", JSON.stringify(params)).then((res) => {
+              console.log(commit, res);
+            }).catch((err) => {
+              console.log(err);
+            })
+          } else { // 등록되어 있으면 starCount +1 증가시키기
+            http
+            .put("/map/plus", JSON.stringify(params))
+            .then((res) => {
+              console.log(res);
+            }).catch((err) => {
+              console.log(err);
+            })
+          }
+          return true;
+        }).catch((err) => {
+          console.log(err);
+        })
+        
+      },
+      putWishList({ commit }, param){
+        const params1 = { userid: param[1], aptdong: param[0].법정동+" "+param[0].아파트 };
+        http
+        .post("/map/userhouse", params1)
+        .then((res) => {
+          console.log(res, commit);
+        }).catch((err) => {
+          console.log(err);
+        })
+      },
+      getStarHouse({ commit }, param) {
+        const params = { userid: param };
+        http
+          .get("/map/starhouse", { params })
+          .then((res) => {
+            commit("SET_STAR_HOUSE", res.data);
+          }).catch((err) => {
+            console.log(err);
+          })
+      },
+      unCheckStar({ commit }, param) {
+        const params = { houseName: param[0].아파트, dealAmount: param[0].거래금액, dealYear: param[0].년, 
+          dealMonth: param[0].월, dealDay: param[0].일, area: param[0].전용면적, floor: param[0].층, 
+          jibun: param[0].지번, dongName: param[0].법정동, houseCode: param[0].일련번호, starCount: 1}
+        // const params1 = { userid: param[1], aptcode: param[0].일련번호 };
+        const userid = param[1];
+        const aptname = param[0].아파트;
+        const dongname = param[0].법정동;
+        http
+          .put("/map/minus", JSON.stringify(params))
+          .then((res) => {
+            console.log(res, commit);
+            http
+              .delete(`/map/delete/${userid}&${aptname}&${dongname}`)
+              .then((res) => {
+                console.log(res);
+                return true;
+              }).catch((err) => {
+                console.log(err);
+              })
+          }).catch((err) => {
+            console.log(err);
+          })
+      }
   },
   modules: {
     boardStore,

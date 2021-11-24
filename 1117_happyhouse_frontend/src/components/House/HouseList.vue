@@ -1,7 +1,7 @@
 <template>
   <b-container v-if="selected == true && houses && houses.length != 0" class="bv-example-row mt-3">
     <b-list-group>
-    <house-list-row v-for="(house, index) in overlaps" :key="index" :house="house" />
+    <house-list-row v-for="(house, index) in overlaps" :key="index" :house="house" :stars="stars"/>
     </b-list-group>
   </b-container>
   <b-container v-else-if="selected == false && aptLists && aptLists.length != 0" class="bv-example-row mt-3">
@@ -34,7 +34,8 @@
 <script>
 import HouseListRow from "@/components/House/HouseListRow.vue";
 import AptListRow from "@/components/House/AptListRow.vue";
-import { mapState, mapMutations, mapGetters } from "vuex";
+import { mapState, mapMutations, mapGetters, mapActions } from "vuex";
+const memberStore = "memberStore";
 
 export default {
   name: "HouseList",
@@ -61,9 +62,11 @@ export default {
   
   created() {
     this.CLEAR_HOUSE_LIST();
+    this.getStarHouse(this.userInfo.userid);
   },
   computed: {
-    ...mapState(["houses", "overlaps", "aptLists", "selected"]),
+    ...mapState(["houses", "overlaps", "aptLists", "selected", "stars"]),
+    ...mapState(memberStore, ["userInfo"]),
     ...mapGetters(["overlapHouse", "getAptList"])
   },
   watch: {
@@ -76,6 +79,7 @@ export default {
   },
   methods: {
     ...mapMutations(["CLEAR_HOUSE_LIST"]),
+    ...mapActions(["getStarHouse"])
   }
 };
 </script>

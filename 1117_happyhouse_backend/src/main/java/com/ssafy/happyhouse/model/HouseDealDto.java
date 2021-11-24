@@ -10,6 +10,8 @@ public class HouseDealDto {
 	private String floor;
 	private String jibun;
 	private String dongName;
+	private String houseCode;
+	private String houseDong;
 	private int starCount;
 	
 	public String getHouseName() {
@@ -65,6 +67,18 @@ public class HouseDealDto {
 	}
 	public void setDongName(String dongName) {
 		this.dongName = dongName;
+	}
+	public String getHouseCode() {
+		return houseCode;
+	}
+	public void setHouseCode(String houseCode) {
+		this.houseCode = houseCode;
+	}
+	public String getHouseDong() {
+		return houseDong;
+	}
+	public void setHouseDong(String houseDong) {
+		this.houseDong = houseDong;
 	}
 	public int getStarCount() {
 		return starCount;
