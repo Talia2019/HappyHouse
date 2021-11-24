@@ -7,7 +7,7 @@
           <b-form-select v-model="year" :options="years"></b-form-select>
         </b-col>
       </b-row> -->
-      <div class="mt-5 mb-3">
+      <div class="ml-3 mt-5 mb-3">
         <span :class="firstClass" @click="sigudong()">시/구/동</span>
         <span :class="secondClass" @click="subway()">지하철역</span>
         <!-- <hr style="border: solid; height: 3px background: #ccc;" /> -->

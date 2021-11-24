@@ -20,14 +20,14 @@
         >
         </sidebar-item>
 
-        <sidebar-item
+        <!-- <sidebar-item
           :link="{
             name: 'Maps',
             path: '/mapscopy',
             icon: 'ni ni-pin-3 text-purple',
           }"
         >
-        </sidebar-item>
+        </sidebar-item> -->
         <sidebar-item
           :link="{
             name: 'Board',
