@@ -44,6 +44,7 @@
               >
                 <b-form role="form" @submit.prevent="handleSubmit(onSubmit)">
                   <base-input
+                    v-if="false"
                     alternative
                     class="mb-3"
                     placeholder="Id 중복여부"
