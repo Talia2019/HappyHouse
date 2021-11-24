@@ -179,7 +179,9 @@ export default {
       if (this.user.userid != null) {
         this.ckId(this.user.userid);
         console.log(this.idckstate);
-        this.user.idck = this.idckstate;
+        setTimeout(() => {
+          this.user.idck = this.idckstate;
+        }, 1000);
       } else {
         alert("ID를 입력해주세요.");
       }
