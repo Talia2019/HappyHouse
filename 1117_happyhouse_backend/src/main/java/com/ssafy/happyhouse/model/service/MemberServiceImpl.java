@@ -43,5 +43,10 @@ public class MemberServiceImpl implements MemberService {
 		return sqlSession.getMapper(MemberMapper.class).updateMember(memberDto) == 1;
 	}
 
+	@Override
+	public boolean idCheck(String userid) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).idCheck(userid) == 1;
+	}
+
 
 }

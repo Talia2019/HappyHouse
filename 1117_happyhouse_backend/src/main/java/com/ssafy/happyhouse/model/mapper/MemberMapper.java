@@ -15,4 +15,5 @@ public interface MemberMapper {
 	public boolean deleteMember(String userid) throws SQLException;
 	public boolean registerMember(MemberDto memberDto) throws SQLException;
 	public int updateMember(MemberDto memberDto) throws SQLException;
+	public int idCheck(String userid) throws SQLException;
 }

@@ -46,6 +46,16 @@
                   <base-input
                     alternative
                     class="mb-3"
+                    placeholder="Id 중복여부"
+                    id="check"
+                    v-model="user.idck"
+                    readonly
+                  >
+                  </base-input>
+
+                  <base-input
+                    alternative
+                    class="mb-3"
                     prepend-icon="ni ni-hat-3"
                     placeholder="Id"
                     id="userid"
@@ -89,6 +99,9 @@
                   </base-input>
                   <div class="text-center">
                     <div class="text-center">
+                      <b-button variant="primary" @click="idcheck"
+                        >ID 중복체크</b-button
+                      >
                       <base-button
                         type="primary"
                         variant="primary"
@@ -122,25 +135,58 @@ export default {
         username: null,
         userpwd: null,
         email: null,
+        idck: null,
       },
     };
   },
   computed: {
-    ...mapState(memberStore, ["isLogin", "isLoginError"]),
+    ...mapState(memberStore, ["isLogin", "isLoginError", "idckstate"]),
   },
   methods: {
-    ...mapActions(memberStore, ["setRegister"]),
+    ...mapActions(memberStore, ["setRegister", "ckId"]),
 
     async confirm() {
+      if (this.user.idck == "생성가능한 ID입니다.") {
+        this.setRegister(this.user);
+        alert("가입을 축하드립니다.");
+        this.$router.push({ name: "dashboard" });
+      } else if (this.user.idck == "중복된 ID입니다.") {
+        alert("새로운 ID를 입력해주세요.");
+      } else {
+        alert("ID 중복체크 버튼을 눌러 중복여부를 확인해주세요.");
+      }
+    },
+
+    async confirm2() {
       this.setRegister(this.user);
       this.$router.push({ name: "dashboard" });
     },
+
     loginWithKakao() {
       const params = {
         redirectUri: "http://localhost:8080/dashboard",
       };
       window.Kakao.Auth.authorize(params);
     },
+
+    async idcheck() {
+      this.ckId(this.user.userid);
+      console.log(this.idckstate);
+      this.user.idck = this.idckstate;
+    },
+    // idcheckssss() {
+    //   console.log(this.idckstate);
+    //   this.ckId(this.user.userid);
+    //   console.log(this.idckstate);
+    //   this.user.username = this.idckstate;
+    //   console.log(this.idckstate);
+    //   // this.user.email = this.ckId(this.user.userid);
+    // },
+    // idcheckssss2() {
+    //   console.log(this.idckstate);
+    //   this.user.username = this.idckstate;
+    //   console.log(this.idckstate);
+    // },
   },
 };
 </script>
