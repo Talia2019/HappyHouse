@@ -12,6 +12,7 @@ public class HouseDealDto {
 	private String dongName;
 	private String houseCode;
 	private String houseDong;
+	private int builtYear;
 	private int starCount;
 	
 	public String getHouseName() {
@@ -86,4 +87,11 @@ public class HouseDealDto {
 	public void setStarCount(int starCount) {
 		this.starCount = starCount;
 	}
+	public int getBuiltYear() {
+		return builtYear;
+	}
+	public void setBuiltYear(int builtYear) {
+		this.builtYear = builtYear;
+	}
+		
 }

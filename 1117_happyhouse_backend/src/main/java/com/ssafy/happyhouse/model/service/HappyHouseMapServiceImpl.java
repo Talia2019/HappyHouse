@@ -104,7 +104,7 @@ public class HappyHouseMapServiceImpl implements HappyHouseMapService {
 
 	@Override
 	public boolean plusStar(HouseDealDto houseDealDto) throws Exception{
-		if (houseDealDto.getHouseCode() == null) {
+		if (houseDealDto.getHouseDong() == null) {
 			throw new Exception();
 		}
 		return sqlSession.getMapper(HouseMapMapper.class).plusStar(houseDealDto) == 1;
@@ -112,15 +112,15 @@ public class HappyHouseMapServiceImpl implements HappyHouseMapService {
 
 	@Override
 	public boolean minusStar(HouseDealDto houseDealDto) throws Exception{
-		if (houseDealDto.getHouseCode() == null) {
+		if (houseDealDto.getHouseDong() == null) {
 			throw new Exception();
 		}
 		return sqlSession.getMapper(HouseMapMapper.class).minusStar(houseDealDto) == 1;
 	}
 
 	@Override
-	public boolean deleteUserHouse(String userid, String aptname, String dongname) throws Exception {
-		return sqlSession.getMapper(HouseMapMapper.class).deleteUserHouse(userid, aptname, dongname) == 1;
+	public boolean deleteUserHouse(String userid, String aptdong) throws Exception {
+		return sqlSession.getMapper(HouseMapMapper.class).deleteUserHouse(userid, aptdong) == 1;
 	}
 
 	@Override
