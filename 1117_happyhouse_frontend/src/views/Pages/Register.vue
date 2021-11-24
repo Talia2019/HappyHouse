@@ -157,11 +157,6 @@ export default {
       }
     },
 
-    async confirm2() {
-      this.setRegister(this.user);
-      this.$router.push({ name: "dashboard" });
-    },
-
     loginWithKakao() {
       const params = {
         redirectUri: "http://localhost:8080/dashboard",
