@@ -120,11 +120,14 @@
     </b-container>
   </div>
 </template>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script>
 //import { registerMember } from "@/api/member";
 import { mapState, mapActions } from "vuex";
-
 const memberStore = "memberStore";
+
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
 
 export default {
   name: "Register",
@@ -153,18 +156,45 @@ export default {
         this.user.userpwd != null
       ) {
         this.setRegister(this.user);
-        alert("가입을 축하드립니다.");
+        // alert("가입을 축하드립니다.");
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "정상적으로 가입되었습니다!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         this.$router.push({ name: "dashboard" });
       } else if (this.user.idck == "중복된 ID입니다.") {
-        alert("새로운 ID를 입력해주세요.");
+        // alert("새로운 ID를 입력해주세요.");
+        Swal.fire({
+          icon: "error",
+          title: "새로운 ID를 입력해주세요.",
+        });
       } else if (this.user.username == null) {
-        alert("이름을 입력해주세요.");
+        // alert("이름을 입력해주세요.");
+        Swal.fire({
+          icon: "error",
+          title: "이름을 입력해주세요.",
+        });
       } else if (this.user.email == null) {
-        alert("이메일을 입력해주세요.");
+        // alert("이메일을 입력해주세요.");
+        Swal.fire({
+          icon: "error",
+          title: "이메일을 입력해주세요.",
+        });
       } else if (this.user.userpwd == null) {
-        alert("비밀번호를 입력해주세요.");
+        // alert("비밀번호를 입력해주세요.");
+        Swal.fire({
+          icon: "error",
+          title: "비밀번호를 입력해주세요.",
+        });
       } else {
-        alert("ID 중복체크 버튼을 눌러 중복여부를 확인해주세요.");
+        // alert("ID 중복체크 버튼을 눌러 중복여부를 확인해주세요.");
+        Swal.fire({
+          icon: "error",
+          title: "ID 중복체크 버튼을 눌러 중복여부를 확인해주세요.",
+        });
       }
     },
 
@@ -181,24 +211,26 @@ export default {
         console.log(this.idckstate);
         setTimeout(() => {
           this.user.idck = this.idckstate;
+          if (this.user.idck == "생성가능한 ID입니다.") {
+            Swal.fire({
+              icon: "success",
+              title: "생성가능한 ID입니다.",
+            });
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "중복된 ID입니다.",
+            });
+          }
         }, 1000);
       } else {
-        alert("ID를 입력해주세요.");
+        // alert("ID를 입력해주세요.");
+        Swal.fire({
+          icon: "error",
+          title: "ID를 입력해주세요.",
+        });
       }
     },
-    // idcheckssss() {
-    //   console.log(this.idckstate);
-    //   this.ckId(this.user.userid);
-    //   console.log(this.idckstate);
-    //   this.user.username = this.idckstate;
-    //   console.log(this.idckstate);
-    //   // this.user.email = this.ckId(this.user.userid);
-    // },
-    // idcheckssss2() {
-    //   console.log(this.idckstate);
-    //   this.user.username = this.idckstate;
-    //   console.log(this.idckstate);
-    // },
   },
 };
 </script>
