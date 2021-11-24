@@ -86,7 +86,6 @@ public class HappyHouseMapServiceImpl implements HappyHouseMapService {
 		if (houseDealDto.getHouseName() == null) {
 			throw new Exception();
 		}
-		
 		return sqlSession.getMapper(HouseMapMapper.class).checkStar(houseDealDto) == 1;
 	}
 
@@ -128,5 +127,4 @@ public class HappyHouseMapServiceImpl implements HappyHouseMapService {
 	public List<HouseDealDto> getStarHouse(String userid) throws Exception {
 		return sqlSession.getMapper(HouseMapMapper.class).getStarHouse(userid);
 	}
-
 }

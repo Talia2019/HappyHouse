@@ -85,7 +85,6 @@ export default {
     console.log('houselistrow update!!!!')
     this.getStarHouse(this.userInfo.userid);
     var flag = false;
-    console.log(this.stars);
     this.stars.forEach((star) => {
       if (star.houseName === this.house.아파트) {
         console.log("same!!");
