@@ -146,12 +146,23 @@ export default {
     ...mapActions(memberStore, ["setRegister", "ckId"]),
 
     async confirm() {
-      if (this.user.idck == "생성가능한 ID입니다.") {
+      if (
+        this.user.idck == "생성가능한 ID입니다." &&
+        this.user.username != null &&
+        this.user.email != null &&
+        this.user.userpwd != null
+      ) {
         this.setRegister(this.user);
         alert("가입을 축하드립니다.");
         this.$router.push({ name: "dashboard" });
       } else if (this.user.idck == "중복된 ID입니다.") {
         alert("새로운 ID를 입력해주세요.");
+      } else if (this.user.username == null) {
+        alert("이름을 입력해주세요.");
+      } else if (this.user.email == null) {
+        alert("이메일을 입력해주세요.");
+      } else if (this.user.userpwd == null) {
+        alert("비밀번호를 입력해주세요.");
       } else {
         alert("ID 중복체크 버튼을 눌러 중복여부를 확인해주세요.");
       }
@@ -165,9 +176,13 @@ export default {
     },
 
     async idcheck() {
-      this.ckId(this.user.userid);
-      console.log(this.idckstate);
-      this.user.idck = this.idckstate;
+      if (this.user.userid != null) {
+        this.ckId(this.user.userid);
+        console.log(this.idckstate);
+        this.user.idck = this.idckstate;
+      } else {
+        alert("ID를 입력해주세요.");
+      }
     },
     // idcheckssss() {
     //   console.log(this.idckstate);
