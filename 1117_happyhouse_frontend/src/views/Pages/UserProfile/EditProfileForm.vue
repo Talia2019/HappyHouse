@@ -185,7 +185,14 @@ export default {
     ...mapState(memberStore, ["userInfo", "isLogin"]),
   },
   methods: {
-    ...mapActions(memberStore, ["setUserInfo", "memberDelete"]),
+    ...mapActions(memberStore, [
+      "setUserInfo",
+      "commentDelete",
+      "boardDelete",
+      "wishListDelete",
+      "noticeDelete",
+      "memberDelete",
+    ]),
     async updateProfile() {
       this.user.username = this.username;
       console.log(this.user);
@@ -207,14 +214,28 @@ export default {
     // },
     ...mapMutations(memberStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
     deleteUser() {
-      this.memberDelete(this.user.userid);
+      setTimeout(() => {
+        this.commentDelete(this.user.userid);
+      }, 1000);
+      setTimeout(() => {
+        this.boardDelete(this.user.userid);
+      }, 1000);
+      setTimeout(() => {
+        this.wishListDelete(this.user.userid);
+      }, 1000);
+      setTimeout(() => {
+        this.noticeDelete(this.user.userid);
+      }, 1000);
+      setTimeout(() => {
+        this.memberDelete(this.user.userid);
+      }, 1000);
       setTimeout(() => {
         console.log(this.isLogin);
         this.SET_IS_LOGIN(false);
         console.log(this.isLogin);
         this.SET_USER_INFO(null);
         sessionStorage.removeItem("access-token");
-      }, 1000);
+      }, 2000);
       this.$router.push({ name: "dashboard" });
     },
   },

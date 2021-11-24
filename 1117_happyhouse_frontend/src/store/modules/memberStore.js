@@ -4,6 +4,10 @@ import {
   findById,
   updateMember,
   registerMember,
+  deleteComment,
+  deleteBoard,
+  deleteWishList,
+  deleteNotice,
   deleteMember,
   idCheck,
 } from "@/api/member.js";
@@ -99,6 +103,66 @@ const memberStore = {
             commit("SET_USER_INFO", user);
           } else {
             console.log("회원가입 실패!!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    commentDelete({ commit }, user) {
+      deleteComment(
+        user,
+        (response) => {
+          if (response.data === "success") {
+            commit("SET_USER_INFO", user);
+          } else {
+            console.log("회원 탈퇴 실패!!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    boardDelete({ commit }, user) {
+      deleteBoard(
+        user,
+        (response) => {
+          if (response.data === "success") {
+            commit("SET_USER_INFO", user);
+          } else {
+            console.log("회원 탈퇴 실패!!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    wishListDelete({ commit }, user) {
+      deleteWishList(
+        user,
+        (response) => {
+          if (response.data === "success") {
+            commit("SET_USER_INFO", user);
+          } else {
+            console.log("회원 탈퇴 실패!!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    noticeDelete({ commit }, user) {
+      deleteNotice(
+        user,
+        (response) => {
+          if (response.data === "success") {
+            commit("SET_USER_INFO", user);
+          } else {
+            console.log("회원 탈퇴 실패!!");
           }
         },
         (error) => {
