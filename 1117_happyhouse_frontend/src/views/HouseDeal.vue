@@ -15,7 +15,7 @@
         <span :class="secondClass" @click="subway()">지하철역</span>
         <!-- <hr style="border: solid; height: 3px background: #ccc;" /> -->
       </div>
-      <b-row class="mt-4 mb-3 text-center" v-if="isSiGuDong">
+      <b-row class="mt-4 mb-4 text-center" v-if="isSiGuDong">
         <b-col class="sm-3">
           <b-form-select
             v-model="sidoCode"
