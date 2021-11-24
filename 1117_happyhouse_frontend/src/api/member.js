@@ -23,6 +23,10 @@ async function updateMember(user, success, fail) {
   await api.put(`/user`, JSON.stringify(user)).then(success).catch(fail);
 }
 
+async function idCheck(userid, success, fail) {
+  await api.get(`/user/${userid}`).then(success).catch(fail);
+}
+
 // function logout(success, fail)
 
-export { login, findById, deleteMember, registerMember, updateMember };
+export { login, findById, deleteMember, registerMember, updateMember, idCheck };
