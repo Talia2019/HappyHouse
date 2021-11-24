@@ -21,7 +21,7 @@ public interface HappyHouseMapService {
 	int checkUserHouse(String housename, String dongName) throws Exception;
 	boolean plusStar(HouseDealDto houseDealDto) throws Exception;
 	boolean minusStar(HouseDealDto houseDealDto) throws Exception;
-	boolean deleteUserHouse(String userid, String aptname, String dongname)throws Exception;
+	boolean deleteUserHouse(String userid, String aptdong)throws Exception;
 	List<HouseDealDto> getStarHouse(String userid) throws Exception;
 	
 }

@@ -27,6 +27,9 @@ export default new Vuex.Store({
     getLocation(state) {
       return state.houses;
     },
+    getStar(state) {
+      return state.stars;
+    },
     overlapHouse(state) {
       state.overlaps = [];
       state.houses.forEach((house) => {
@@ -97,6 +100,16 @@ export default new Vuex.Store({
     },
     SET_STAR_HOUSE(state, houses) {
       state.stars = houses;
+    },
+    SET_STAR_HOUSE_LIST(state, stars) {
+      state.selected = true;
+      state.houses = [];
+      stars.forEach((star) => {
+        state.houses.push({ 아파트: star.houseName, 건축년도: star.builtYear, 
+          거래금액: star.dealAmount, 법정동: star.dongName, 전용면적: star.area,
+          지번: star.jibun, 층: star.floor, 년: star.dealYear, 월: star.dealMonth, 일: star.dealDay })
+      })
+      console.log(state.houses);
     },
     CLEAR_SIDO_LIST(state) {
       state.sidos = [{ value: null, text: "시도" }];
@@ -188,7 +201,7 @@ export default new Vuex.Store({
       commit("SET_OVERLAP_LIST", aptList);
     },
     checkStar({ commit }, param) {
-      const params = { houseName: param[0].아파트, dealAmount: param[0].거래금액, dealYear: param[0].년, 
+      const params = { houseName: param[0].아파트, dealAmount: param[0].거래금액, builtYear: param[0].건축년도, dealYear: param[0].년, 
         dealMonth: param[0].월, dealDay: param[0].일, area: param[0].전용면적, floor: param[0].층, 
         jibun: param[0].지번, dongName: param[0].법정동, houseCode: param[0].일련번호, 
         houseDong: param[0].법정동+" "+param[0].아파트, starCount: 1};
@@ -241,19 +254,19 @@ export default new Vuex.Store({
           })
       },
       unCheckStar({ commit }, param) {
-        const params = { houseName: param[0].아파트, dealAmount: param[0].거래금액, dealYear: param[0].년, 
+        const params = { houseName: param[0].아파트, dealAmount: param[0].거래금액, builtYear: param[0].건축년도, dealYear: param[0].년, 
           dealMonth: param[0].월, dealDay: param[0].일, area: param[0].전용면적, floor: param[0].층, 
-          jibun: param[0].지번, dongName: param[0].법정동, houseCode: param[0].일련번호, starCount: 1}
+          jibun: param[0].지번, dongName: param[0].법정동, houseCode: param[0].일련번호, 
+          houseDong: param[0].법정동+" "+param[0].아파트, starCount: 1};
         // const params1 = { userid: param[1], aptcode: param[0].일련번호 };
         const userid = param[1];
-        const aptname = param[0].아파트;
-        const dongname = param[0].법정동;
+        const aptdong = params.houseDong;
         http
           .put("/map/minus", JSON.stringify(params))
           .then((res) => {
             console.log(res, commit);
             http
-              .delete(`/map/delete/${userid}&${aptname}&${dongname}`)
+              .delete(`/map/delete/${userid}&${aptdong}`)
               .then((res) => {
                 console.log(res);
                 return true;

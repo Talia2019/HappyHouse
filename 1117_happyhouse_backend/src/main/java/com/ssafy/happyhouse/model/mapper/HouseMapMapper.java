@@ -23,6 +23,6 @@ public interface HouseMapMapper {
 	int putUserHouse(WishListDto wishListDto) throws SQLException;
 	int plusStar(HouseDealDto houseDealDto) throws SQLException;
 	int minusStar(HouseDealDto houseDealDto) throws SQLException;
-	int deleteUserHouse(String userid, String aptname, String dongname)throws SQLException;
+	int deleteUserHouse(String userid, String aptdong)throws SQLException;
 	List<HouseDealDto> getStarHouse(String userid) throws SQLException;
 }
