@@ -165,8 +165,8 @@ export default {
   data() {
     return {
       topHits: [],
-      firstClass: "spread-underline",
-      secondClass: "spread-underline-selected",
+      firstClass: "spread-underline-selected",
+      secondClass: "spread-underline",
       bigLineChart: {
         allData: [
           [0, 20, 10, 30, 15, 40, 20, 60, 60],

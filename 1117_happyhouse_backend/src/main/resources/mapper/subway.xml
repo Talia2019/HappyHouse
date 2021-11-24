@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.model.mapper.SubwayMapper">
+
+	<!-- 역리스트 -->
+	<select id="getList" parameterType="int" resultType="string">
+		select name
+		from subway
+		where lineno=#{number}
+	</select>
+	
+	<!-- 역정보 -->
+	<select id="getSubway" parameterType="string" resultType="subwayDto">
+		select name, dongcode, sidoname, gugunname, dongname
+		from subway
+		where name=#{name} and lineno=#{number}
+	</select>
+
+	<!-- 구군코드 -->
+	<select id="getGugunCode" parameterType="string" resultType="string">
+		select left(gugunCode,5) gugunCode
+		from guguncode
+		where gugunName=#{name}
+		limit 1
+	</select>
+
+</mapper>
+

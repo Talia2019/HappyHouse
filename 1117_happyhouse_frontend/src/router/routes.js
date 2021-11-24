@@ -76,6 +76,11 @@ const routes = [
         component: HouseDeal,
       },
       {
+        path: "/mapscopy",
+        name: "mapscopy",
+        component: () => import("../views/HouseDealCopy.vue"),
+      },
+      {
         path: "/tables",
         name: "tables",
         component: () => import("../views/RegularTables.vue"),
