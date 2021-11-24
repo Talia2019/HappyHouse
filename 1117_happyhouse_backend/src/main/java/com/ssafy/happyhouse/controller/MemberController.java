@@ -96,6 +96,50 @@ public class MemberController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	@ApiOperation(value = "삭제", notes = "유저 아이디에 해당하는 회원을 탈퇴한다.", response = String.class)
+	@DeleteMapping("/co/{userid}")
+	public ResponseEntity<String> deleteComment(
+			@PathVariable("userid") @ApiParam(value = "삭제eeqw할 유저의 아이디.", required = true) String userid) throws Exception {
+		logger.info("deleteComment - 호출");
+		if (memberService.deleteComment(userid)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+	
+	@ApiOperation(value = "삭제", notes = "유저 아이디에 해당하는 회원을 탈퇴한다.", response = String.class)
+	@DeleteMapping("/bo/{userid}")
+	public ResponseEntity<String> deleteBoard(
+			@PathVariable("userid") @ApiParam(value = "삭제ee할 유저의 아이디.", required = true) String userid) throws Exception {
+		logger.info("deleteBoard - 호출");
+		if (memberService.deleteBoard(userid)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+	
+	@ApiOperation(value = "삭제", notes = "유저 아이디에 해당하는 회원을 탈퇴한다.", response = String.class)
+	@DeleteMapping("/wi/{userid}")
+	public ResponseEntity<String> deleteWishList(
+			@PathVariable("userid") @ApiParam(value = "삭제할 유qq저의 아이디.", required = true) String userid) throws Exception {
+		logger.info("deleteWishList - 호출");
+		if (memberService.deleteWishList(userid)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+	
+	@ApiOperation(value = "삭제", notes = "유저 아이디에 해당하는 회원을 탈퇴한다.", response = String.class)
+	@DeleteMapping("/nt/{userid}")
+	public ResponseEntity<String> deleteNotice(
+			@PathVariable("userid") @ApiParam(value = "삭제할 유저의 we아이디.", required = true) String userid) throws Exception {
+		logger.info("deleteNotice - 호출");
+		if (memberService.deleteNotice(userid)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
 
 	@ApiOperation(value = "회원 탈퇴", notes = "유저 아이디에 해당하는 회원을 탈퇴한다.", response = String.class)
 	@DeleteMapping("/{userid}")
@@ -132,15 +176,26 @@ public class MemberController {
 
 	@ApiOperation(value = "ID 중복체크", notes = "기존에 가입한 ID인지 체크한다.", response = String.class)
 	@GetMapping("/{userid}")
-	public ResponseEntity<Boolean> idCheck(
+	public ResponseEntity<String> idCheck(
 			@PathVariable("userid") @ApiParam(value = "인증할 회원의 아이디.", required = true) String userid) throws Exception {
 		logger.info("idCheck - 호출");
 		logger.info(userid);
 		if (memberService.idCheck(userid)) {
-			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
-		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
+//	@ApiOperation(value = "ID 중복체크", notes = "기존에 가입한 ID인지 체크한다.", response = String.class)
+//	@GetMapping("/{userid}")
+//	public ResponseEntity<Boolean> idCheck(
+//			@PathVariable("userid") @ApiParam(value = "인증할 회원의 아이디.", required = true) String userid) throws Exception {
+//		logger.info("idCheck - 호출");
+//		logger.info(userid);
+//		if (memberService.idCheck(userid)) {
+//			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+//		}
+//		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+//	}
 //	@ApiOperation(value = "ID 중복체크", notes = "기존에 가입한 ID인지 체크한다.", response = String.class)
 //	@GetMapping("/{userid}")
 //	public ResponseEntity<String> idCheck( @PathVariable("userid") @ApiParam(value = "인증할 회원의 아이디.", required = true) String userid) throws Exception {

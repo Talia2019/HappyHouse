@@ -11,6 +11,22 @@ async function findById(userid, success, fail) {
   await api.get(`/user/info/${userid}`).then(success).catch(fail);
 }
 
+async function deleteComment(userid, success, fail) {
+  await api.delete(`/user/co/${userid}`).then(success).catch(fail);
+}
+
+async function deleteBoard(userid, success, fail) {
+  await api.delete(`/user/bo/${userid}`).then(success).catch(fail);
+}
+
+async function deleteWishList(userid, success, fail) {
+  await api.delete(`/user/wi/${userid}`).then(success).catch(fail);
+}
+
+async function deleteNotice(userid, success, fail) {
+  await api.delete(`/user/nt/${userid}`).then(success).catch(fail);
+}
+
 async function deleteMember(userid, success, fail) {
   await api.delete(`/user/${userid}`).then(success).catch(fail);
 }
@@ -29,4 +45,15 @@ async function idCheck(userid, success, fail) {
 
 // function logout(success, fail)
 
-export { login, findById, deleteMember, registerMember, updateMember, idCheck };
+export {
+  login,
+  findById,
+  deleteComment,
+  deleteBoard,
+  deleteWishList,
+  deleteNotice,
+  deleteMember,
+  registerMember,
+  updateMember,
+  idCheck,
+};

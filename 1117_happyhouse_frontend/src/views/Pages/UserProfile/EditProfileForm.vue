@@ -7,7 +7,10 @@
       <b-col cols="4" class="text-right">
         <!-- btn-sm  -->
         <b-button variant="primary" @click="updateProfile">수정</b-button>
-        <b-button variant="primary" @click="deleteUser">탈퇴</b-button>
+        <b-button variant="primary" @click.prevent="deleteUser">탈퇴</b-button>
+        <!-- <b-button variant="primary" @click.prevent="onClickLogout"
+          >로그아웃</b-button
+        > -->
       </b-col>
     </b-row>
 
@@ -156,8 +159,7 @@
   </card>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
-
+import { mapState, mapMutations, mapActions } from "vuex";
 const memberStore = "memberStore";
 
 export default {
@@ -179,8 +181,18 @@ export default {
       username: "",
     };
   },
+  computed: {
+    ...mapState(memberStore, ["userInfo", "isLogin"]),
+  },
   methods: {
-    ...mapActions(memberStore, ["setUserInfo", "memberDelete"]),
+    ...mapActions(memberStore, [
+      "setUserInfo",
+      "commentDelete",
+      "boardDelete",
+      "wishListDelete",
+      "noticeDelete",
+      "memberDelete",
+    ]),
     async updateProfile() {
       this.user.username = this.username;
       console.log(this.user);
@@ -193,13 +205,39 @@ export default {
       this.user.contact = p;
       console.log(p);
     },
-    async deleteUser() {
-      await this.memberDelete(this.user.userid);
+    // ...mapMutations(memberStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
+    // onClickLogout() {
+    //   this.SET_IS_LOGIN(false);
+    //   console.log(this.isLogin);
+    //   this.SET_USER_INFO(null);
+    //   sessionStorage.removeItem("access-token");
+    // },
+    ...mapMutations(memberStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
+    deleteUser() {
+      setTimeout(() => {
+        this.commentDelete(this.user.userid);
+      }, 1000);
+      setTimeout(() => {
+        this.boardDelete(this.user.userid);
+      }, 1000);
+      setTimeout(() => {
+        this.wishListDelete(this.user.userid);
+      }, 1000);
+      setTimeout(() => {
+        this.noticeDelete(this.user.userid);
+      }, 1000);
+      setTimeout(() => {
+        this.memberDelete(this.user.userid);
+      }, 1000);
+      setTimeout(() => {
+        console.log(this.isLogin);
+        this.SET_IS_LOGIN(false);
+        console.log(this.isLogin);
+        this.SET_USER_INFO(null);
+        sessionStorage.removeItem("access-token");
+      }, 2000);
       this.$router.push({ name: "dashboard" });
     },
-  },
-  computed: {
-    ...mapState(memberStore, ["userInfo"]),
   },
   created() {
     this.user = this.userInfo;
