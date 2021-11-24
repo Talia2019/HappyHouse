@@ -7,7 +7,10 @@
       <b-col cols="4" class="text-right">
         <!-- btn-sm  -->
         <b-button variant="primary" @click="updateProfile">수정</b-button>
-        <b-button variant="primary" @click="deleteUser">탈퇴</b-button>
+        <b-button variant="primary" @click.prevent="deleteUser">탈퇴</b-button>
+        <!-- <b-button variant="primary" @click.prevent="onClickLogout"
+          >로그아웃</b-button
+        > -->
       </b-col>
     </b-row>
 
@@ -156,8 +159,7 @@
   </card>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
-
+import { mapState, mapMutations, mapActions } from "vuex";
 const memberStore = "memberStore";
 
 export default {
@@ -179,6 +181,9 @@ export default {
       username: "",
     };
   },
+  computed: {
+    ...mapState(memberStore, ["userInfo", "isLogin"]),
+  },
   methods: {
     ...mapActions(memberStore, ["setUserInfo", "memberDelete"]),
     async updateProfile() {
@@ -193,13 +198,25 @@ export default {
       this.user.contact = p;
       console.log(p);
     },
-    async deleteUser() {
-      await this.memberDelete(this.user.userid);
+    // ...mapMutations(memberStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
+    // onClickLogout() {
+    //   this.SET_IS_LOGIN(false);
+    //   console.log(this.isLogin);
+    //   this.SET_USER_INFO(null);
+    //   sessionStorage.removeItem("access-token");
+    // },
+    ...mapMutations(memberStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
+    deleteUser() {
+      this.memberDelete(this.user.userid);
+      setTimeout(() => {
+        console.log(this.isLogin);
+        this.SET_IS_LOGIN(false);
+        console.log(this.isLogin);
+        this.SET_USER_INFO(null);
+        sessionStorage.removeItem("access-token");
+      }, 1000);
       this.$router.push({ name: "dashboard" });
     },
-  },
-  computed: {
-    ...mapState(memberStore, ["userInfo"]),
   },
   created() {
     this.user = this.userInfo;
