@@ -128,9 +128,10 @@ const memberStore = {
         (response) => {
           if (response.data === "success") {
             console.log(response.data);
+            console.log("ID 중복");
             commit("SET_ID_CHECK_SUCCESS", user);
           } else {
-            console.log("ID 중복확인 실패");
+            console.log("ID 사용가능");
             commit("SET_ID_CHECK_FAIL", user);
           }
         },
