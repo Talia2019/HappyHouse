@@ -35,14 +35,14 @@
     </b-row>
     <b-row ref="pay" style="display: none;">
       <b-col>
-        <b-alert show variant="danger">거래금액 : {{ (parseInt(house.거래금액.replace(",", ""))) | price}} 만원</b-alert>
+        <b-alert show variant="danger">거래금액 : {{ (parseInt(house.거래금액.replace(",", ""))) | price}}원</b-alert>
       </b-col>
     </b-row>
 </b-list-group-item>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 import SideBar from '../SidebarPlugin/SideBar.vue';
 
 const memberStore = "memberStore";
@@ -61,8 +61,29 @@ export default {
   },
   filters: {
     price(value) {
+      let inputNumber = value * 10000
+      let unitWords = ['', '만', '억', '조', '경'];
+      let splitUnit = 10000;
+      let splitCount = unitWords.length;
+      let resultArray = [];
+      let resultString = '';
+
       if (!value) return value;
-      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      else {
+        for (let i = 0; i < splitCount; i++) {
+          let unitResult = (inputNumber % Math.pow(splitUnit, i+1)) / Math.pow(splitUnit, i);
+          unitResult = Math.floor(unitResult);
+          if (unitResult > 0) {
+            resultArray[i] = unitResult;
+          }
+        }
+
+        for (let i = 0; i < resultArray.length; i++) {
+          if(!resultArray[i]) continue;
+          resultString = String(" " + resultArray[i]) + unitWords[i] + resultString;
+        }
+        return resultString;
+      }
     },
     built(value) {
       if (!value) return value;
@@ -105,6 +126,7 @@ export default {
   },
   methods: {
     ...mapActions(["detailHouse", "checkStar", "unCheckStar", "getStarHouse", "putWishList"]),
+    ...mapMutations(["SET_STAR_HOUSE_LIST"]),
     colorChange(flag) {
       this.isColor = flag;
     },

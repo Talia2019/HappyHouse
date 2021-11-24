@@ -67,7 +67,7 @@ export default {
   computed: {
     ...mapState(["houses", "overlaps", "aptLists", "selected", "stars"]),
     ...mapState(memberStore, ["userInfo"]),
-    ...mapGetters(["overlapHouse", "getAptList"])
+    ...mapGetters(["overlapHouse", "getAptList", "getStar"])
   },
   watch: {
     overlapHouse(val) {
@@ -75,10 +75,14 @@ export default {
     },
     getAptList(val) {
       console.log("aptList watch", val);
+    },
+    getStar(val) {
+      console.log('star house watch',val);
+      // this.SET_STAR_HOUSE_LIST(this.stars); 하면 큰일남
     }
   },
   methods: {
-    ...mapMutations(["CLEAR_HOUSE_LIST"]),
+    ...mapMutations(["CLEAR_HOUSE_LIST", "SET_STAR_HOUSE_LIST"]),
     ...mapActions(["getStarHouse"])
   }
 };

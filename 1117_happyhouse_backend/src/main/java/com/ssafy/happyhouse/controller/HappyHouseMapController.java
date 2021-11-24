@@ -93,9 +93,9 @@ public class HappyHouseMapController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 	
-	@DeleteMapping("/delete/{userid}&{aptname}&{dongname}")
-	public ResponseEntity<String> nohouse(@PathVariable String userid, @PathVariable String aptname, @PathVariable String dongname) throws Exception {
-		if (happyHouseMapService.deleteUserHouse(userid, aptname, dongname)) {
+	@DeleteMapping("/delete/{userid}&{aptdong}")
+	public ResponseEntity<String> nohouse(@PathVariable String userid, @PathVariable String aptdong) throws Exception {
+		if (happyHouseMapService.deleteUserHouse(userid, aptdong)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);

@@ -2,11 +2,14 @@
   <div>
     <base-header class="pb-6 pb-8 pt-5 pt-md-6 bg-gradient-success">
       <h1>부동산 실시간 거래정보</h1>
-      <!-- <b-row align-h="end">
-        <b-col cols="2">
-          <b-form-select v-model="year" :options="years"></b-form-select>
-        </b-col>
-      </b-row> -->
+      <b-row align-h="end">
+        <b-button @click="starHouseList" style="background-color: #2186c4">
+          <b-img
+            :src="require('@/assets/img/star.png')"
+            style="width: 30px; height: 30px"
+          ></b-img>
+        </b-button>
+      </b-row>
       <b-row class="mt-4 mb-4 text-center">
         <b-col class="sm-3">
           <b-form-select
@@ -57,6 +60,7 @@
 import HouseList from "@/components/House/HouseList.vue";
 import KakaoMap from "@/components/House/KakaoMap.vue";
 import { mapActions, mapMutations, mapState } from "vuex";
+const memberStore = "memberStore";
 
 export default {
   name: "HouseDeal",
@@ -65,12 +69,14 @@ export default {
     KakaoMap,
   },
   computed: {
-    ...mapState(["sidos", "guguns", "dongs", "houses", "apts"]),
+    ...mapState(["sidos", "guguns", "dongs", "houses", "apts", "stars"]),
+    ...mapState(memberStore, ["userInfo"]),
   },
   created() {
     this.CLEAR_SIDO_LIST();
     this.CLEAR_DEAL_LIST();
     this.sidoList();
+    this.getStarHouse(this.userInfo.userid);
   },
   data() {
     return {
@@ -89,6 +95,7 @@ export default {
       "getDong",
       "getHouse",
       "getOverlapHouse",
+      "getStarHouse",
     ]),
     ...mapMutations([
       "CLEAR_SIDO_LIST",
@@ -97,6 +104,7 @@ export default {
       "CLEAR_HOUSE_LIST",
       "CLEAR_APT_LIST",
       "CLEAR_DEAL_LIST",
+      "SET_STAR_HOUSE_LIST",
     ]),
     sidoList() {
       this.getSido();
@@ -134,6 +142,10 @@ export default {
     },
     getDongName(val) {
       console.log(val);
+    },
+    starHouseList() {
+      console.log(this.stars);
+      this.SET_STAR_HOUSE_LIST(this.stars);
     },
   },
 };

@@ -57,7 +57,7 @@
 	</select>
 	
 	<select id="getStarHouse" parameterType="string" resultType="houseDealDto">
-		select h.houseName, h.dealAmount, h.dealYear, h.dealMonth, h.dealDay, h.area, h.floor, h.jibun, h.dongName, h.houseCode, h.houseDong, h.starCount
+		select h.houseName, h.dealAmount, h.dealYear, h.dealMonth, h.dealDay, h.area, h.floor, h.jibun, h.dongName, h.houseCode, h.houseDong, h.builtYear, h.starCount
 		from housedeal h
 		join wishlist w
 		on h.houseDong=w.aptdong
@@ -70,8 +70,8 @@
 	</insert>
 	
 	<insert id="checkStar" parameterType="houseDealDto">
-		insert into housedeal (houseName, dealAmount, dealYear, dealMonth, dealDay, area, floor, jibun, dongName, houseCode, houseDong, starCount)
-		values (#{houseName}, #{dealAmount}, #{dealYear}, #{dealMonth}, #{dealDay}, #{area}, #{floor}, #{jibun}, #{dongName}, #{houseCode}, #{houseDong}, #{starCount});
+		insert into housedeal (houseName, dealAmount, dealYear, dealMonth, dealDay, area, floor, jibun, dongName, houseCode, houseDong, builtYear, starCount)
+		values (#{houseName}, #{dealAmount}, #{dealYear}, #{dealMonth}, #{dealDay}, #{area}, #{floor}, #{jibun}, #{dongName}, #{houseCode}, #{houseDong}, #{builtYear}, #{starCount});
 	</insert>
 	
 	<!-- <select id="checkHouse" parameterType="string">
