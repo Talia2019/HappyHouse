@@ -220,7 +220,7 @@ export default {
           icon: "error",
           title: "비밀번호를 입력해주세요.",
         });
-      } else if (this.user.userpwd < 6) {
+      } else if (this.user.userpwd.length < 6) {
         // alert("비밀번호를 입력해주세요.");
         Swal.fire({
           icon: "error",
