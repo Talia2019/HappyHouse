@@ -112,7 +112,7 @@ export default {
       "gugunCodeSub",
       "isInfo",
     ]),
-    ...mapState(["sidos", "guguns", "dongs", "houses", "apts", "stars"]),
+    ...mapState(["sidos", "guguns", "dongs", "houses", "apts", "stars", "addr"]),
     ...mapState(memberStore, ["userInfo"]),
   },
   created() {
@@ -173,6 +173,7 @@ export default {
       "CLEAR_APT_LIST",
       "CLEAR_DEAL_LIST",
       "SET_STAR_HOUSE_LIST",
+      "SET_ADDRESS"
     ]),
     subwayList() {
       this.clearSubwayList();
@@ -211,12 +212,14 @@ export default {
     },
     sidoList() {
       this.getSido();
+      this.gugunCode = null;
     },
     gugunList() {
-      console.log(this.sidoCode);
+      console.log(this.sidoCode.code);
       this.CLEAR_GUGUN_LIST();
       this.gugunCode = null;
-      if (this.sidoCode) this.getGugun(this.sidoCode);
+      this.jibunCode = null;
+      if (this.sidoCode.code) this.getGugun(this.sidoCode.code);
     },
     dongList() {
       this.CLEAR_DONG_LIST();
@@ -228,7 +231,9 @@ export default {
       if (this.gugunCode.code) this.getDong(this.gugunCode.code);
     },
     searchApt() {
-      console.log(this.gugunCode.name, this.dongCode.name);
+      var addr = this.sidoCode.name + " " + this.gugunCode.name + " " + this.dongCode.name;
+      this.SET_ADDRESS(addr);
+      console.log(this.addr);
       const code = {
         gugunCode: this.gugunCode,
         dongCode: this.dongCode.code.slice(5),
@@ -250,11 +255,15 @@ export default {
       console.log(this.stars);
       this.SET_STAR_HOUSE_LIST(this.stars);
     },
-    sigudong() {
+    sigudong: function() {
+      var _this = this;
       // this.$router.replace({ name: "card", params: { type: "board" } });
       this.firstClass = "spread-underline-selected";
       this.secondClass = "spread-underline";
       this.isSiGuDong = true;
+      this.CLEAR_SIDO_LIST();
+      this.sidoCode = null;
+      _this.sidoList();
       this.CLEAR_DONG_LIST();
       this.CLEAR_HOUSE_LIST();
       this.CLEAR_APT_LIST();

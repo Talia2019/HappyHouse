@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters} from 'vuex';
+import { mapState, mapGetters, mapMutations} from 'vuex';
 
 export default {
   name: "KakaoMap",
@@ -49,10 +49,7 @@ export default {
     }
   },
   methods: {
-    test: function () {
-      var _this = this;
-      _this.getCategory();
-    },
+    ...mapMutations(["SET_COORDS"]),
     moveLatLng(gudong) {
       const container = document.getElementById("map");
       const options = {
@@ -85,16 +82,14 @@ export default {
         });    
     },
     getLatLng: function(houses) {
-      // var _this = this;
-
+      var _this = this;
       const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        center: this.coords,
         level: 5,
       };
       
       var map = new kakao.maps.Map(container, options);
-      
 
       // 주소-좌표 변환 객체를 생성합니다
       this.geocoder = new kakao.maps.services.Geocoder();
@@ -111,6 +106,8 @@ export default {
               position: coords,
               clickable: true
             });
+            
+            _this.SET_COORDS(coords);
     
             marker.setMap(map);
 
@@ -181,25 +178,28 @@ export default {
             
             // _this.getCategory();
             // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-            map.setCenter(coords);
+              map.setCenter(coords);
           } 
         });    
       })
     },
-    initMap() {
+    initMap: function() {
+      var _this = this;
       const container = document.getElementById("map");
       const options = {
         center: new kakao.maps.LatLng(33.450701, 126.570667),
         level: 5,
       };
       var map = new kakao.maps.Map(container, options);
+      var locPosition = null;
 
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
           var lat = position.coords.latitude;
           var lon = position.coords.longitude;
 
-          var locPosition = new kakao.maps.LatLng(lat, lon);
+          locPosition = new kakao.maps.LatLng(lat, lon);
+          _this.SET_COORDS(locPosition);
           map.setCenter(locPosition);
         })
       }

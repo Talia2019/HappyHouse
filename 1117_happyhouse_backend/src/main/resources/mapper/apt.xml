@@ -50,14 +50,14 @@
 	
 	<!-- 관심부동산 등록 -->
 	<select id="checkUserHouse" parameterType="string" resultType="houseDealDto">
-		select houseName, dealAmount, dealYear, dealMonth, dealDay, area, floor, jibun, dongName, houseCode, starCount
+		select houseName, dealAmount, dealYear, dealMonth, dealDay, area, floor, jibun, dongName, houseCode, houseDong, builtYear, address, starCount
 		from housedeal 
 		where houseName=#{houseName}
 		and dongName=#{dongName}
 	</select>
 	
 	<select id="getStarHouse" parameterType="string" resultType="houseDealDto">
-		select h.houseName, h.dealAmount, h.dealYear, h.dealMonth, h.dealDay, h.area, h.floor, h.jibun, h.dongName, h.houseCode, h.houseDong, h.builtYear, h.starCount
+		select h.houseName, h.dealAmount, h.dealYear, h.dealMonth, h.dealDay, h.area, h.floor, h.jibun, h.dongName, h.houseCode, h.houseDong, h.builtYear, h.address, h.starCount
 		from housedeal h
 		join wishlist w
 		on h.houseDong=w.aptdong
@@ -65,13 +65,13 @@
 	</select>
 	
 	<insert id="putUserHouse" parameterType="wishListDto">
-		insert into wishlist (userid, aptdong, aptname, dongname)
-		values (#{userid}, #{aptdong}, #{aptname}, #{dongname})
+		insert into wishlist (userid, aptdong, address, dongname)
+		values (#{userid}, #{aptdong}, #{address}, #{dongname})
 	</insert>
 	
 	<insert id="checkStar" parameterType="houseDealDto">
-		insert into housedeal (houseName, dealAmount, dealYear, dealMonth, dealDay, area, floor, jibun, dongName, houseCode, houseDong, builtYear, starCount)
-		values (#{houseName}, #{dealAmount}, #{dealYear}, #{dealMonth}, #{dealDay}, #{area}, #{floor}, #{jibun}, #{dongName}, #{houseCode}, #{houseDong}, #{builtYear}, #{starCount});
+		insert into housedeal (houseName, dealAmount, dealYear, dealMonth, dealDay, area, floor, jibun, dongName, houseCode, houseDong, builtYear, address, starCount)
+		values (#{houseName}, #{dealAmount}, #{dealYear}, #{dealMonth}, #{dealDay}, #{area}, #{floor}, #{jibun}, #{dongName}, #{houseCode}, #{houseDong}, #{builtYear}, #{address}, #{starCount});
 	</insert>
 	
 	<!-- <select id="checkHouse" parameterType="string">
@@ -88,13 +88,13 @@
 	<update id="plusStar" parameterType="houseDealDto">
 		update housedeal
 		set starCount=starCount + 1
-		where houseCode=#{houseCode}
+		where houseDong=#{houseDong}
 	</update>
 	
 	<update id="minusStar" parameterType="houseDealDto">
 		update housedeal
 		set starCount=starCount - 1
-		where houseCode=#{houseCode}
+		where houseDong=#{houseDong}
 	</update>
 	
 	<delete id="deleteUserHouse" parameterType="wishListDto">
