@@ -78,6 +78,15 @@ public class BoardController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}	
 	
+	@ApiOperation(value = "게시판 댓글들 삭제", notes = "게시글 번호에 해당하는 모든 댓글의 정보를 삭제한다. 그리고 DB삭제 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@DeleteMapping("/{boardno}")
+	public ResponseEntity<String> deleteAllComment(@PathVariable("boardno") @ApiParam(value = "삭제할 댓글의 글번호.", required = true) int boardno) throws Exception {
+		if (boardService.deleteAllComment(boardno)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}	
+	
 	@ApiOperation(value = "댓글목록", notes = "댓글들을 반환.", response = List.class)
 	@GetMapping("/comment/{articleno}")
 	public ResponseEntity<List<CommentDto>> listComment(@PathVariable("articleno") @ApiParam(value = "댓글들을 얻기위한 부가정보.", required = true)int articleno) throws Exception {

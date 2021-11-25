@@ -24,4 +24,5 @@ public interface BoardMapper {
 	public List<CommentDto> listComment(int articleno) throws SQLException;
 	public int deleteComment(int commentno) throws SQLException;
 	public List<BoardDto> topArticle() throws SQLException;
+	public int deleteAllComment(int boardno) throws SQLException;
 }
