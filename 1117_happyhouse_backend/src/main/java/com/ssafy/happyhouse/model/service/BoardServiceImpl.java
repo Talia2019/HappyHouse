@@ -80,4 +80,9 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.topArticle();
 	}
 
+	@Override
+	public boolean deleteAllComment(int boardno) throws Exception {
+		return boardMapper.deleteAllComment(boardno) == 1;
+	}
+
 }

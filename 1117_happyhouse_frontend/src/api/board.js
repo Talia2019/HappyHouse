@@ -18,6 +18,10 @@ function modifyArticle(article, success, fail) {
   api.put(`/board`, JSON.stringify(article)).then(success).catch(fail);
 }
 
+function deleteAllComment(boardno, success, fail) {
+  api.delete(`/board/all/${boardno}`).then(success).catch(fail);
+}
+
 function deleteArticle(articleno, success, fail) {
   api.delete(`/board/${articleno}`).then(success).catch(fail);
 }
@@ -51,6 +55,7 @@ export {
   writeArticle,
   getArticle,
   modifyArticle,
+  deleteAllComment,
   deleteArticle,
   searchArticle,
   totalArticle,

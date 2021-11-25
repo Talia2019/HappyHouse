@@ -76,15 +76,20 @@
     </div>
   </div>
 </template>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script>
 import {
   getArticle,
   deleteArticle,
+  deleteAllComment,
   writeComment,
   listComment,
 } from "@/api/board";
 import Comment from "@/components/Comment";
 import { mapState } from "vuex";
+
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
 
 const memberStore = "memberStore";
 
@@ -110,6 +115,23 @@ export default {
       return "";
     },
   },
+  // actions: {
+  //   commentAllDelete({ commit }, user) {
+  //     deleteComment(
+  //       user,
+  //       (response) => {
+  //         if (response.data === "success") {
+  //           commit("SET_USER_INFO", user);
+  //         } else {
+  //           console.log("");
+  //         }
+  //       },
+  //       (error) => {
+  //         console.log(error);
+  //       }
+  //     );
+  //   },
+  // },
   created() {
     getArticle(
       this.$route.params.articleno,
@@ -164,12 +186,51 @@ export default {
       });
       //   this.$router.push({ path: `/board/modify/${this.article.articleno}` });
     },
+    // deleteAllComment(boardno) {
+    //   if (confirm("삭제 하시겠습니까?")) {
+    //     deleteAllComment(boardno, () => {
+    //       this.$router.go({
+    //         name: "boardView",
+    //         params: { articleno: this.boardno },
+    //       });
+    //     });
+    //   }
+    // },
     removeArticle() {
-      if (confirm("삭제 하시겠습니까?")) {
-        deleteArticle(this.article.boardNo, () => {
-          this.$router.push({ name: "boardList" });
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger",
+        },
+        buttonsStyling: false,
+      });
+
+      swalWithBootstrapButtons
+        .fire({
+          title: "정말로 삭제하시겠습니까?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "삭제하기",
+          cancelButtonText: "취소",
+          reverseButtons: true,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            swalWithBootstrapButtons.fire("삭제되었습니다!", "", "success");
+            // deleteAllComment(this.comment.boardNo, () => {
+            //   this.$router.push({ name: "boardList" });
+            // });
+            deleteAllComment(this.article.boardNo);
+            deleteArticle(this.article.boardNo, () => {
+              this.$router.push({ name: "boardList" });
+            });
+          } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            swalWithBootstrapButtons.fire("취소되었습니다!", "", "error");
+          }
         });
-      }
     },
     registerComment(value) {
       // console.log(this.article.articleno);

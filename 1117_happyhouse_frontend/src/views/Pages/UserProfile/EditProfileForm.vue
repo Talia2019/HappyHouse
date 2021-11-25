@@ -158,9 +158,13 @@
     </div>
   </card>
 </template>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
 const memberStore = "memberStore";
+
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
 
 export default {
   data() {
@@ -195,9 +199,36 @@ export default {
       "memberDelete",
     ]),
     async updateProfile() {
-      this.user.username = this.username;
-      console.log(this.user);
-      await this.setUserInfo(this.user);
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger",
+        },
+        buttonsStyling: false,
+      });
+
+      swalWithBootstrapButtons
+        .fire({
+          title: "정말로 수정하시겠습니까?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "수정하기",
+          cancelButtonText: "취소",
+          reverseButtons: true,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            swalWithBootstrapButtons.fire("수정되었습니다!", "", "success");
+            this.user.username = this.username;
+            console.log(this.user);
+            this.setUserInfo(this.user);
+          } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            swalWithBootstrapButtons.fire("취소되었습니다!", "", "error");
+          }
+        });
     },
     filterContact() {
       let p = this.user.contact;
@@ -216,29 +247,56 @@ export default {
     // },
     ...mapMutations(memberStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
     deleteUser() {
-      setTimeout(() => {
-        this.commentDelete(this.user.userid);
-      }, 1000);
-      setTimeout(() => {
-        this.boardDelete(this.user.userid);
-      }, 1000);
-      setTimeout(() => {
-        this.wishListDelete(this.user.userid);
-      }, 1000);
-      setTimeout(() => {
-        this.noticeDelete(this.user.userid);
-      }, 1000);
-      setTimeout(() => {
-        this.memberDelete(this.user.userid);
-      }, 1000);
-      setTimeout(() => {
-        console.log(this.isLogin);
-        this.SET_IS_LOGIN(false);
-        console.log(this.isLogin);
-        this.SET_USER_INFO(null);
-        sessionStorage.removeItem("access-token");
-      }, 2000);
-      this.$router.push({ name: "dashboard" });
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger",
+        },
+        buttonsStyling: false,
+      });
+
+      swalWithBootstrapButtons
+        .fire({
+          title: "정말로 탈퇴하시겠습니까?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "탈퇴하기",
+          cancelButtonText: "취소",
+          reverseButtons: true,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            swalWithBootstrapButtons.fire("탈퇴되었습니다!", "", "success");
+            setTimeout(() => {
+              this.commentDelete(this.user.userid);
+            }, 1000);
+            setTimeout(() => {
+              this.boardDelete(this.user.userid);
+            }, 1000);
+            setTimeout(() => {
+              this.wishListDelete(this.user.userid);
+            }, 1000);
+            setTimeout(() => {
+              this.noticeDelete(this.user.userid);
+            }, 1000);
+            setTimeout(() => {
+              this.memberDelete(this.user.userid);
+            }, 1000);
+            setTimeout(() => {
+              console.log(this.isLogin);
+              this.SET_IS_LOGIN(false);
+              console.log(this.isLogin);
+              this.SET_USER_INFO(null);
+              sessionStorage.removeItem("access-token");
+              this.$router.push({ name: "dashboard" });
+            }, 2000);
+          } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            swalWithBootstrapButtons.fire("취소되었습니다!", "", "error");
+          }
+        });
     },
     getPhoneMask(val) {
       let res = this.getMask(val);

@@ -114,6 +114,11 @@
 		delete from comment
 		 where commentno = #{no}
 	</delete>
-	
+		
+	<!-- 게시물 댓글 삭제 -->
+	<delete id="deleteAllComment" parameterType="int">
+		delete from comment
+		 where boardno = #{no}
+	</delete>
 </mapper>
 
