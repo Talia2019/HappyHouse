@@ -9,6 +9,7 @@
 		select name
 		from subway
 		where lineno=#{number}
+		order by name
 	</select>
 	
 	<!-- 역정보 -->

@@ -157,6 +157,19 @@ const routes = [
           },
         ],
       },
+      {
+        path: "/manage",
+        name: "manageuser",
+        component: () => import("../views/ManageUser.vue"),
+        redirect: "/manage/list",
+        children: [
+          {
+            path: "list",
+            name: "UserList",
+            component: () => import("../views/Manage/UserList.vue"),
+          },
+        ],
+      },
     ],
   },
   {

@@ -64,6 +64,14 @@
               >프로필</router-link
             >
           </b-dropdown-item>
+          <b-dropdown-item href="#!" v-if="userInfo.userid == 'admin'">
+            <i class="ni ni-settings-gear-65"></i>
+            <router-link
+              :to="{ name: 'manageuser' }"
+              class="link align-self-center"
+              >회원관리</router-link
+            >
+          </b-dropdown-item>
           <b-dropdown-item href="#!" @click.prevent="onClickLogout">
             <i class="ni ni-user-run"></i>
             <span>로그아웃</span>
