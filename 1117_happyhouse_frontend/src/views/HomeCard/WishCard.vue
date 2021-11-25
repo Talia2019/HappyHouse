@@ -11,11 +11,14 @@
           class="mb-4"
         >
           <template slot="footer">
-            <span class="text-nowrap"
-              >{{ cardList[0].jibun }} {{ cardList[0].dongName }}</span
-            >
+            <span class="text-nowrap">{{ cardList[0].dongName }}</span>
             <br />
-            <span class="text-nowrap">{{ cardList[0].dealAmount }} 원</span>
+            <span class="text-nowrap"
+              >{{
+                parseInt(cardList[0].dealAmount.replace(",", "")) | price
+              }}
+              원</span
+            >
             <br />
             <span class="text-success mr-2"
               >관심 등록 수 {{ cardList[0].starCount }}</span
@@ -33,11 +36,14 @@
           class="mb-4"
         >
           <template slot="footer">
-            <span class="text-nowrap"
-              >{{ cardList[1].jibun }} {{ cardList[1].dongName }}</span
-            >
+            <span class="text-nowrap">{{ cardList[1].dongName }}</span>
             <br />
-            <span class="text-nowrap">{{ cardList[1].dealAmount }} 원</span>
+            <span class="text-nowrap"
+              >{{
+                parseInt(cardList[1].dealAmount.replace(",", "")) | price
+              }}
+              원</span
+            >
             <br />
             <span class="text-success mr-2"
               >관심 등록 수 {{ cardList[1].starCount }}</span
@@ -55,11 +61,14 @@
           class="mb-4"
         >
           <template slot="footer">
-            <span class="text-nowrap"
-              >{{ cardList[2].jibun }} {{ cardList[2].dongName }}</span
-            >
+            <span class="text-nowrap">{{ cardList[2].dongName }}</span>
             <br />
-            <span class="text-nowrap">{{ cardList[2].dealAmount }} 원</span>
+            <span class="text-nowrap"
+              >{{
+                parseInt(cardList[2].dealAmount.replace(",", "")) | price
+              }}
+              원</span
+            >
             <br />
             <span class="text-success mr-2"
               >관심 등록 수 {{ cardList[2].starCount }}</span
@@ -153,6 +162,34 @@ export default {
       this.cardList = response.data;
       // console.log(this.cardList);
     });
+  },
+  filters: {
+    price(value) {
+      let inputNumber = value * 10000;
+      let unitWords = ["", "만", "억", "조", "경"];
+      let splitUnit = 10000;
+      let splitCount = unitWords.length;
+      let resultArray = [];
+      let resultString = "";
+
+      if (!value) return value;
+      else {
+        for (let i = 0; i < splitCount; i++) {
+          let unitResult =
+            (inputNumber % Math.pow(splitUnit, i + 1)) / Math.pow(splitUnit, i);
+          unitResult = Math.floor(unitResult);
+          if (unitResult > 0) {
+            resultArray[i] = unitResult;
+          }
+        }
+
+        for (let i = 0; i < resultArray.length; i++) {
+          if (!resultArray[i]) continue;
+          resultString = String(resultArray[i]) + unitWords[i] + resultString;
+        }
+        return resultString;
+      }
+    },
   },
 };
 </script>
