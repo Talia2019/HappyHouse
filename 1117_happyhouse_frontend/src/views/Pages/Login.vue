@@ -104,8 +104,12 @@
     </b-container>
   </div>
 </template>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script>
 import { mapState, mapActions } from "vuex";
+
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
 
 const memberStore = "memberStore";
 
@@ -130,6 +134,18 @@ export default {
       if (this.isLogin) {
         await this.getUserInfo(token);
         this.$router.push({ name: "dashboard" });
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "로그인 성공!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "아이디와 패스워드를 확인해 주세요!",
+        });
       }
     },
     movePage() {
