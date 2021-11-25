@@ -2,19 +2,19 @@
   <div>
     <base-header class="pb-4 pt-5 pt-md-6 bg-gradient-success">
       <h1>부동산 실시간 거래정보</h1>
-      <b-row align-h="end">
-        <b-button @click="starHouseList" style="background-color: #2186c4">
-          <b-img
-            :src="require('@/assets/img/star.png')"
-            style="width: 30px; height: 30px"
-          ></b-img>
-        </b-button>
-      </b-row>
-      <div class="ml-3 mt-1 mb-3">
+      <div class="ml-3 mt-1 mb-3" style="float: left;">
         <span :class="firstClass" @click="sigudong()">시/구/동</span>
         <span :class="secondClass" @click="subway()">지하철역</span>
         <!-- <hr style="border: solid; height: 3px background: #ccc;" /> -->
       </div>
+      <b-row align-h="end">
+        <b-button @click="starHouseList" style="background-color: #2186c4;">
+          <b-img
+            :src="require('@/assets/img/star.png')"
+            style="width: 30px; height: 30px;"
+          ></b-img>
+        </b-button>
+      </b-row>
       <b-row class="mt-4 mb-4 text-center" v-if="isSiGuDong">
         <b-col class="sm-3">
           <b-form-select
