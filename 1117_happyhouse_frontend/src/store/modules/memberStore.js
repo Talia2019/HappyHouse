@@ -4,6 +4,10 @@ import {
   findById,
   updateMember,
   registerMember,
+  deleteComment,
+  deleteBoard,
+  deleteWishList,
+  deleteNotice,
   deleteMember,
   idCheck,
 } from "@/api/member.js";
@@ -106,6 +110,66 @@ const memberStore = {
         }
       );
     },
+    commentDelete({ commit }, user) {
+      deleteComment(
+        user,
+        (response) => {
+          if (response.data === "success") {
+            commit("SET_USER_INFO", user);
+          } else {
+            console.log("회원 탈퇴 실패!!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    boardDelete({ commit }, user) {
+      deleteBoard(
+        user,
+        (response) => {
+          if (response.data === "success") {
+            commit("SET_USER_INFO", user);
+          } else {
+            console.log("회원 탈퇴 실패!!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    wishListDelete({ commit }, user) {
+      deleteWishList(
+        user,
+        (response) => {
+          if (response.data === "success") {
+            commit("SET_USER_INFO", user);
+          } else {
+            console.log("회원 탈퇴 실패!!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    noticeDelete({ commit }, user) {
+      deleteNotice(
+        user,
+        (response) => {
+          if (response.data === "success") {
+            commit("SET_USER_INFO", user);
+          } else {
+            console.log("회원 탈퇴 실패!!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
     memberDelete({ commit }, user) {
       deleteMember(
         user,
@@ -128,9 +192,10 @@ const memberStore = {
         (response) => {
           if (response.data === "success") {
             console.log(response.data);
+            console.log("ID 중복");
             commit("SET_ID_CHECK_SUCCESS", user);
           } else {
-            console.log("ID 중복확인 실패");
+            console.log("ID 사용가능");
             commit("SET_ID_CHECK_FAIL", user);
           }
         },

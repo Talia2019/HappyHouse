@@ -144,7 +144,6 @@ export default {
             '    <div class="info">' + 
             '        <div class="title">' + 
                         house['아파트'] + 
-            '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' + 
             '        </div>' + 
             '        <div class="body">' + 
             '            <div class="img">' +
