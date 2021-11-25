@@ -76,6 +76,7 @@
     </div>
   </div>
 </template>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script>
 import {
   getArticle,
@@ -85,6 +86,9 @@ import {
 } from "@/api/board";
 import Comment from "@/components/Comment";
 import { mapState } from "vuex";
+
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
 
 const memberStore = "memberStore";
 
@@ -165,11 +169,36 @@ export default {
       //   this.$router.push({ path: `/board/modify/${this.article.articleno}` });
     },
     removeArticle() {
-      if (confirm("삭제 하시겠습니까?")) {
-        deleteArticle(this.article.boardNo, () => {
-          this.$router.push({ name: "boardList" });
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger",
+        },
+        buttonsStyling: false,
+      });
+
+      swalWithBootstrapButtons
+        .fire({
+          title: "정말로 삭제하시겠습니까?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "삭제하기",
+          cancelButtonText: "취소",
+          reverseButtons: true,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            swalWithBootstrapButtons.fire("삭제되었습니다!", "", "success");
+            deleteArticle(this.article.boardNo, () => {
+              this.$router.push({ name: "boardList" });
+            });
+          } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            swalWithBootstrapButtons.fire("취소되었습니다!", "", "error");
+          }
         });
-      }
     },
     registerComment(value) {
       // console.log(this.article.articleno);
