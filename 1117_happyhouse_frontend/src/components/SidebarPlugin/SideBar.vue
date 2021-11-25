@@ -12,7 +12,7 @@
       <!--Toggler-->
       <navbar-toggle-button @click.native="showSidebar"> </navbar-toggle-button>
       <router-link class="navbar-brand" to="/">
-        <img src="@/img/logo.png" class="navbar-brand-img" alt="..." />
+        <img src="@/img/logoblack.png" class="navbar-brand-img" alt="..." />
       </router-link>
 
       <slot name="mobile-right">
@@ -102,19 +102,25 @@
         <ul class="navbar-nav mb-md-3">
           <li class="nav-item">
             <a class="nav-link" href="#">
-              <i class="ni ni-spaceship"></i> 노유진
+              <i class="ni ni-spaceship text-yellow"></i> 노유진
             </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"> <i class="ni ni-atom"></i> 배지환 </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">
-              <i class="ni ni-planet"></i> 정지영
+              <i class="ni ni-diamond text-info"></i> 배지환
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="ni ni-favourite-28 text-red"></i> 정지영
             </a>
           </li>
         </ul>
-        <img src="@/img/ssafy.png" class="ssafy-img" alt="..." />
+        <img
+          src="@/img/ssafy.png"
+          alt="..."
+          style="width: 30px; height: auto"
+        />
       </div>
     </div>
   </nav>
@@ -165,9 +171,10 @@ export default {
   // },
 };
 </script>
-<style scoped>
+<style>
 .ssafy-img {
-  width: 150px;
-  height: 100px;
+  width: 0.1rem;
+  max-width: 10px;
+  /* object-fit: cover; */
 }
 </style>
