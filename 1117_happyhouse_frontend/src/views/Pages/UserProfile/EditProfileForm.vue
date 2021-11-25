@@ -259,8 +259,8 @@ export default {
               console.log(this.isLogin);
               this.SET_USER_INFO(null);
               sessionStorage.removeItem("access-token");
+              this.$router.push({ name: "dashboard" });
             }, 2000);
-            this.$router.push({ name: "dashboard" });
           } else if (
             /* Read more about handling dismissals below */
             result.dismiss === Swal.DismissReason.cancel
