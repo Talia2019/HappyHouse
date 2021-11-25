@@ -1,5 +1,5 @@
 {
-  "name": "1117_happyhouse_frontend",
+  "name": "ZIPUP",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -65,7 +65,8 @@
       "parser": "babel-eslint"
     },
     "rules": {
-      "vue/no-unused-components": "off"
+      "vue/no-unused-components": "off",
+      "vue/no-use-v-if-with-v-for": "off"
     }
   },
   "browserslist": [

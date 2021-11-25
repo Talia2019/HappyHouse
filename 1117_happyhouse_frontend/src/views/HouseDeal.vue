@@ -3,7 +3,7 @@
     <base-header class="pb-4 pt-5 pt-md-6 bg-gradient-success">
       <h1>부동산 실시간 거래정보</h1>
       <div class="ml-3 mt-1 mb-3" style="float: left;">
-        <span :class="firstClass" @click="sigudong()">시/구/동</span>
+        <span :class="firstClass" @click="sigudong()">지역</span>
         <span :class="secondClass" @click="subway()">지하철역</span>
         <!-- <hr style="border: solid; height: 3px background: #ccc;" /> -->
       </div>
