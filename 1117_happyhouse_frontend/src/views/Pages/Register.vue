@@ -64,7 +64,7 @@
                   <base-input
                     alternative
                     class="mb-3"
-                    prepend-icon="ni ni-single-02"
+                    prepend-icon="ni ni-single-02 text-red"
                     placeholder="Id"
                     id="userid"
                     :rules="{ required: true }"
@@ -75,7 +75,7 @@
                   <base-input
                     alternative
                     class="mb-3"
-                    prepend-icon="ni ni-tag"
+                    prepend-icon="ni ni-tag text-red"
                     placeholder="Name"
                     id="username"
                     :rules="{ required: true }"
@@ -86,7 +86,7 @@
                   <base-input
                     alternative
                     class="mb-3"
-                    prepend-icon="ni ni-email-83"
+                    prepend-icon="ni ni-email-83 text-red"
                     placeholder="Email"
                     id="email"
                     :rules="{ required: true, email: true }"
@@ -97,7 +97,7 @@
                   <base-input
                     alternative
                     class="mb-3"
-                    prepend-icon="ni ni-lock-circle-open"
+                    prepend-icon="ni ni-lock-circle-open text-red"
                     placeholder="password"
                     type="password"
                     id="userpwd"
