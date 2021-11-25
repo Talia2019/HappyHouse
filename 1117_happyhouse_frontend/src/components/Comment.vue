@@ -124,14 +124,12 @@ export default {
       }
     },
     deleteComment(commentno) {
-      if (confirm("삭제 하시겠습니까?")) {
-        deleteComment(commentno, () => {
-          this.$router.go({
-            name: "boardView",
-            params: { articleno: this.boardno },
-          });
+      deleteComment(commentno, () => {
+        this.$router.go({
+          name: "boardView",
+          params: { articleno: this.boardno },
         });
-      }
+      });
     },
   },
 };
