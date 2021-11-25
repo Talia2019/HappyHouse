@@ -4,7 +4,7 @@ public class WishListDto {
 
    private String userid;
    private String aptdong;
-   private String aptname;
+   private String address;
    private String dongname;
    
    public String getUserid() {
@@ -19,11 +19,11 @@ public class WishListDto {
    public void setAptdong(String aptdong) {
 	   this.aptdong = aptdong;
    }
-   public String getAptname() {
-		return aptname;
+   public String getAddress() {
+	   return address;
    }
-   public void setAptname(String aptname) {
-		this.aptname = aptname;
+   public void setAddress(String address) {
+	   this.address = address;
    }
    public String getDongname() {
 		return dongname;

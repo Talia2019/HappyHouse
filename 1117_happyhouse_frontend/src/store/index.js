@@ -23,6 +23,8 @@ export default new Vuex.Store({
     aptLists: [],
     gudong: null,
     stars: [],
+    addr: "",
+    coords: null,
   },
   getters: {
     getLocation(state) {
@@ -51,11 +53,7 @@ export default new Vuex.Store({
         }
       });
       state.overlaps.sort((a, b) => {
-        return a["아파트"] < b["아파트"]
-          ? -1
-          : a["아파트"] > b["아파트"]
-          ? 1
-          : 0;
+        return a["아파트"] < b["아파트"] ? -1 : a["아파트"] > b["아파트"] ? 1 : 0;
       });
       state.apts = [{ value: null, text: "아파트" }];
       state.overlaps.forEach((over) => {
@@ -73,7 +71,10 @@ export default new Vuex.Store({
   mutations: {
     SET_SIDO_LIST(state, sidos) {
       sidos.forEach((sido) => {
-        state.sidos.push({ value: sido.sidoCode, text: sido.sidoName });
+        state.sidos.push({ 
+          value: { code: sido.sidoCode, name: sido.sidoName },
+          text: sido.sidoName
+        });
       });
     },
     SET_GUGUN_LIST(state, guguns) {
@@ -125,6 +126,12 @@ export default new Vuex.Store({
         });
       });
       console.log(state.houses);
+    },
+    SET_ADDRESS(state, addr) {
+      state.addr = addr;
+    },
+    SET_COORDS(state, coords) {
+      state.coords = coords;
     },
     CLEAR_SIDO_LIST(state) {
       state.sidos = [{ value: null, text: "시도" }];
@@ -234,6 +241,7 @@ export default new Vuex.Store({
         dongName: param[0].법정동,
         houseCode: param[0].일련번호,
         houseDong: param[0].법정동 + " " + param[0].아파트,
+        address: param[2],
         starCount: 1,
       };
 
@@ -272,6 +280,7 @@ export default new Vuex.Store({
       const params1 = {
         userid: param[1],
         aptdong: param[0].법정동 + " " + param[0].아파트,
+        address: param[2]
       };
       http
         .post("/map/userhouse", params1)
@@ -313,6 +322,7 @@ export default new Vuex.Store({
         dongName: param[0].법정동,
         houseCode: param[0].일련번호,
         houseDong: param[0].법정동 + " " + param[0].아파트,
+        address: param[2],
         starCount: 1,
       };
       // const params1 = { userid: param[1], aptcode: param[0].일련번호 };

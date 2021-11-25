@@ -4,7 +4,7 @@
     @mouseout="colorChange(false)"
     :class="{ 'mouse-over-bgcolor': isColor }">
   <b-row class="m-2">
-    <b-img id="star"
+    <b-img v-if="userInfo" id="star"
       @click="toggleStar"
       :src="star" 
       style="width:30px;height:30px;"></b-img>
@@ -94,12 +94,9 @@ export default {
     console.log('houselistrow creat!!!!')
     this.stars.forEach((star) => {
       if (star.houseName === this.house.아파트) {
-        console.log("same!!");
         this.star = require("@/assets/img/star.png");
         return;
-      } else {
-        console.log("no same");
-      }
+      } 
     })
   },
   updated() {
@@ -108,12 +105,9 @@ export default {
     var flag = false;
     this.stars.forEach((star) => {
       if (star.houseName === this.house.아파트) {
-        console.log("same!!");
         this.star = require("@/assets/img/star.png");
         flag = true;
         return;
-      } else {
-        console.log("no same");
       }
     })
     if (!flag) {
@@ -122,7 +116,7 @@ export default {
   },
   computed: {
     ...mapState(memberStore, ["userInfo"]),
-    ...mapState(["stars"])
+    ...mapState(["stars", "addr"])
   },
   methods: {
     ...mapActions(["detailHouse", "checkStar", "unCheckStar", "getStarHouse", "putWishList"]),
@@ -149,19 +143,19 @@ export default {
         }
       })
     },
-    toggleStar() {
+    async toggleStar() {
       if (this.star.slice(5, 9) === 'star'){
-        this.star = require("@/assets/img/gray.png");
-        const params = [this.house, this.userInfo.userid] ;
+        // this.star = require("@/assets/img/gray.png");
+        const params = [this.house, this.userInfo.userid, this.addr] ;
         if (this.unCheckStar(params)) {
-          this.getStarHouse(this.userInfo.userid);
+          await this.getStarHouse(this.userInfo.userid);
         }
       } else if (this.star.slice(5, 9) === 'gray') {
-        this.star = require("@/assets/img/star.png");
-        const params = [this.house, this.userInfo.userid] ;
+        // this.star = require("@/assets/img/star.png");
+        const params = [this.house, this.userInfo.userid, this.addr] ;
         if (this.checkStar(params)) {
-          this.putWishList(params);
-          this.getStarHouse(this.userInfo.userid);
+          await this.putWishList(params);
+          await this.getStarHouse(this.userInfo.userid);
         }
       }
     }
