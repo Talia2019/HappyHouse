@@ -138,6 +138,7 @@ export default {
     loginWithKakao() {
       const params = {
         redirectUri: "https://zipup.netlify.app/dashboard",
+        // redirectUri: "http://localhost:8080/dashboard",
       };
       window.Kakao.Auth.authorize(params);
     },
