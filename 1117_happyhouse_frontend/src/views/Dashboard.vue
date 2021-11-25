@@ -150,8 +150,7 @@ import { getKakaoToken, getKakaoUserInfo } from "@/api/login";
 import { mapState, mapActions } from "vuex";
 
 const memberStore = "memberStore";
-
-window.Kakao.init("da17ab51974602aad4f466bacd9024f3");
+window.Kakao.init("6082f567e1510e9c68f57509bd7e571c");
 
 export default {
   components: {
@@ -231,20 +230,38 @@ export default {
       this.$router.push({ name: "wishcard" });
     },
     async setKakaoToken() {
-      // console.log("카카오 인증 코드", this.$route.query.code);
+      // console.log("카카오 인증 코드!", this.$route.query.code);
+      // const query = this.$route.query.code;
       const { data } = await getKakaoToken(this.$route.query.code);
       // console.log(data);
-      // if (data.error) {
-      //   alert("카카오톡 로그인 오류입니다.");
-      //   this.$router.replace("/login");
-      //   return;
-      // }
-
+      if (data.error) {
+        alert("카카오톡 로그인 오류입니다.");
+        this.$router.replace("/login");
+        return;
+      }
       window.Kakao.Auth.setAccessToken(data.access_token);
       // this.$cookies.set("access-token", data.access_token, "1d");
       // this.$cookies.set("refresh-token", data.refresh_token, "1d");
 
       const res = await getKakaoUserInfo();
+      if (!res.kakao_account.email) {
+        alert("이메일 동의가 필요합니다.");
+        // window.Kakao.Auth.logout(function () {
+        //   console.log(window.Kakao.Auth.getAccessToken());
+        // });
+        window.Kakao.API.request({
+          url: "v1/user/unlink",
+          success: function (response) {
+            console.log("탈퇴", response);
+            // callbackFunction();
+          },
+          fail: function (error) {
+            console.log("탈퇴실패", error);
+          },
+        });
+        this.loginWithKakao();
+        return;
+      }
       let user = {
         userid: res.kakao_account.email.split("@")[0],
         userpwd: "wlqdjqqlqjs1",
@@ -258,9 +275,11 @@ export default {
         this.$router.push({ name: "dashboard" });
       } else {
         // console.log("카카오 회원가입");
+        var name = res.kakao_account.profile.nickname;
+        if (!name) name = "회원";
         let user = {
           userid: res.kakao_account.email.split("@")[0],
-          username: res.kakao_account.profile.nickname,
+          username: name,
           userpwd: "wlqdjqqlqjs1",
           // 이거 보안상 문제되지만...일단이렇게...ㅎ
         };
@@ -287,6 +306,12 @@ export default {
     // moneycard() {
     //   this.$router.push({ name: "moneycard" });
     // },
+    loginWithKakao() {
+      const params = {
+        redirectUri: "http://localhost:8080/dashboard",
+      };
+      window.Kakao.Auth.authorize(params);
+    },
   },
   mounted() {
     this.initBigChart(0);

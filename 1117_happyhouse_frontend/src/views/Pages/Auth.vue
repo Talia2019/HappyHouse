@@ -5,11 +5,7 @@
 </template>
 
 <script>
-import {
-  getKakaoToken,
-  getKakaoUserInfo,
-  naverService,
-} from "@/services/login";
+import { getKakaoToken, getKakaoUserInfo } from "@/api/login.js";
 export default {
   name: "Auth",
   created() {
@@ -17,14 +13,9 @@ export default {
       this.setKakaoToken();
     }
   },
-  mounted() {
-    if (this.$route.hash) {
-      naverService().getUserInfo();
-    }
-  },
   methods: {
     async setKakaoToken() {
-      console.log("카카오 인증 코드", this.$route.query.code);
+      console.log("카카오 인증 코드!", this.$route.query.code);
       const { data } = await getKakaoToken(this.$route.query.code);
       if (data.error) {
         alert("카카오톡 로그인 오류입니다.");

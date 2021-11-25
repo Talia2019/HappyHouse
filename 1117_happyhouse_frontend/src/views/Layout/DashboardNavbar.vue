@@ -166,6 +166,20 @@ export default {
     },
     ...mapMutations(memberStore, ["SET_IS_LOGIN", "SET_USER_INFO"]),
     onClickLogout() {
+      // window.Kakao.Auth.logout((res) => {
+      //   console.log("카카오로그아웃");
+      //   if (!res) return;
+      // });
+      // window.Kakao.API.request({
+      //   url: "v1/user/unlink",
+      //   success: function (response) {
+      //     console.log("탈퇴", response);
+      //     // callbackFunction();
+      //   },
+      //   fail: function (error) {
+      //     console.log("탈퇴실패", error);
+      //   },
+      // });
       this.SET_IS_LOGIN(false);
       this.SET_USER_INFO(null);
       sessionStorage.removeItem("access-token");

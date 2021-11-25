@@ -105,6 +105,28 @@
                     v-model="user.userpwd"
                   >
                   </base-input>
+                  <base-input
+                    alternative
+                    class="mb-3"
+                    prepend-icon="ni ni-square-pin"
+                    placeholder="address"
+                    type="text"
+                    id="address"
+                    v-model="user.address"
+                  >
+                  </base-input>
+                  <base-input
+                    alternative
+                    class="mb-3"
+                    prepend-icon="ni ni-mobile-button"
+                    placeholder="contact"
+                    type="tel"
+                    :rules="{ max: 13 }"
+                    id="contact"
+                    v-model="contact"
+                    @keyup="getPhoneMask(contact)"
+                  >
+                  </base-input>
                   <div class="text-center">
                     <div class="text-center">
                       <base-button
@@ -112,8 +134,8 @@
                         variant="primary"
                         class="my-4"
                         @click="confirm"
-                        >계정 생성</base-button
-                      >
+                        >계정 생성
+                      </base-button>
                     </div>
                   </div>
                 </b-form>
@@ -144,7 +166,10 @@ export default {
         userpwd: null,
         email: null,
         idck: null,
+        address: null,
+        contact: null,
       },
+      contact: null,
     };
   },
   computed: {
@@ -158,7 +183,8 @@ export default {
         this.user.idck == "생성가능한 ID입니다." &&
         this.user.username != null &&
         this.user.email != null &&
-        this.user.userpwd != null
+        this.user.userpwd != null &&
+        this.user.userpwd.length >= 6
       ) {
         this.setRegister(this.user);
         // alert("가입을 축하드립니다.");
@@ -193,6 +219,12 @@ export default {
         Swal.fire({
           icon: "error",
           title: "비밀번호를 입력해주세요.",
+        });
+      } else if (this.user.userpwd < 6) {
+        // alert("비밀번호를 입력해주세요.");
+        Swal.fire({
+          icon: "error",
+          title: "6자 이상의 비밀번호를 입력해주세요.",
         });
       } else {
         // alert("ID 중복체크 버튼을 눌러 중복여부를 확인해주세요.");
@@ -235,6 +267,79 @@ export default {
           title: "ID를 입력해주세요.",
         });
       }
+    },
+    getPhoneMask(val) {
+      let res = this.getMask(val);
+      this.contact = res;
+      this.user.contact = res;
+      //서버 전송 값에는 '-' 를 제외하고 숫자만 저장
+      // this.model.contact = this.contact.replace(/[^0-9]/g, "");
+    },
+
+    getMask(phoneNumber) {
+      if (!phoneNumber) return phoneNumber;
+      phoneNumber = phoneNumber.replace(/[^0-9]/g, "");
+      let res = "";
+      if (phoneNumber.length < 3) {
+        res = phoneNumber;
+        console.log(res);
+      } else {
+        if (phoneNumber.substr(0, 2) == "02") {
+          if (phoneNumber.length <= 5) {
+            //02-123-5678
+            res = phoneNumber.substr(0, 2) + "-" + phoneNumber.substr(2, 3);
+          } else if (phoneNumber.length > 5 && phoneNumber.length <= 9) {
+            //02-123-5678
+            res =
+              phoneNumber.substr(0, 2) +
+              "-" +
+              phoneNumber.substr(2, 3) +
+              "-" +
+              phoneNumber.substr(5);
+          } else if (phoneNumber.length > 9) {
+            //02-1234-5678
+            res =
+              phoneNumber.substr(0, 2) +
+              "-" +
+              phoneNumber.substr(2, 4) +
+              "-" +
+              phoneNumber.substr(6);
+          }
+        } else {
+          if (phoneNumber.length < 8) {
+            res = phoneNumber;
+          } else if (phoneNumber.length == 8) {
+            res = phoneNumber.substr(0, 4) + "-" + phoneNumber.substr(4);
+          } else if (phoneNumber.length == 9) {
+            res =
+              phoneNumber.substr(0, 3) +
+              "-" +
+              phoneNumber.substr(3, 3) +
+              "-" +
+              phoneNumber.substr(6);
+          } else if (phoneNumber.length == 10) {
+            res =
+              phoneNumber.substr(0, 3) +
+              "-" +
+              phoneNumber.substr(3, 3) +
+              "-" +
+              phoneNumber.substr(6);
+          } else if (phoneNumber.length > 10) {
+            //010-1234-5678
+            res =
+              phoneNumber.substr(0, 3) +
+              "-" +
+              phoneNumber.substr(3, 4) +
+              "-" +
+              phoneNumber.substr(7);
+          }
+
+          if (res.length > 13) {
+            res = res.substr(0, 13);
+          }
+        }
+      }
+      return res;
     },
   },
 };

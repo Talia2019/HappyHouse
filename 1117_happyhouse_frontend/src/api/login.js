@@ -3,7 +3,7 @@ import axios from "axios";
 
 const kakaoHeader = {
   //admin
-  Authorization: "56c6e7317d0e472b73b33e4e0bd71e61",
+  Authorization: "d5321e3df3010ac1b3df17cc19b079e7",
   "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
 };
 
@@ -13,7 +13,7 @@ const getKakaoToken = async (code) => {
     const data = {
       grant_type: "authorization_code",
       // restAPI
-      client_id: "3820ec1c958af28f735cd65d836b4748",
+      client_id: "614212d90899a7993f687a5fab4d7fb4",
       redirect_uri: "http://localhost:8080/dashboard",
       code: code,
     };
@@ -25,7 +25,8 @@ const getKakaoToken = async (code) => {
       queryString,
       { headers: kakaoHeader }
     );
-    // console.log("카카오 토큰", queryString);
+    console.log("카카오 토큰");
+    console.log(result);
     return result;
   } catch (e) {
     return e;
