@@ -82,7 +82,10 @@
                 }}</b-dropdown-item>
               </b-dropdown>
             </template>
-            <b-form-input v-model="searchWord"></b-form-input>
+            <b-form-input
+              @keyup.enter="searchList()"
+              v-model="searchWord"
+            ></b-form-input>
 
             <b-input-group-append>
               <b-button @click="searchList()" variant="primary">검색</b-button>
