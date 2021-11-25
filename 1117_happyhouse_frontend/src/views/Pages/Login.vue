@@ -94,9 +94,9 @@
           </b-card>
           <b-row class="mt-3">
             <b-col cols="6">
-              <router-link to="/dashboard" class="text-light"
+              <!-- <router-link to="/dashboard" class="text-light"
                 ><small>Forgot password?</small></router-link
-              >
+              > -->
             </b-col>
             <b-col cols="6" class="text-right">
               <router-link to="/register" class="text-light"
@@ -142,7 +142,7 @@ export default {
     },
     loginWithKakao() {
       const params = {
-        redirectUri: "http://localhost:8080/dashboard",
+        redirectUri: "https://zipup.netlify.app/dashboard",
       };
       window.Kakao.Auth.authorize(params);
     },
