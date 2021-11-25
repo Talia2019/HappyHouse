@@ -198,9 +198,36 @@ export default {
       "memberDelete",
     ]),
     async updateProfile() {
-      this.user.username = this.username;
-      console.log(this.user);
-      await this.setUserInfo(this.user);
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger",
+        },
+        buttonsStyling: false,
+      });
+
+      swalWithBootstrapButtons
+        .fire({
+          title: "정말로 수정하시겠습니까?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "수정하기",
+          cancelButtonText: "취소",
+          reverseButtons: true,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            swalWithBootstrapButtons.fire("수정되었습니다!", "", "success");
+            this.user.username = this.username;
+            console.log(this.user);
+            this.setUserInfo(this.user);
+          } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            swalWithBootstrapButtons.fire("취소되었습니다!", "", "error");
+          }
+        });
     },
     filterContact() {
       let p = this.user.contact;
