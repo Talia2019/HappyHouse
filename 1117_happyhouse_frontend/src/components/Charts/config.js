@@ -152,7 +152,7 @@ function chartOptions() {
   });
 
   return options;
-};
+}
 
 let initialized = false
 
