@@ -12,7 +12,7 @@ Chart.elements.Rectangle.prototype.draw = function() {
   // Set Radius Here
   // If radius is large enough to cause drawing errors a max radius is imposed
   let cornerRadius = 6;
-
+  console.log(radius);
   if (!vm.horizontal) {
     // bar
     left = vm.x - vm.width / 2;
@@ -95,6 +95,7 @@ Chart.elements.Rectangle.prototype.draw = function() {
     }
 
     let nextCorner = cornerAt(nextCornerId);
+    console.log(nextCorner);
 
     let width = corners[2][0] - corners[1][0];
     let height = corners[0][1] - corners[1][1];
