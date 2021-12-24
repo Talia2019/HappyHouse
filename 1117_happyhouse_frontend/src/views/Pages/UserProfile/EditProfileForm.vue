@@ -376,7 +376,7 @@ export default {
     this.user = this.userInfo;
     this.username = this.user.username;
     this.contact = this.user.contact;
-    // console.log(this.user);
+    console.log(this.userInfo);
   },
   filters: {
     phone(value) {
