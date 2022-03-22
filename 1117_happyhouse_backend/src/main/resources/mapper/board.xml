@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.model.mapper.BoardMapper">
+
+	<!-- 게시글 전체 조회 -->
+	<select id="listArticle" parameterType="map" resultType="boardDto">
+		select boardno, userid, subject, content, hit ,
+				case when date_format(regtime, '%Y%m%d') = date_format(now(), '%Y%m%d')
+				then date_format(regtime, '%y.%m.%d')
+				else date_format(regtime, '%y.%m.%d')
+				end regtime
+		from board 
+		<if test="word != null and word != ''">
+			<if test="key == 'subject'">
+				where subject like concat('%', #{word}, '%')
+			</if>
+			<if test="key != 'subject'">
+				where ${key} = #{word}
+			</if>
+		</if>
+		 order by boardno desc
+		limit #{start}, #{spp}
+	</select>
+	
+	<!-- 게시글 상세 조회 -->
+	<select id="getArticle" parameterType="int" resultType="boardDto">
+		select boardno, userid, subject, content, hit, 
+				case when date_format(regtime, '%Y%m%d') = date_format(now(), '%Y%m%d')
+				then date_format(regtime, '%Y-%m-%d %H:%i:%s')
+				else date_format(regtime, '%y.%m.%d')
+				end regtime
+		from board 
+		where boardno = #{no}
+	</select>
+
+	<!-- 게시글 등록 -->
+	<insert id="writeArticle" parameterType="boardDto">
+		insert into board (userid, subject, content, hit)
+		values (#{userId}, #{subject}, #{content}, 0)
+	</insert>
+	
+	<!-- 게시글 수정 -->
+	<update id="modifyArticle" parameterType="boardDto">
+		update board
+		set subject = #{subject}, 
+			content = #{content},
+			regtime=now()
+			 
+		 where boardno = #{boardNo}
+	</update>
+
+	<!-- 게시글 삭제 -->
+	<delete id="deleteArticle" parameterType="int">
+		delete from board
+		 where boardno = #{no}
+	</delete>
+	
+<!-- 	<delete id="deleteMemo" parameterType="int"> -->
+<!-- 		delete from memo -->
+<!-- 		where boardno = #{no} -->
+<!-- 	</delete> -->
+	
+	<select id="getTotalCount" parameterType="map" resultType="int">
+		select count(boardNo)
+		from board
+		<if test="word != null and word != ''">
+			<if test="key == 'subject'">
+				where subject like concat('%', #{word}, '%')
+			</if>
+			<if test="key != 'subject'">
+				where ${key} = #{word}
+			</if>
+		</if>
+	</select>
+	
+	<update id="updateHit" parameterType="int">
+		update board
+		set hit = hit + 1
+		where boardno = #{no}
+	</update>
+	
+		<!-- 인기글 -->
+	<select id="topArticle" resultType="boardDto">
+		select boardno, userid, subject, content, hit
+		from board 
+		 order by hit desc
+		limit 3
+	</select>
+	
+	
+<!-- 	댓글 -->
+		<!-- 댓글 등록 -->
+	<insert id="writeComment" parameterType="commentDto">
+		insert into comment (boardno, userid, content)
+		values (#{boardNo}, #{userId}, #{content})
+	</insert>
+
+	<!-- 댓글 조회 -->
+	<select id="listComment" parameterType="int" resultType="commentDto">
+		select boardno, commentno, userid, content, 
+				case when date_format(regtime, '%Y%m%d') = date_format(now(), '%Y%m%d')
+				then date_format(regtime, '%y.%m.%d')
+				else date_format(regtime, '%y.%m.%d')
+				end regtime
+		from comment
+		where boardno = #{no}
+		 order by commentno desc
+	</select>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="deleteComment" parameterType="int">
+		delete from comment
+		 where commentno = #{no}
+	</delete>
+		
+	<!-- 게시물 댓글 삭제 -->
+	<delete id="deleteAllComment" parameterType="int">
+		delete from comment
+		 where boardno = #{no}
+	</delete>
+</mapper>
+

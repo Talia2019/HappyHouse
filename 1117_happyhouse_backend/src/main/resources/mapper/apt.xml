@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.happyhouse.model.mapper.HouseMapMapper">
+
+	<select id="getSido" resultType="sidoGugunCodeDto"> 
+		select left(sidoCode,2) sidoCode, sidoName
+		from sidocode
+		order by sidoCode
+	</select>
+	
+	<select id="getGugunInSido" parameterType="string" resultType="sidoGugunCodeDto">
+		select left(gugunCode,5) gugunCode, gugunName
+		from guguncode
+		where left(gugunCode,2) = #{sido}
+		order by gugunCode
+	</select>
+	
+ 	<select id="getDongInGugun" parameterType="string" resultType="houseInfoDto">
+		select distinct dongName, dongCode
+		from dongcode
+		where left(dongCode, 5) = #{gugun}
+		order by dongName
+	</select> 
+	
+	<select id="getAptInDong" parameterType="string" resultType="houseInfoDto">
+		select h.aptCode, h.aptName, h.buildyear, h.dongCode, h.dongName, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
+				(select dealAmount from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where aptCode = h.aptCode)) recentPrice
+		from houseinfo h
+		left join sidocode si
+		on left(h.dongcode,2) = left(si.sidocode,2)
+		left join guguncode gu
+		on left(h.dongcode,5) = left(gu.guguncode,5)
+		where dongCode = #{dong} 
+		order by aptName
+	</select>
+	
+	<select id="getAptInName" parameterType="string" resultType="houseInfoDto">
+		select h.aptCode, h.aptName, h.buildyear, h.dongCode, h.dongName, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
+				(select dealAmount from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where aptCode = h.aptCode)) recentPrice
+		from houseinfo h
+		left join sidocode si
+		on left(h.dongcode,2) = left(si.sidocode,2)
+		left join guguncode gu
+		on left(h.dongcode,5) = left(gu.guguncode,5)
+		where aptName like concat('%',#{name}, '%')  and dongCode=#{dong}
+		order by aptName
+	</select>
+	
+	<!-- 관심부동산 등록 -->
+	<select id="checkUserHouse" parameterType="string" resultType="houseDealDto">
+		select houseName, dealAmount, dealYear, dealMonth, dealDay, area, floor, jibun, dongName, houseCode, houseDong, builtYear, address, starCount
+		from housedeal 
+		where houseName=#{houseName}
+		and dongName=#{dongName}
+	</select>
+	
+	<select id="getStarHouse" parameterType="string" resultType="houseDealDto">
+		select h.houseName, h.dealAmount, h.dealYear, h.dealMonth, h.dealDay, h.area, h.floor, h.jibun, h.dongName, h.houseCode, h.houseDong, h.builtYear, h.address, h.starCount
+		from housedeal h
+		join wishlist w
+		on h.houseDong=w.aptdong
+		where w.userid=#{userid}
+	</select>
+	
+	<insert id="putUserHouse" parameterType="wishListDto">
+		insert into wishlist (userid, aptdong, address, dongname)
+		values (#{userid}, #{aptdong}, #{address}, #{dongname})
+	</insert>
+	
+	<insert id="checkStar" parameterType="houseDealDto">
+		insert into housedeal (houseName, dealAmount, dealYear, dealMonth, dealDay, area, floor, jibun, dongName, houseCode, houseDong, builtYear, address, starCount)
+		values (#{houseName}, #{dealAmount}, #{dealYear}, #{dealMonth}, #{dealDay}, #{area}, #{floor}, #{jibun}, #{dongName}, #{houseCode}, #{houseDong}, #{builtYear}, #{address}, #{starCount});
+	</insert>
+	
+	<!-- <select id="checkHouse" parameterType="string">
+		select h.houseName, h.starCount
+		from housedeal h
+		join wishlist w
+		on w.aptno = h.no
+		join user u
+		on u.userid = w.user
+		where u.userid = #{user}
+	</select> -->
+	
+	
+	<update id="plusStar" parameterType="houseDealDto">
+		update housedeal
+		set starCount=starCount + 1
+		where houseDong=#{houseDong}
+	</update>
+	
+	<update id="minusStar" parameterType="houseDealDto">
+		update housedeal
+		set starCount=starCount - 1
+		where houseDong=#{houseDong}
+	</update>
+	
+	<delete id="deleteUserHouse" parameterType="wishListDto">
+		delete from wishlist
+		where userid=#{userid} 
+		and aptdong=#{aptdong}
+	</delete>
+</mapper>

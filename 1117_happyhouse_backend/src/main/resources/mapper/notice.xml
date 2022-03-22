@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.happyhouse.model.mapper.NoticeMapper">
+
+	<!-- 게시글 전체 조회 -->
+	<select id="listArticle" parameterType="map" resultType="noticeDto">
+		select articleno as noticeNo, userid, subject, content, hit ,
+				case when date_format(regtime, '%Y%m%d') = date_format(now(), '%Y%m%d')
+				then date_format(regtime, '%y.%m.%d')
+				else date_format(regtime, '%y.%m.%d')
+				end regtime
+		from notice 
+		<if test="word != null and word != ''">
+			<if test="key == 'subject'">
+				where subject like concat('%', #{word}, '%')
+			</if>
+			<if test="key != 'subject'">
+				where ${key} = #{word}
+			</if>
+		</if>
+		 order by articleno desc
+		limit #{start}, #{spp}
+	</select>
+	
+	<!-- 게시글 상세 조회 -->
+	<select id="getArticle" parameterType="int" resultType="noticeDto">
+		select articleno as noticeNo, userid, subject, content, hit, 
+				case when date_format(regtime, '%Y%m%d') = date_format(now(), '%Y%m%d')
+				then date_format(regtime, '%Y-%m-%d %H:%i:%s')
+				else date_format(regtime, '%y.%m.%d')
+				end regtime
+		from notice 
+		where articleno = #{no}
+	</select>
+
+	<!-- 게시글 등록 -->
+	<insert id="writeArticle" parameterType="noticeDto">
+		insert into notice (userid, subject, content, hit)
+		values (#{userId}, #{subject}, #{content}, 0)
+	</insert>
+	
+	<!-- 게시글 수정 -->
+	<update id="modifyArticle" parameterType="noticeDto">
+		update notice
+		set subject = #{subject}, 
+			content = #{content},
+			regtime=now()
+			 
+		 where articleno = #{noticeNo}
+	</update>
+
+	<!-- 게시글 삭제 -->
+	<delete id="deleteArticle" parameterType="int">
+		delete from notice
+		 where articleno = #{no}
+	</delete>
+	
+	<select id="getTotalCount" parameterType="map" resultType="int">
+		select count(articleno)
+		from notice
+		<if test="word != null and word != ''">
+			<if test="key == 'subject'">
+				where subject like concat('%', #{word}, '%')
+			</if>
+			<if test="key != 'subject'">
+				where ${key} = #{word}
+			</if>
+		</if>
+	</select>
+	
+	<update id="updateHit" parameterType="int">
+		update notice
+		set hit = hit + 1
+		where articleno = #{no}
+	</update>
+	
+</mapper>
+
